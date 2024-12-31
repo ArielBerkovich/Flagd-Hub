@@ -1,0 +1,57 @@
+/* Popup Overlay */
+.feature-flag-card-info-popup-overlay {
+    position: fixed; /* Ensures it takes up the whole screen */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Make sure it appears above other elements */
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+  }
+  
+  /* Popup Content */
+  .feature-flag-card-info-popup {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    display: flex; /* Enable flexbox for the popup content */
+    flex-direction: column; /* Ensures items stack vertically */
+    justify-content: center; /* Center the content vertically */
+    align-items: center; /* Center the content horizontally */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1001; /* Ensure popup content is above the overlay */
+  }
+  
+  /* Fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Close Button */
+  .close-btn {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .close-btn:hover {
+    background-color: #2980b9;
+  }
+  

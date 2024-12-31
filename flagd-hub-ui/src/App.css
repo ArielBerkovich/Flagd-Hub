@@ -1,0 +1,70 @@
+.light-mode {
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --accent-color: #e74c3c;
+  --background-color: #ecf0f1;
+  --light-bg: #d8ddde;
+  --dark-bg: #34495e;
+  --font-family: 'Roboto', sans-serif;
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
+  --text-color: #83878c; /* Muted light gray for text or inactive elements */
+}
+
+
+.dark-mode {
+  --primary-color: #64819e; /* Facebook blue for highlights */
+  --secondary-color: #18191a; /* Near-black for primary background */
+  --accent-color: #4a4c4d; /* Medium-dark gray for accents */
+  --background-color: #33373C;
+  --border-radius: 8px;
+  --light-bg: #303439; /* Slightly lighter gray for containers */
+  --dark-bg: #b0b3b8; /* Muted light gray for text or inactive elements */
+  --text-color: #d4d7da; /* Muted light gray for text or inactive elements */
+}
+
+
+
+header {
+  background: linear-gradient(to right, var(--primary-color), var(--dark-bg));
+  color: #fff;
+  padding: 20px;
+  height: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main{
+  background-color: var(--background-color);
+}
+
+.dark-mode-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.2);
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+.mainArea {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Keep other styles as is */
