@@ -31,9 +31,11 @@ To use this project, you'll need:
    cd feature-flags-manager
    ```
 
-2 Start the application:
+2 Start the ui application:
    ```bash
    cd feature-flags-ui
+   configure .env file to fit your settings
+   npm i
    npm start
    ```
    The application will be available at `http://localhost:5002`.

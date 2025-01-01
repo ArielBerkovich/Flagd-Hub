@@ -9,7 +9,8 @@ const Sidebar = ({ onAreaSelect }) => {
   useEffect(() => {
     const fetchFeatureFlags = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/getFeatureFlags');
+        const apiUrl = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(apiUrl+'/getFeatureFlags');
         const flags = response.data;
         const uniqueAreas = [...new Set(flags.map(flag => flag.area))];
         setAreas(['All', ...uniqueAreas]); // Add "All" to the list

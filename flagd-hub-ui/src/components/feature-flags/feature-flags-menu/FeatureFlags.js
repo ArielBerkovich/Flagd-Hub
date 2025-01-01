@@ -14,7 +14,8 @@ const FeatureFlags = ({ activeArea }) => {
   useEffect(() => {
     const fetchFeatureFlags = async () => {
       try {
-        const { data } = await axios.get('http://localhost:3000/getFeatureFlags');
+        const apiUrl = process.env.REACT_APP_SERVER_URL;
+        const { data } = await axios.get(apiUrl+'/getFeatureFlags');
         const flags = activeArea ? data.filter(flag => flag.area === activeArea) : data;
         setFeatureFlags(flags);
 
