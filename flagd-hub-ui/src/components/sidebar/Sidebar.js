@@ -10,7 +10,7 @@ const Sidebar = ({ onAreaSelect }) => {
     const fetchFeatureFlags = async () => {
       try {
         const apiUrl = process.env.REACT_APP_SERVER_URL;
-        const response = await axios.get(apiUrl+'/getFeatureFlags');
+        const response = await axios.get(apiUrl+'/flagd-hub/flags');
         const flags = response.data;
         const uniqueAreas = [...new Set(flags.map(flag => flag.area))];
         setAreas(['All', ...uniqueAreas]); // Add "All" to the list
