@@ -124,15 +124,23 @@ components:
     FeatureFlag:
       type: "object"
       required:
+        - "id"
         - "name"
+        - "area"
         - "description"
         - "type"
         - "variants"
-        - "value"
+        - "defaultVariant"
       properties:
-        name:
+        id:
           type: "string"
           description: "The unique identifier for the flag."
+        name:
+          type: "string"
+          description: "The name of the flag"
+        area:
+          type: "string"
+          description: "The name of the area this flag belongs to"
         description:
           type: "string"
           description: "flag description"
@@ -144,11 +152,9 @@ components:
           type: object
           additionalProperties:
             type: string
-        value:
+        defaultVariant:
           type: "string"
           description: "The chosen variant of the flag."
-        targeting:
-          type: object
     FlagDFeatureFlag:
       type: "object"
       required:
