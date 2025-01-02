@@ -28,12 +28,12 @@ To use this project, you'll need:
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/feature-flags-manager.git
-   cd feature-flags-manager
+   cd Flagd-Hub
    ```
 
 2 Start the ui application:
    ```bash
-   cd feature-flags-ui
+   cd flagd-hub-ui
    configure .env file to fit your settings
    npm i
    npm start
