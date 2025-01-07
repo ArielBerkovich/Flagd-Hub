@@ -123,13 +123,13 @@ paths:
           description: "Invalid input."
         404:
           description: "Flag not found."
-  /flags/{flagKey}/targeting:
+  /flagd-hub/flags/{flagKey}/targeting:
     get:
       summary: "Get targeting rules of a feature flag"
       description: "Retrieve targeting rules of the specified feature flag."
       operationId: getFlagTargeting
       tags:
-        - flags
+        - flags-hub
       parameters:
         - name: "flagKey"
           in: "path"
@@ -151,7 +151,7 @@ paths:
       description: "Add a new targeting rule to an existing feature flag."
       operationId: addFlagTargeting
       tags:
-        - flags
+        - flags-hub
       parameters:
         - name: "flagKey"
           in: "path"
@@ -175,7 +175,7 @@ paths:
       description: "Delete targeting rule of an existing featire"
       operationId: deleteFlagTargeting
       tags:
-        - flags
+        - flags-hub
       parameters:
         - name: "flagKey"
           in: "path"
@@ -201,7 +201,7 @@ components:
         - "variants"
         - "defaultVariant"
       properties:
-        id:
+        key:
           type: "string"
           description: "The unique identifier for the flag."
         name:
