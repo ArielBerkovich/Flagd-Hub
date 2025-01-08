@@ -9,8 +9,8 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'flagd-config-server'
+rootProject.name = 'flagd-hub-server'
 
-include 'flagd-config-api'
+include 'flagd-hub-api'
 include 'swagger-schemas'
 

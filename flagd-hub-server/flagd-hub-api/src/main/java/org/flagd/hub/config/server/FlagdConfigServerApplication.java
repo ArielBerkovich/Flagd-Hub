@@ -1,6 +1,5 @@
 package org.flagd.hub.config.server;
 
-import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
