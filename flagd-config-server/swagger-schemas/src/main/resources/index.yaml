@@ -13,23 +13,23 @@ tags:
 paths:
   /flagd/flags:
     get:
-      summary: "Get all feature flags"
-      description: "Retrieve a list of all feature flags."
+      summary: "Get all flags in flagd format"
+      description: "Get the configuration for the flagd server in the correct format"
+      operationId: getFlagdConfiguration
       tags:
         - flagd-configuration
       responses:
         200:
-          description: "A list of feature flags."
+          description: "flagd configuration"
           content:
             application/json:
               schema:
-                type: "array"
-                items:
-                  $ref: "#/components/schemas/FeatureFlag"
+                type: "object"
   /flagd-hub/flags:
     get:
       summary: "Get all feature flags"
       description: "Retrieve a list of all feature flags."
+      operationId: getFlags
       tags:
         - flags-hub
       responses:
@@ -44,6 +44,7 @@ paths:
     post:
       summary: "Create or update a feature flag"
       description: "Create a new feature flag or override an existing one."
+      operationId: createFlag
       tags:
         - flags-hub
       requestBody:
@@ -61,6 +62,7 @@ paths:
     get:
       summary: "Get a specific feature flag"
       description: "Retrieve details of a specific feature flag by its key."
+      operationId: getFlag
       tags:
         - flags-hub
       parameters:
@@ -81,6 +83,7 @@ paths:
     delete:
       summary: "Delete a feature flag"
       description: "Remove a feature flag by its key."
+      operationId: deleteFlag
       tags:
         - flags-hub
       parameters:
@@ -97,6 +100,7 @@ paths:
     put:
       summary: "Update a feature flag value"
       description: "Update the default variant of an existing feature flag by its key."
+      operationId: updateFlagValue
       tags:
         - flags-hub
       parameters:
@@ -119,12 +123,77 @@ paths:
           description: "Invalid input."
         404:
           description: "Flag not found."
+  /flagd-hub/flags/{flagKey}/targeting:
+    get:
+      summary: "Get targeting rules of a feature flag"
+      description: "Retrieve targeting rules of the specified feature flag."
+      operationId: getFlagTargeting
+      tags:
+        - flags-hub
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "The key of the feature flag."
+      responses:
+        200:
+          description: "The targeting rules."
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: "Flag not found."
+    post:
+      summary: "Add a targeting rule to a feature flag"
+      description: "Add a new targeting rule to an existing feature flag."
+      operationId: addFlagTargeting
+      tags:
+        - flags-hub
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "The key of the feature flag."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        200:
+          description: "Targeting rule added successfully."
+        404:
+          description: "Flag not found."
+    delete:
+      summary: "Delete targeting of a feature flag"
+      description: "Delete targeting rule of an existing featire"
+      operationId: deleteFlagTargeting
+      tags:
+        - flags-hub
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "The key of the feature flag."
+      responses:
+        202:
+          description: "Targeting rule deleted."
+        404:
+          description: "Flag not found."
 components:
   schemas:
     FeatureFlag:
       type: "object"
       required:
-        - "id"
+        - "key"
         - "name"
         - "area"
         - "description"
@@ -132,7 +201,7 @@ components:
         - "variants"
         - "defaultVariant"
       properties:
-        id:
+        key:
           type: "string"
           description: "The unique identifier for the flag."
         name:
@@ -155,25 +224,6 @@ components:
         defaultVariant:
           type: "string"
           description: "The chosen variant of the flag."
-    FlagDFeatureFlag:
-      type: "object"
-      required:
-        - "key"
-        - "type"
-        - "variants"
-        - "defaultValue"
-      properties:
-        key:
-          type: "string"
-          description: "The unique identifier for the flag."
-        type:
-          type: "string"
-          enum: ["boolean", "string", "integer", "float", "object"]
-          description: "The type of the flag."
-        variants:
+        targeting:
           type: object
-          additionalProperties:
-            type: string
-        defaultValue:
-          type: "string"
-          description: "The default variant of the flag."
+          description: "targeting rules"

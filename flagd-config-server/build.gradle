@@ -1,0 +1,42 @@
+plugins {
+	id 'java' // Apply to ensure shared Java settings
+	id 'io.spring.dependency-management' version '1.1.7' // Dependency management
+}
+
+allprojects {
+	group = 'org.flagd.hub'
+	version = '1.0-SNAPSHOT'
+
+	repositories {
+		mavenCentral()
+	}
+}
+
+subprojects {
+	apply plugin: 'java'
+
+	// Common configurations for all subprojects
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(21) // Use Java 21
+		}
+	}
+
+	tasks.withType(JavaCompile) {
+		options.encoding = 'UTF-8'
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+
+}
