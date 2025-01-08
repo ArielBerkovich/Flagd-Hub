@@ -1,8 +1,11 @@
 package org.flagd.hub.config.server.controllers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.flagd.hub.config.server.services.FeatureFlagsService;
 import org.flagd.hub.rest.api.FlagsHubApi;
 import org.flagd.hub.rest.model.FeatureFlag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -10,46 +13,62 @@ import java.util.List;
 
 @Log4j2
 @Controller
+@RequiredArgsConstructor
 public class FlagdHubController implements FlagsHubApi {
+    private final FeatureFlagsService featureFlagsService;
 
     @Override
     public ResponseEntity<List<FeatureFlag>> getFlags() {
         log.info("example endpoint");
-        return ResponseEntity.ok(List.of(new FeatureFlag().name("a")));
+        return ResponseEntity.ok(featureFlagsService.getAllFlags());
     }
 
     @Override
     public ResponseEntity<FeatureFlag> getFlag(String flagKey) {
-        return null;
+        return featureFlagsService.getFlagByKey(flagKey)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @Override
     public ResponseEntity<Void> createFlag(FeatureFlag featureFlag) {
-        return null;
+        featureFlagsService.createFlag(featureFlag);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
     public ResponseEntity<Void> updateFlagValue(String flagKey, String body) {
-        return null;
+        featureFlagsService.updateFlagDefaultVariant(flagKey, body);
+
+        return ResponseEntity.accepted().build();
     }
 
     @Override
     public ResponseEntity<Void> deleteFlag(String flagKey) {
-        return null;
+        featureFlagsService.deleteFlag(flagKey);
+
+        return ResponseEntity.accepted().build();
     }
 
     @Override
     public ResponseEntity<Object> getFlagTargeting(String flagKey) {
-        return null;
+        return featureFlagsService.getFlagTargeting(flagKey)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @Override
     public ResponseEntity<Void> addFlagTargeting(String flagKey, Object body) {
-        return null;
+        featureFlagsService.updateFlagTargeting(flagKey, body);
+
+        return ResponseEntity.accepted().build();
     }
 
     @Override
     public ResponseEntity<Void> deleteFlagTargeting(String flagKey) {
-        return null;
+        featureFlagsService.deleteFlagTargeting(flagKey);
+
+        return ResponseEntity.accepted().build();
     }
 }

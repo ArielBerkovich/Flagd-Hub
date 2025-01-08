@@ -193,7 +193,7 @@ components:
     FeatureFlag:
       type: "object"
       required:
-        - "id"
+        - "key"
         - "name"
         - "area"
         - "description"

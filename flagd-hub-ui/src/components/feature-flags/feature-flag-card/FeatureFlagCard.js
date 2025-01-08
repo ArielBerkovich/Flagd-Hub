@@ -43,7 +43,7 @@ const FeatureFlagCard = ({ flag, selectedVariant, onVariantChange }) => {
         </div>
       ) : (
         <div className="button-radio-group">
-          {flag.variants.map((variant) => (
+          {Object.keys(flag.variants).map((variant) => (
             <label
               key={variant}
               className={`button-radio ${selectedVariant === variant ? 'active' : ''}`}
