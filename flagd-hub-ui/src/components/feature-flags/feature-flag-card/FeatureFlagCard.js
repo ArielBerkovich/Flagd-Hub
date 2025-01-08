@@ -6,11 +6,11 @@ const FeatureFlagCard = ({ flag, selectedVariant, onVariantChange }) => {
   const [showPopup, setShowPopup] = useState(false);
 
   const handleToggleChange = () => {
-    onVariantChange(flag.id, selectedVariant === 'on' ? 'off' : 'on');
+    onVariantChange(flag.key, selectedVariant === 'on' ? 'off' : 'on');
   };
 
   const handleRadioChange = (variant) => {
-    onVariantChange(flag.id, variant);
+    onVariantChange(flag.key, variant);
   };
 
   const handleInfoClick = (e) => {
@@ -50,7 +50,7 @@ const FeatureFlagCard = ({ flag, selectedVariant, onVariantChange }) => {
             >
               <input
                 type="radio"
-                name={`flag-${flag.id}`}
+                name={`flag-${flag.key}`}
                 value={variant}
                 onChange={() => handleRadioChange(variant)}
                 checked={selectedVariant === variant}

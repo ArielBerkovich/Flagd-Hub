@@ -20,7 +20,7 @@ const FeatureFlags = ({ activeArea }) => {
         setFeatureFlags(flags);
 
         const defaultVariants = flags.reduce(
-          (acc, flag) => ({ ...acc, [flag.id]: flag.defaultVariant }),
+          (acc, flag) => ({ ...acc, [flag.key]: flag.defaultVariant }),
           {}
         );
         setSelectedVariants(defaultVariants);
@@ -40,9 +40,18 @@ const FeatureFlags = ({ activeArea }) => {
   ).sort((a, b) => (a.defaultVariant === 'on' ? -1 : 1));
 
   const handleVariantChange = (flagId, variant) => {
-    setSelectedVariants(prev => ({ ...prev, [flagId]: variant }));
     console.log(`Feature flag ID: ${flagId}, Variant selected: ${variant}`);
+    setSelectedVariants(prev => ({ ...prev, [flagId]: variant })); 
+    updateFeatureFlag(flagId, variant)     
   };
+
+  const updateFeatureFlag = async (flagId, defaultVariant)=>{
+    axios.put(`/flagd-hub/flags/${flagId}`, defaultVariant, {
+    headers: {
+      'Content-Type': 'application/json',
+    },}
+    );
+  }
 
   const handleCreateFlag = (newFlag) => {
     setFeatureFlags(prev => [...prev, newFlag]);
@@ -72,9 +81,9 @@ const FeatureFlags = ({ activeArea }) => {
         <div className="feature-cards">
           {filteredFlags.map(flag => (
             <FeatureFlagCard
-              key={flag.id}
+              key={flag.key}
               flag={flag}
-              selectedVariant={selectedVariants[flag.id]}
+              selectedVariant={selectedVariants[flag.keyd]}
               onVariantChange={handleVariantChange}
             />
           ))}
