@@ -10,6 +10,7 @@ const FeatureFlags = ({ activeArea }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedVariants, setSelectedVariants] = useState({});
   const [isPopupOpen, setIsPopupOpen] = useState(false); // Popup state
+  const POLLING_INTERVAL = 2000
 
   useEffect(() => {
     const fetchFeatureFlags = async () => {
@@ -29,7 +30,9 @@ const FeatureFlags = ({ activeArea }) => {
     };
 
     fetchFeatureFlags();
+    setInterval(fetchFeatureFlags, POLLING_INTERVAL);
   }, [activeArea]);
+
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
