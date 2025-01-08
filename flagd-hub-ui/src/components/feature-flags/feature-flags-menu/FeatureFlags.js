@@ -33,7 +33,6 @@ const FeatureFlags = ({ activeArea }) => {
     setInterval(fetchFeatureFlags, POLLING_INTERVAL);
   }, [activeArea]);
 
-
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const filteredFlags = featureFlags.filter(flag =>
