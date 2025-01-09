@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: example-service
+
+server:
+  port: 8090 # Port the application will run on
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # Expose all Actuator endpoints
+      base-path: /actuator # Base path for Actuator endpoints
+  health:
+    defaults:
+      enabled: true # Enable default health checks
+
+logging:
+  config: classpath:log4j2.yaml
+  level:
+    root: INFO # Default log level
+    org.springframework: ERROR # Example of enabling debug logs for Spring
+
+actuator:
+  metrics:
+    export:
+      prometheus:
+        enabled: true # Example for exporting metrics to Prometheus

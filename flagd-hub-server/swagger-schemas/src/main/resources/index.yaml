@@ -114,8 +114,7 @@ paths:
         content:
           application/json:
             schema:
-              type: "string"
-              description: "The new default variant of the flag."
+              $ref: "#/components/schemas/ChangeDefaultVariantRequest"
       responses:
         200:
           description: "Flag value updated successfully."
@@ -190,6 +189,12 @@ paths:
           description: "Flag not found."
 components:
   schemas:
+    ChangeDefaultVariantRequest:
+      type: object
+      properties:
+        defaultVariant:
+          type: string
+          description: "The new default variant of the flag."
     FeatureFlag:
       type: "object"
       required:

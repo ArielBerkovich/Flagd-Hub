@@ -46,7 +46,10 @@ const FeatureFlags = ({ activeArea }) => {
   };
 
   const updateFeatureFlag = async (flagId, defaultVariant)=>{
-    axios.put(`/flagd-hub/flags/${flagId}`, defaultVariant, {
+    console.log(defaultVariant)
+    axios.put(`/flagd-hub/flags/${flagId}`, {
+      defaultVariant: defaultVariant
+    }, {
     headers: {
       'Content-Type': 'application/json',
     },}
@@ -83,7 +86,7 @@ const FeatureFlags = ({ activeArea }) => {
             <FeatureFlagCard
               key={flag.key}
               flag={flag}
-              selectedVariant={selectedVariants[flag.keyd]}
+              selectedVariant={selectedVariants[flag.key]}
               onVariantChange={handleVariantChange}
             />
           ))}

@@ -13,4 +13,5 @@ rootProject.name = 'flagd-hub-server'
 
 include 'flagd-hub-api'
 include 'swagger-schemas'
+include 'example-service'
 

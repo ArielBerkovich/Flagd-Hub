@@ -1,0 +1,110 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management'
+}
+
+group = 'org.flagd.hub'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    implementation 'com.sun:tools:jdk'
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+    implementation 'dev.openfeature:sdk:1.13.0'
+    implementation 'dev.openfeature.contrib.providers:flagd:0.10.5'
+
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+
+    // Log4j2 dependencies
+    implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
+    implementation 'org.apache.logging.log4j:log4j-api:2.24.3'
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.24.3'
+
+    // Exclude Spring Boot's default logging (Logback)
+    configurations {
+        all {
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+    }
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+//
+//// Configure annotation processing
+//tasks.withType(JavaCompile) {
+//    options.compilerArgs += [
+//            '-proc:none', // Disable annotation processing for the processor itself
+//            '-XprintRounds', // Print information about annotation processing rounds
+//            '-XprintProcessorInfo' // Print information about which processors are running
+//    ]
+//}
+//
+//tasks.withType(JavaCompile).configureEach {
+//    options.compilerArgs += [
+//            '--add-exports', 'jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED',
+//            '--add-exports', 'jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED'
+//    ]
+//}
+//
+//// Create separate JAR for the annotation processor
+//task processorJar(type: Jar) {
+//    archiveClassifier = 'processor'
+//    from(sourceSets.main.output) {
+//        include 'org/flagd/hub/example/annotations/ClassifiedProcessor.class'
+//        include 'META-INF/services/*'
+//    }
+//}
+//
+//// Create JAR for the annotation
+//task annotationJar(type: Jar) {
+//    archiveClassifier = 'annotation'
+//    from(sourceSets.main.output) {
+//        include 'org/flagd/hub/example/annotations/Classified.class'
+//    }
+//}
+//
+//
+//// Create the META-INF/services directory structure
+//def servicesDir = file("${buildDir}/resources/main/META-INF/services")
+//servicesDir.mkdirs()
+//
+//// Create the service file for the annotation processor
+//def processorFile = new File(servicesDir, "javax.annotation.processing.Processor")
+//processorFile.text = "org/flagd/hub/example/annotations/ClassifiedProcessor"
+//
+//// Task to ensure service file is created before compiling
+//tasks.compileJava.dependsOn {
+//    tasks.create("createServiceFile") {
+//        doLast {
+//            servicesDir.mkdirs()
+//            processorFile.text = "org/flagd/hub/example/annotations/ClassifiedProcessor"
+//        }
+//    }
+//}
+//
+//// Configure source sets to include generated sources
+//sourceSets {
+//    main {
+//        java {
+//            srcDir "${buildDir}/generated/sources/annotationProcessor/java/main"
+//        }
+//    }
+//}

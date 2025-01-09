@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.flagd.hub.config.server.services.FeatureFlagsService;
 import org.flagd.hub.rest.api.FlagsHubApi;
+import org.flagd.hub.rest.model.ChangeDefaultVariantRequest;
 import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,6 @@ public class FlagdHubController implements FlagsHubApi {
 
     @Override
     public ResponseEntity<List<FeatureFlag>> getFlags() {
-        log.info("example endpoint");
         return ResponseEntity.ok(featureFlagsService.getAllFlags());
     }
 
@@ -38,10 +38,14 @@ public class FlagdHubController implements FlagsHubApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateFlagValue(String flagKey, String body) {
-        featureFlagsService.updateFlagDefaultVariant(flagKey, body);
+    public ResponseEntity<Void> updateFlagValue(String flagKey, ChangeDefaultVariantRequest request) {
+        boolean isSuccess = featureFlagsService.updateFlagDefaultVariant(flagKey, request.getDefaultVariant());
 
-        return ResponseEntity.accepted().build();
+        if (isSuccess) {
+            return ResponseEntity.accepted().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
     @Override
