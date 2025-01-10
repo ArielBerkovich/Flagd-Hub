@@ -63,19 +63,21 @@ const FeatureFlags = ({ activeArea }) => {
 
   return (  
     <div className="feature-flags">
-      <div className="header-with-search">
+      <div className="feature-flags-menu-header">
         <h3>{activeArea ? `Feature Flags for ${activeArea}` : 'All Feature Flags'}</h3>
-        <button className="create-flag-button" onClick={() => setIsPopupOpen(true)}>
-            + Create Feature Flag
-          </button>
-        <div>
-          <input
-            type="text"
-            placeholder="Search feature flags..."
-            className="search-bar"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
+        <div className='flagfs-actions'>
+          <button className="create-flag-button" onClick={() => setIsPopupOpen(true)}>
+              + Create Feature Flag
+            </button>
+          <div>
+            <input
+              type="text"
+              placeholder="Search feature flags..."
+              className="search-bar"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
         </div>
       </div>
       {filteredFlags.length === 0 ? (

@@ -4,7 +4,7 @@
     border: 1px solid #1e1d1d; /* Optional: add border for better visibility */
   }
   
-  .header-with-search {
+  .feature-flags-menu-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -66,6 +66,10 @@
     border-color: var(--primary-color);
   }
   
+  .flagfs-actions{
+    display: flex;
+    flex-direction: row;
+  }
 
   /* General container for button radio group */
 .button-radio-group {
@@ -121,9 +125,8 @@ h3{
 
 .create-flag-button {
   padding: 10px 15px;
-  margin-left: 450px;
-  margin-right: 20px;
   width: 200px;
+  margin-right: 10px;
   background-color: var(--primary-color);
   color: white;
   border: none;
