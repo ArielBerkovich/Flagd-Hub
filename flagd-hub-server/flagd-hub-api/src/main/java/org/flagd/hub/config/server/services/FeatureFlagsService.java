@@ -2,46 +2,48 @@ package org.flagd.hub.config.server.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.flagd.hub.config.server.repositories.FeatureFlagsRepository;
+import org.flagd.hub.config.server.repositories.FeatureFlagRepository;
 import org.flagd.hub.rest.model.FeatureFlag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Log4j2
 @RequiredArgsConstructor
 @Service
 public class FeatureFlagsService {
-    private final FeatureFlagsRepository featureFlagsRepository;
+    @Autowired
+    private final FeatureFlagRepository featureFlagRepository;
 
     public List<FeatureFlag> getAllFlags() {
-        List<FeatureFlag> allFlags = featureFlagsRepository.getAll();
+        List<FeatureFlag> allFlags = new ArrayList<>();
+        featureFlagRepository.findAll().forEach(allFlags::add);
         log.debug("return all flags: {}", allFlags);
 
         return allFlags;
     }
 
     public Optional<FeatureFlag> getFlagByKey(String flagKey) {
-        return featureFlagsRepository.getFlagByKey(flagKey);
+        return featureFlagRepository.findById(flagKey);
     }
 
     public void createFlag(FeatureFlag featureFlag) {
         log.info("creating new flag: {}", featureFlag);
-        featureFlagsRepository.putFlag(featureFlag.getKey(), featureFlag);
+        featureFlagRepository.save(featureFlag);
     }
 
     public boolean updateFlagDefaultVariant(String flagKey, String newDefaultVariant) {
         log.info("update flag '{}' value to: {}", flagKey, newDefaultVariant);
 
-        boolean isVariantExist = featureFlagsRepository.getFlagByKey(flagKey)
+        boolean isVariantExist = featureFlagRepository.findById(flagKey)
                 .map(FeatureFlag::getVariants)
                 .filter((Map<String, String> variants) -> variants.containsKey(newDefaultVariant))
                 .isPresent();
 
         if (isVariantExist) {
-            featureFlagsRepository.updateFlagDefaultVariant(flagKey, newDefaultVariant);
+//            featureFlagRepository.updateFlagDefaultVariant(flagKey, newDefaultVariant);
         } else {
             log.warn("{} is not a variant of flag {}", newDefaultVariant, flagKey);
         }
@@ -50,19 +52,23 @@ public class FeatureFlagsService {
     }
 
     public void deleteFlag(String flagKey) {
-        featureFlagsRepository.deleteFlag(flagKey);
+        featureFlagRepository.deleteById(flagKey);
         log.info("flag {} deleted", flagKey);
     }
 
     public void updateFlagTargeting(String flagKey, Object targeting) {
-        featureFlagsRepository.setFlagTargeting(flagKey, targeting);
+        // TODO: fixme
+//        featureFlagsRepository.setFlagTargeting(flagKey, targeting);
     }
 
     public Optional<Object> getFlagTargeting(String flagKey) {
-        return featureFlagsRepository.getFlagTargeting(flagKey);
+        // TODO: fixme
+//        return featureFlagsRepository.getFlagTargeting(flagKey);
+        return Optional.empty();
     }
 
     public void deleteFlagTargeting(String flagKey) {
-        featureFlagsRepository.deleteFlagTargeting(flagKey);
+        // TODO: fixme
+//        featureFlagsRepository.deleteFlagTargeting(flagKey);
     }
 }
