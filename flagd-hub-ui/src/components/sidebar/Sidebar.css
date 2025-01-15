@@ -68,7 +68,7 @@
 }
 
 .sidebar ul::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #2563eb, #1e40af); /* Darker gradient on hover */
+  background: #1e40af; /* Darker gradient on hover */
 }
 
 .sidebar ul::-webkit-scrollbar-track {
@@ -112,7 +112,6 @@
   width: 3px;
   height: 70%;
   border-radius: 0 4px 4px 0;
-  background: #3b82f6; /* Blue color for active indicator */
   transition: height 0.2s ease;
 }
 
