@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Popup from '../popup/Popup'; // Import the Popup component
 import './Logo.css';
 
-const Logo = () => {
-  const [showPopup, setShowPopup] = useState(false);
+const Logo: React.FC = () => {
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   // Handle logo click to show the popup
   const handleLogoClick = () => {

@@ -3,10 +3,9 @@
   --secondary-color: #2c3e50;
   --accent-color: #e74c3c;
   --background-color: #ecf0f1;
-  --light-bg: #d8ddde;
+  --light-bg: #d8d9de;
   --dark-bg: #34495e;
   --font-family: 'Roboto', sans-serif;
-  --border-radius: 8px;
   --transition-speed: 0.3s;
   --text-color: #83878c; /* Muted light gray for text or inactive elements */
 }
@@ -22,7 +21,6 @@
   --dark-bg: #b0b3b8; /* Muted light gray for text or inactive elements */
   --text-color: #d4d7da; /* Muted light gray for text or inactive elements */
 }
-
 
 
 header {
@@ -41,6 +39,17 @@ header {
 
 .main{
   background-color: var(--background-color);
+  display: flex;
+  height: 100%;
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --accent-color: #e74c3c;
+  --background-color: #ecf0f1;
+  --light-bg: #d8d9de;
+  --dark-bg: #34495e;
+  --font-family: 'Roboto', sans-serif;
+  --transition-speed: 0.3s;
+  --text-color: #83878c; /* Muted light gray for text or inactive elements */
 }
 
 .dark-mode-toggle {
@@ -67,4 +76,7 @@ main {
   width: 100%;
 }
 
-/* Keep other styles as is */
+html, body {
+  height: 100%;
+  margin: 0;
+}

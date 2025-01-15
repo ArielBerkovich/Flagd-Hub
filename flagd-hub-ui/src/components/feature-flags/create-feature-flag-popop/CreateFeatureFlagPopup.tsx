@@ -1,19 +1,34 @@
 import React, { useState } from 'react';
 import './CreateFeatureFlagPopup.css';
+import FeatureFlag from '../../../models/FeatureFlag';
+import { v4 as uuidv4 } from 'uuid';
 
-const CreateFeatureFlagPopup = ({ onClose, onCreate }) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [type, setType] = useState('boolean');
-  const [values, setValues] = useState(['on', 'off']);
-  const [defaultValue, setDefaultValue] = useState('on');
+interface CreateFeatureFlagPopupProps {
+  onClose: () => void;
+  onCreate: (newFlag: FeatureFlag) => void;
+}
+
+const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose, onCreate }) => {
+  const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [type, setType] = useState<string>('boolean');
+  const [values, setValues] = useState<string[]>(['on', 'off']);
+  const [defaultValue, setDefaultValue] = useState<string>('on');
 
   const handleSubmit = () => {
     if (!name) {
       alert('Name is required');
       return;
     }
-    const newFlag = { id: Date.now(), name, description, type, values, defaultVariant: defaultValue };
+    const newFlag: FeatureFlag = { 
+      key: uuidv4(),
+      name, 
+      area: "test",
+      description, 
+      type, 
+      variants: {},
+      defaultVariant: defaultValue 
+    };
     onCreate(newFlag);
   };
 
@@ -73,8 +88,8 @@ const CreateFeatureFlagPopup = ({ onClose, onCreate }) => {
           </div>
         </label>
         <div className="form-actions">
-          <button className='form-button' onClick={handleSubmit}>Create</button>
-          <button className='form-button' onClick={onClose}>Cancel</button>
+          <button className="form-button" onClick={handleSubmit}>Create</button>
+          <button className="form-button" onClick={onClose}>Cancel</button>
         </div>
       </div>
     </div>

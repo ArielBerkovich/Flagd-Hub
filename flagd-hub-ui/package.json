@@ -13,6 +13,7 @@
     "react-scripts": "5.0.1",
     "stream": "^0.0.3",
     "url": "^0.11.4",
+    "uuid": "^11.0.5",
     "web-vitals": "^4.2.4",
     "zlib": "^1.0.5"
   },
@@ -39,5 +40,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3"
   }
 }

@@ -1,15 +1,20 @@
 import React from 'react';
-import './no-feature-flags.css';  // Import the CSS file
+import './flags-empty-state.css';  // Import the CSS file
 
 // Truncate and append "..." if longer than 10 characters
-const trimSearchTerm = (term) => {
+const trimSearchTerm = (term: string): string => {
   if (!term) return ''; 
   term = term.trim(); 
   return term.length > 20 ? term.substring(0, 20) + '...' : term; 
 };
 
-const NoFeatureFlags = ({ searchTerm }) => {
-  searchTerm = trimSearchTerm(searchTerm)
+interface FlagsEmptyStateProps {
+  searchTerm: string;
+}
+
+const FlagsEmptyState: React.FC<FlagsEmptyStateProps> = ({ searchTerm }) => {
+  const trimmedSearchTerm = trimSearchTerm(searchTerm);
+
   return (
     <div className="no-feature-flags-container">
       <div className="no-feature-flags-icon">
@@ -27,10 +32,11 @@ const NoFeatureFlags = ({ searchTerm }) => {
           <line x1="16" y1="16" x2="20" y2="20" />
         </svg>
       </div>
-      <h2 className="no-feature-flags-title">No Feature Flags found for "{searchTerm}"</h2>
+      <h2 className="no-feature-flags-title">
+        No Feature Flags found for "{trimmedSearchTerm}"
+      </h2>
     </div>
   );
 };
 
-
-export default NoFeatureFlags;
+export default FlagsEmptyState;

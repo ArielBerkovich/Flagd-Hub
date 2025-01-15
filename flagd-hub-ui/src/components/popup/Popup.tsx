@@ -1,8 +1,11 @@
-// Popup.js
 import React from 'react';
 import './Popup.css'; // Optional: for styling the popup
 
-const Popup = ({ onClose }) => {
+interface PopupProps {
+  onClose: () => void;
+}
+
+const Popup: React.FC<PopupProps> = ({ onClose }) => {
   return (
     <div className="popup-overlay">
       <div className="popup">

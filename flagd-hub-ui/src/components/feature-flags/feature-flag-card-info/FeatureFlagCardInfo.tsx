@@ -2,15 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './FeatureFlagCardInfo.css'; // Optional: for styling the popup
 
-const FeatureFlagCardInfo = ({ title, message, onClose }) => {
-  const handleCloseClick = (e) => {
+// Define types for the props
+interface FeatureFlagCardInfoProps {
+  title: string;
+  message: string;
+  onClose: () => void;
+}
+
+const FeatureFlagCardInfo: React.FC<FeatureFlagCardInfoProps> = ({ title, message, onClose }) => {
+  const handleCloseClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent the close button click from triggering the overlay's click handler
     onClose(); // Call the passed function to close the popup
   };
 
   return ReactDOM.createPortal(
     <div className="feature-flag-card-info-popup-overlay" onClick={onClose}>
-      <div className="feature-flag-card-info-popup" onClick={(e) => e.stopPropagation()}> {}
+      <div className="feature-flag-card-info-popup" onClick={(e) => e.stopPropagation()}>
         <h1>{title}</h1>
         <h2>Description</h2>
         <p>{message}</p>

@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
 import './FeatureFlagCard.css';
-import FeatureCardInfoPopup from '../feature-flag-card-info/FeatureFlagCardInfo'; // Import the Popup component
+import FeatureCardInfoPopup from '../feature-flag-card-info/FeatureFlagCardInfo'
+import FeatureFlag from '../../../models/FeatureFlag'
 
-const FeatureFlagCard = ({ flag, selectedVariant, onVariantChange }) => {
-  const [showPopup, setShowPopup] = useState(false);
+interface FeatureFlagCardProps {
+  flag: FeatureFlag;
+  selectedVariant: string;
+  onVariantChange: (flagId: string, variant: string) => void;
+}
+
+const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant, onVariantChange }) => {
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   const handleToggleChange = () => {
     onVariantChange(flag.key, selectedVariant === 'on' ? 'off' : 'on');
   };
 
-  const handleRadioChange = (variant) => {
+  const handleRadioChange = (variant: string) => {
     onVariantChange(flag.key, variant);
   };
 
-  const handleInfoClick = (e) => {
+  const handleInfoClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent triggering other events on the parent
     setShowPopup(true);
   };
@@ -43,7 +50,7 @@ const FeatureFlagCard = ({ flag, selectedVariant, onVariantChange }) => {
         </div>
       ) : (
         <div className="button-radio-group">
-          {Object.keys(flag.variants).map((variant) => (
+          {Object.keys(flag.variants || {}).map((variant) => (
             <label
               key={variant}
               className={`button-radio ${selectedVariant === variant ? 'active' : ''}`}
