@@ -24,16 +24,15 @@
 .sidebar ul {
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 8px 0;
-  margin: 16px 0;
+  padding: 1px 0;
+  margin: 8px 0;
   list-style: none;
   flex-grow: 1;
   color: #a5a8c1;  /* Muted text color for list items */
 }
 
 .sidebar li {
-  padding: 10px 16px;
-  margin: 4px 0;
+  padding: 10px 8px;
   cursor: pointer;
   transition: all 0.2s ease;
   border-radius: 8px;
@@ -58,6 +57,7 @@
 
 /* Enhanced Scrollbar Styling */
 .sidebar ul::-webkit-scrollbar {
+  margin-left: 50px;
   width: 8px;
 }
 
