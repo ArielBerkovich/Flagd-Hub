@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import './dashboard.css';
 import FlagsEmptyState from '../components/flags-empty-state/flags-empty-state';
 import FeatureFlagCard from '../components/feature-flags/feature-flag-card/FeatureFlagCard';
@@ -19,8 +18,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
 
   useEffect(() => {
     const fetchFeatureFlags = async () => {
-      try {
-        const { data } = await axios.get('/flagd-hub/flags');
+        FeatureFlagService.getFeatureFlags().then(data=>{
         const flags = activeArea ? data.filter((flag: FeatureFlag) => flag.area === activeArea) : data;
         setFeatureFlags(flags);
 
@@ -29,9 +27,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
           {}
         );
         setSelectedVariants(defaultVariants);
-      } catch (error) {
-        console.error('Error fetching feature flags:', error);
-      }
+      })
     };
 
     fetchFeatureFlags();
@@ -54,8 +50,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
 
   const updateFeatureFlag = async (flagId: string, defaultVariant: string) => {
     console.log(defaultVariant);
-    const featureFlagsSerice = new FeatureFlagService();
-    featureFlagsSerice.setFeatureFlag(flagId, defaultVariant)
+    FeatureFlagService.setFeatureFlag(flagId, defaultVariant)
   };
 
   const handleCreateFlag = (newFlag: FeatureFlag) => {
