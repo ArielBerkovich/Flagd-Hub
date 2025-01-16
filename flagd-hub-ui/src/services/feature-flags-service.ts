@@ -30,6 +30,16 @@ class FeatureFlagsService {
       throw error;
     }
   }
+
+  static async createFeatureFlag(featureFlag: FeatureFlag) {
+    try {
+      const response = await FeatureFlagsService.apiClient.post(`/flags`, JSON.stringify(featureFlag));
+      return response.data;
+    } catch (error) {
+      console.error(`Error creating feature flag (${featureFlag}):`, error);
+      throw error;
+    }
+  }
 }
 
 export default FeatureFlagsService;

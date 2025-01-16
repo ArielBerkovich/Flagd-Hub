@@ -10,6 +10,7 @@ interface CreateFeatureFlagPopupProps {
 
 const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose, onCreate }) => {
   const [name, setName] = useState<string>('');
+  const [area, setArea] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [type, setType] = useState<string>('boolean');
   const [values, setValues] = useState<string[]>(['on', 'off']);
@@ -20,14 +21,20 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
       alert('Name is required');
       return;
     }
+    const formVariants: Map<string, string> = values.reduce((acc, item) => {
+      acc.set(item, item);
+      return acc;
+    }, new Map<string, string>());    
+
     const newFlag: FeatureFlag = { 
-      key: uuidv4(),
-      name, 
-      area: "test",
-      description, 
-      type, 
-      variants: {},
-      defaultVariant: defaultValue 
+      key:uuidv4(),
+      name:name, 
+      area:area,
+      description:description, 
+      type:type, 
+      variants: formVariants,
+      defaultVariant: defaultValue ,
+      targeting:"",
     };
     onCreate(newFlag);
   };
@@ -42,6 +49,14 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+        </label>
+        <label>
+          area (required):
+          <input
+            type="text"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
           />
         </label>
         <label>

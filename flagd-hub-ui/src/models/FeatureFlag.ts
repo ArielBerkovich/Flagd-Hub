@@ -4,8 +4,9 @@ export default class FeatureFlag {
   area: string;
   description: string;
   type: string
-  variants: Record<string, string>;
+  variants: Map<string, string>;
   defaultVariant: string;
+  targeting: string;
 
   /**
    * Creates a new FeatureFlag instance.
@@ -31,7 +32,7 @@ export default class FeatureFlag {
     area: string;
     description: string;
     type: string;
-    variants: Record<string, string>;
+    variants: Map<string, string>;
     defaultVariant: string;
   }) {
     this.key = key;
@@ -41,5 +42,6 @@ export default class FeatureFlag {
     this.type = type;
     this.variants = variants;
     this.defaultVariant = defaultVariant;
+    this.targeting = "";
   }
 }
