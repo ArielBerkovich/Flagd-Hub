@@ -18,6 +18,24 @@
     transition: background-color 0.3s;
 }
 
+.delete-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border: none;
+  width: 24px;
+  background-color: transparent;
+  height: 24px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  transform: scale(1.2);
+}
 
   /* Toggle Wrapper for Alignment */
   .toggle-wrapper {

@@ -32,7 +32,6 @@ const App: React.FC = () => {
         <Sidebar onAreaSelect={setActiveArea} />
         <div className='mainArea'>
           <Dashboard activeArea={activeArea} />
-          <Logo />
         </div>
       </div>
   );

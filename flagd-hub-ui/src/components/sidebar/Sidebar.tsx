@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import './Sidebar.css';
+import FeatureFlagsService from '../../services/feature-flags-service';
 
 interface SidebarProps {
   onAreaSelect: (area: string | null) => void;
@@ -12,36 +12,41 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect }) => {
   const [activeArea, setActiveArea] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  useEffect(() => {
-    const fetchFeatureFlags = async () => {
-      try {
-        const response = await axios.get('/flagd-hub/flags');
-        const flags = response.data;
+  const fetchFeatureFlags = async () => {
+    try {
+      FeatureFlagsService.getFeatureFlags().then(flags=>{
         const uniqueAreas: any = [...new Set(flags.map((flag: { area: string }) => flag.area))];
         const areasWithAll = ['All', ...uniqueAreas];
         setAreas(areasWithAll);
-        setFilteredAreas(areasWithAll);
-      } catch (error) {
-        console.error('Error fetching feature flags:', error);
-      }
-    };
+        setFilteredAreas(() => 
+          searchTerm.trim()
+            ? areasWithAll.filter((area) =>
+                area.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+            : areasWithAll)
+      })
+    } catch (error) {
+      console.error('Error fetching feature flags:', error);
+    }
+  };
 
+  useEffect(() => {
+    setActiveArea('All')
     fetchFeatureFlags();
-  }, []);
+    const intervalId = setInterval(fetchFeatureFlags, 1000);
+
+    return () => clearInterval(intervalId); 
+  }, [searchTerm]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
 
-    if (value.trim() === '') {
-      setFilteredAreas(areas);
-    } else {
-      setFilteredAreas(
-        areas.filter((area) =>
-          area.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-    }
+    setFilteredAreas(
+      areas.filter((area) =>
+        area.toLowerCase().includes(value.toLowerCase())
+      )
+    );
   };
 
   const handleAreaClick = (area: string) => {
@@ -51,7 +56,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect }) => {
 
   return (
     <div className="sidebar">
-      <h3>Areas</h3>
+      <div className="header">
+      <img className="logo"
+        src="/flagd-hub-logo.png"
+        alt="Logo"
+      />
+            <h3>Flagd Hub</h3>
+      </div>
+
       <input
         type="text"
         className="sidebar-search"

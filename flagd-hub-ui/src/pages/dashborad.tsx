@@ -4,7 +4,8 @@ import FlagsEmptyState from '../components/flags-empty-state/flags-empty-state';
 import FeatureFlagCard from '../components/feature-flags/feature-flag-card/FeatureFlagCard';
 import FeatureFlag from '../models/FeatureFlag';
 import CreateFeatureFlagPopup from '../components/feature-flags/create-feature-flag-popop/CreateFeatureFlagPopup';
-import FeatureFlagService from '../services/feature-flags-service'
+import FeatureFlagService from '../services/feature-flags-service';
+
 interface DashboardProps {
   activeArea: string | null;
 }
@@ -18,7 +19,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
 
   useEffect(() => {
     const fetchFeatureFlags = async () => {
-        FeatureFlagService.getFeatureFlags().then(data=>{
+      FeatureFlagService.getFeatureFlags().then(data => {
         const flags = activeArea ? data.filter((flag: FeatureFlag) => flag.area === activeArea) : data;
         setFeatureFlags(flags);
 
@@ -27,13 +28,13 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
           {}
         );
         setSelectedVariants(defaultVariants);
-      })
+      });
     };
 
     fetchFeatureFlags();
     const intervalId = setInterval(fetchFeatureFlags, POLLING_INTERVAL);
 
-    return () => clearInterval(intervalId); // Cleanup on component unmount
+    return () => clearInterval(intervalId);
   }, [activeArea]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
@@ -50,13 +51,32 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
 
   const updateFeatureFlag = async (flagId: string, defaultVariant: string) => {
     console.log(defaultVariant);
-    FeatureFlagService.setFeatureFlag(flagId, defaultVariant)
+    FeatureFlagService.setFeatureFlag(flagId, defaultVariant);
   };
 
   const handleCreateFlag = (newFlag: FeatureFlag) => {
-    FeatureFlagService.createFeatureFlag(newFlag)
+    FeatureFlagService.createFeatureFlag(newFlag);
     setFeatureFlags(prev => [...prev, newFlag]);
     setIsPopupOpen(false); // Close popup after creation
+  };
+
+  const downloadFlags = () => {
+    FeatureFlagService.getFeatureFlags().then(data=>{
+      const text = JSON.stringify(data)
+      console.log(text)
+      const blob = new Blob([text], { type: "text/plain" }); // Create a Blob
+      const url = URL.createObjectURL(blob); 
+  
+      // Create a temporary anchor element and trigger a download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "flags.json"; // Set the file name
+      document.body.appendChild(a); // Append the anchor to the document
+      a.click(); // Programmatically click the anchor
+      document.body.removeChild(a); // Remove the anchor
+      URL.revokeObjectURL(url); // Clean up the URL object
+    })
+   
   };
 
   return (
@@ -64,10 +84,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
       <div className="feature-flags-menu-header">
         <h3>{activeArea ? `Feature Flags for ${activeArea}` : 'All Feature Flags'}</h3>
         <div className="flagfs-actions">
-          <button className="create-flag-button" onClick={() => setIsPopupOpen(true)}>
-            + Create Feature Flag
-          </button>
-          <div>
+        <div>
             <input
               type="text"
               placeholder="Search feature flags..."
@@ -76,20 +93,30 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
               onChange={handleSearchChange}
             />
           </div>
+          <button className="header-button" onClick={() => setIsPopupOpen(true)}>
+            Create Feature Flag ➕
+          </button>
+          <button className="header-button" onClick={() => downloadFlags()}>
+            export 💾
+          </button>
         </div>
       </div>
-      {filteredFlags.length === 0 ? (
+      {featureFlags.length === 0 ? (
+        <div className="no-feature-flags">No feature flags available</div>
+      ) : filteredFlags.length === 0 ? (
         <FlagsEmptyState searchTerm={searchTerm} />
       ) : (
         <div className="feature-cards">
-          {filteredFlags.map(flag => (
-            <FeatureFlagCard
-              key={flag.key}
-              flag={flag}
-              selectedVariant={selectedVariants[flag.key]}
-              onVariantChange={handleVariantChange}
-            />
-          ))}
+          {filteredFlags
+            .sort((a, b) => a.name.localeCompare(b.name)) // Sort by name
+            .map(flag => (
+              <FeatureFlagCard
+                key={flag.key}
+                flag={flag}
+                selectedVariant={selectedVariants[flag.key]}
+                onVariantChange={handleVariantChange}
+              />
+            ))}
         </div>
       )}
       {isPopupOpen && (

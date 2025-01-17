@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import './FeatureFlagCard.css';
-import FeatureCardInfoPopup from '../feature-flag-card-info/FeatureFlagCardInfo'
-import FeatureFlag from '../../../models/FeatureFlag'
+import FeatureCardInfoPopup from '../feature-flag-card-info/FeatureFlagCardInfo';
+import DeleteConfirmationPopup from '../delete-confirmation-popup/DeleteConfirmationPopup';
+import FeatureFlag from '../../../models/FeatureFlag';
+import FeatureFlagsService from '../../../services/feature-flags-service';
 
 interface FeatureFlagCardProps {
   flag: FeatureFlag;
@@ -11,6 +13,7 @@ interface FeatureFlagCardProps {
 
 const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant, onVariantChange }) => {
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
   const handleToggleChange = () => {
     onVariantChange(flag.key, selectedVariant === 'on' ? 'off' : 'on');
@@ -29,6 +32,20 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
     setShowPopup(false);
   };
 
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering other events on the parent
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setShowDeleteConfirm(false); // Close the confirmation popup
+    FeatureFlagsService.deleteFeatureFlag(flag.key)
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirm(false);
+  };
+
   return (
     <div className="feature-card">
       {flag.description && (
@@ -36,6 +53,9 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
           i
         </button>
       )}
+      <button className="delete-button" onClick={handleDeleteClick} title="Delete Feature Flag">
+      ✖️
+      </button>
       <h4>{flag.name}</h4>
       {flag.type === 'boolean' ? (
         <div className="toggle-wrapper">
@@ -70,6 +90,15 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
 
       {/* Show Popup when flag.description exists */}
       {showPopup && <FeatureCardInfoPopup title={flag.name} message={flag.description} onClose={handleClosePopup} />}
+
+      {/* Delete Confirmation Popup */}
+      {showDeleteConfirm && (
+        <DeleteConfirmationPopup
+        message={`Are you sure you want to delete feature flag ${flag.name}?`}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
+      )}
     </div>
   );
 };

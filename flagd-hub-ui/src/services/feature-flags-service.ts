@@ -9,7 +9,6 @@ class FeatureFlagsService {
     },
   });
 
-  // This method returns a promise that resolves to an array of FeatureFlag instances
   static async getFeatureFlags(): Promise<FeatureFlag[]> {
     try {
       const response = await FeatureFlagsService.apiClient.get('/flags');
@@ -20,23 +19,36 @@ class FeatureFlagsService {
     }
   }
 
-  // The method signature specifies that flagName is a string and flagData is any
-  static async setFeatureFlag(flagName: string, flagData: any) {
+  static async setFeatureFlag(flagKey: string, flagData: any) {
     try {
-      const response = await FeatureFlagsService.apiClient.put(`/flags/${flagName}`, {"defaultVariant":flagData});
+      const response = await FeatureFlagsService.apiClient.put(`/flags/${flagKey}`, {"defaultVariant":flagData});
       return response.data;
     } catch (error) {
-      console.error(`Error setting feature flag (${flagName}):`, error);
+      console.error(`Error setting feature flag (${flagKey}):`, error);
       throw error;
     }
   }
 
   static async createFeatureFlag(featureFlag: FeatureFlag) {
     try {
-      const response = await FeatureFlagsService.apiClient.post(`/flags`, JSON.stringify(featureFlag));
+      const json = JSON.stringify({
+        ...featureFlag,
+        variants: Object.fromEntries(featureFlag.variants),
+      });
+      const response = await FeatureFlagsService.apiClient.post(`/flags`, json);
       return response.data;
     } catch (error) {
       console.error(`Error creating feature flag (${featureFlag}):`, error);
+      throw error;
+    }
+  }
+
+  static async deleteFeatureFlag(flagKey: string){
+    try {
+      const response = await FeatureFlagsService.apiClient.delete(`/flags/${flagKey}`);
+      return response.data;
+    } catch (error) {
+      console.error(`failed to delete (${flagKey}):`, error);
       throw error;
     }
   }

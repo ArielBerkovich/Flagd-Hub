@@ -25,7 +25,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
       acc.set(item, item);
       return acc;
     }, new Map<string, string>());    
-
+    console.log(formVariants)
     const newFlag: FeatureFlag = { 
       key:uuidv4(),
       name:name, 
