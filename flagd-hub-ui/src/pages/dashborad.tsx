@@ -15,7 +15,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // Popup state
-  const POLLING_INTERVAL = 2000;
+  const POLLING_INTERVAL = 1000;
 
   useEffect(() => {
     const fetchFeatureFlags = async () => {

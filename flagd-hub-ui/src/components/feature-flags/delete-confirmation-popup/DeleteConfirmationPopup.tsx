@@ -10,8 +10,10 @@ interface DeleteConfirmationPopupProps {
 
 const DeleteConfirmationPopup: React.FC<DeleteConfirmationPopupProps> = ({ message, onConfirm, onCancel }) => {
   return ReactDOM.createPortal(
-    <div className="popup-overlay">
-      <div className="popup-form">
+    <div className="popup-overlay" onClick={onCancel}>
+      <div
+        className="popup-form"
+      >
         <h3>Confirm Delete</h3>
         <p>{message}</p>
         <div className="form-actions">
@@ -20,7 +22,7 @@ const DeleteConfirmationPopup: React.FC<DeleteConfirmationPopupProps> = ({ messa
         </div>
       </div>
     </div>,
-    document.body // The second argument is the target DOM node where the popup will be rendered
+    document.body
   );
 };
 

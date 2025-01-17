@@ -15,17 +15,11 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
-  const handleToggleChange = () => {
-    onVariantChange(flag.key, selectedVariant === 'on' ? 'off' : 'on');
-  };
-
-  const handleRadioChange = (variant: string) => {
-    onVariantChange(flag.key, variant);
-  };
-
-  const handleInfoClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering other events on the parent
-    setShowPopup(true);
+  const handleCardClick = (e: React.MouseEvent) => {
+    console.log('Card clicked');
+    if (flag.description) {
+      setShowPopup(true);
+    }
   };
 
   const handleClosePopup = () => {
@@ -33,30 +27,40 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
   };
 
   const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering other events on the parent
+    e.stopPropagation(); // Prevent parent click handler
+    console.log('Delete button clicked');
     setShowDeleteConfirm(true);
   };
 
   const handleConfirmDelete = () => {
-    setShowDeleteConfirm(false); // Close the confirmation popup
-    FeatureFlagsService.deleteFeatureFlag(flag.key)
+    setShowDeleteConfirm(false);
+    FeatureFlagsService.deleteFeatureFlag(flag.key);
   };
 
   const handleCancelDelete = () => {
     setShowDeleteConfirm(false);
   };
 
+  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>, variant: string) => {
+    console.log('Radio button clicked:', variant);
+    onVariantChange(flag.key, variant);
+  };
+
+  const handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('Toggle clicked');
+    onVariantChange(flag.key, selectedVariant === 'on' ? 'off' : 'on');
+  };
+
   return (
-    <div className="feature-card">
-      {flag.description && (
-        <button className="info-button" onClick={handleInfoClick} title="More Info">
-          i
-        </button>
-      )}
-      <button className="delete-button" onClick={handleDeleteClick} title="Delete Feature Flag">
-      ✖️
+    <div className="feature-card" >
+      <button
+        className="delete-button"
+        onClick={handleDeleteClick}
+        title="Delete Feature Flag"
+      >
+        ✖️
       </button>
-      <h4>{flag.name}</h4>
+      <h4 onClick={handleCardClick}>{flag.name}</h4>
       {flag.type === 'boolean' ? (
         <div className="toggle-wrapper">
           <label className="toggle-switch">
@@ -79,7 +83,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
                 type="radio"
                 name={`flag-${flag.key}`}
                 value={variant}
-                onChange={() => handleRadioChange(variant)}
+                onChange={(e) => handleRadioChange(e, variant)}
                 checked={selectedVariant === variant}
               />
               {variant}
@@ -94,10 +98,10 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
       {/* Delete Confirmation Popup */}
       {showDeleteConfirm && (
         <DeleteConfirmationPopup
-        message={`Are you sure you want to delete feature flag ${flag.name}?`}
-        onConfirm={handleConfirmDelete}
-        onCancel={handleCancelDelete}
-      />
+          message={`Are you sure you want to delete feature flag ${flag.name}?`}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
       )}
     </div>
   );

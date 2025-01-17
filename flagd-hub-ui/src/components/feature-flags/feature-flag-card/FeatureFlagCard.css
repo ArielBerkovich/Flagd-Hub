@@ -104,5 +104,36 @@
 }
 
 h4{
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s; /* Smooth transitions */
     color: var(--text-color)
+}
+
+h4::after {
+  content: "see description"; /* Tooltip text */
+  position: absolute;
+  top: -24px; /* Adjust position above the element */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+h4:hover::after {
+  opacity: 1; /* Makes tooltip visible on hover */
+}
+
+h4:hover{
+  transform: scale(1.2);
+}
+h4:active {
+  transform: scale(0.95); /* Simulates a "pressed" state */
+  color: var(--accent-color); /* Adjusts color for active interaction */
 }
