@@ -58,8 +58,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
 
   const handleCreateFlag = (newFlag: FeatureFlag) => {
     FeatureFlagService.createFeatureFlag(newFlag);
-    setFeatureFlags(prev => [...prev, newFlag]);
-    setIsPopupOpen(false); // Close popup after creation
+    setIsPopupOpen(false);
   };
 
   const openExportPopup = async () => {
