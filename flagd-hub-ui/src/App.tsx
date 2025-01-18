@@ -28,7 +28,7 @@ const App: React.FC = () => {
   };
 
   return (
-      <div className='main'>
+      <div id="main" className='main'>
         <Sidebar onAreaSelect={setActiveArea} />
         <div className='mainArea'>
           <Dashboard activeArea={activeArea} />

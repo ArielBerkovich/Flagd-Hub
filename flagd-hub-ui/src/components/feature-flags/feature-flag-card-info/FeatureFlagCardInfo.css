@@ -43,7 +43,8 @@
   /* Close Button */
   .close-btn {
     padding: 10px 15px;
-    background-color: #3498db;
+    margin-top: 10px;
+    background-color: #2563eb; /* change to primary */
     color: white;
     border: none;
     border-radius: 5px;
@@ -52,6 +53,6 @@
   }
   
   .close-btn:hover {
-    background-color: #2980b9;
+    background-color: #103146;
   }
   

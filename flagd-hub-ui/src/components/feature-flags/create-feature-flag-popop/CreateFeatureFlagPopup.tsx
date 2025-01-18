@@ -16,26 +16,27 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
   const [values, setValues] = useState<string[]>(['on', 'off']);
   const [defaultValue, setDefaultValue] = useState<string>('on');
 
+  const isFormValid = name.trim() && area.trim() && description.trim() && values.length>0 && values.includes(defaultValue)
+
   const handleSubmit = () => {
-    if (!name) {
-      alert('Name is required');
-      return;
-    }
+    if (!isFormValid) return;
+
     const formVariants: Map<string, string> = values.reduce((acc, item) => {
       acc.set(item, item);
       return acc;
-    }, new Map<string, string>());    
-    console.log(formVariants)
-    const newFlag: FeatureFlag = { 
-      key:uuidv4(),
-      name:name, 
-      area:area,
-      description:description, 
-      type:type, 
+    }, new Map<string, string>());
+
+    const newFlag: FeatureFlag = {
+      key: uuidv4(),
+      name: name.trim(),
+      area: area.trim(),
+      description: description.trim(),
+      type: type,
       variants: formVariants,
-      defaultVariant: defaultValue ,
-      targeting:"",
+      defaultVariant: defaultValue,
+      targeting: "",
     };
+
     onCreate(newFlag);
   };
 
@@ -44,35 +45,41 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
       <div className="popup-form">
         <h3>Create New Feature Flag</h3>
         <label>
-          Name (required):
+          Name
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className={!name.trim() ? 'input-error' : ''}
           />
         </label>
         <label>
-          area (required):
+          Area
           <input
             type="text"
             value={area}
             onChange={(e) => setArea(e.target.value)}
+            className={!area.trim() ? 'input-error' : ''}
           />
         </label>
         <label>
-          Description (optional):
+          Description
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            className={!description.trim() ? 'input-error' : ''}
           />
         </label>
         <label>
-          Type:
-          <select value={type} onChange={(e) => {
-            const selectedType = e.target.value;
-            setType(selectedType);
-            setValues(selectedType === 'boolean' ? ['on', 'off'] : []);
-          }}>
+          Type  
+          <select
+            value={type}
+            onChange={(e) => {
+              const selectedType = e.target.value;
+              setType(selectedType);
+              setValues(selectedType === 'boolean' ? ['on', 'off'] : []);
+            }}
+          >
             <option value="boolean">Boolean</option>
             <option value="string">String</option>
             <option value="number">Number</option>
@@ -103,7 +110,13 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
           </div>
         </label>
         <div className="form-actions">
-          <button className="form-button" onClick={handleSubmit}>Create</button>
+          <button
+            className="form-button"
+            onClick={handleSubmit}
+            disabled={!isFormValid}
+          >
+            Create
+          </button>
           <button className="form-button" onClick={onClose}>Cancel</button>
         </div>
       </div>

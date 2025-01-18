@@ -19,7 +19,6 @@ const FeatureFlagCardInfo: React.FC<FeatureFlagCardInfoProps> = ({ title, messag
     <div className="feature-flag-card-info-popup-overlay" onClick={onClose}>
       <div className="feature-flag-card-info-popup" onClick={(e) => e.stopPropagation()}>
         <h1>{title}</h1>
-        <h2>Description</h2>
         <p>{message}</p>
         <button className="close-btn" onClick={handleCloseClick}>
           Close

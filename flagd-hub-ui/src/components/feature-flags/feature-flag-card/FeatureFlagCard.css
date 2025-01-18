@@ -101,6 +101,7 @@
     position: relative; /* Ensures the button stays within the card */
     padding-top: 16px; /* Prevent overlap of content with the button */
     background-color: var(--light-bg);
+    max-width: 100%;
 }
 
 h4{

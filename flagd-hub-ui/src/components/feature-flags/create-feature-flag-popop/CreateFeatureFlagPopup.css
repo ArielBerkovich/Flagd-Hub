@@ -68,3 +68,19 @@
     background-color: var(--primary-color);
     color: #fff;
   }
+
+
+  /* Highlight input fields with a red border if empty */
+.input-error {
+  border-color: red !important;
+}
+
+input:focus-within{
+  border-color: var(--primary-color) !important;
+}
+
+/* Disable the Create button if form is invalid */
+.form-button:disabled {
+  background-color: #a8a0a0;
+  cursor: not-allowed;
+}

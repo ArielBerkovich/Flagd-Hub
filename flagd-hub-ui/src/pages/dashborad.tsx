@@ -5,6 +5,7 @@ import FeatureFlagCard from '../components/feature-flags/feature-flag-card/Featu
 import FeatureFlag from '../models/FeatureFlag';
 import CreateFeatureFlagPopup from '../components/feature-flags/create-feature-flag-popop/CreateFeatureFlagPopup';
 import FeatureFlagService from '../services/feature-flags-service';
+import ExportPopup from '../components/export-popup/ExportPopup'; // Import the popup
 
 interface DashboardProps {
   activeArea: string | null;
@@ -14,7 +15,9 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
   const [featureFlags, setFeatureFlags] = useState<FeatureFlag[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // Popup state
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // Create Flag Popup state
+  const [isExportOpen, setIsExportOpen] = useState<boolean>(false); // Export Popup state
+  const [exportData, setExportData] = useState<object | null>(null); // Data for Export Popup
   const POLLING_INTERVAL = 1000;
 
   useEffect(() => {
@@ -50,7 +53,6 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
   };
 
   const updateFeatureFlag = async (flagId: string, defaultVariant: string) => {
-    console.log(defaultVariant);
     FeatureFlagService.setFeatureFlag(flagId, defaultVariant);
   };
 
@@ -60,23 +62,10 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
     setIsPopupOpen(false); // Close popup after creation
   };
 
-  const downloadFlags = () => {
-    FeatureFlagService.getFeatureFlags().then(data=>{
-      const text = JSON.stringify(data)
-      console.log(text)
-      const blob = new Blob([text], { type: "text/plain" }); // Create a Blob
-      const url = URL.createObjectURL(blob); 
-  
-      // Create a temporary anchor element and trigger a download
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "flags.json"; // Set the file name
-      document.body.appendChild(a); // Append the anchor to the document
-      a.click(); // Programmatically click the anchor
-      document.body.removeChild(a); // Remove the anchor
-      URL.revokeObjectURL(url); // Clean up the URL object
-    })
-   
+  const openExportPopup = async () => {
+    const data = await FeatureFlagService.getFeatureFlags();
+    setExportData(data);
+    setIsExportOpen(true);
   };
 
   return (
@@ -84,7 +73,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
       <div className="feature-flags-menu-header">
         <h3>{activeArea ? `Feature Flags for ${activeArea}` : 'All Feature Flags'}</h3>
         <div className="flagfs-actions">
-        <div>
+          <div>
             <input
               type="text"
               placeholder="Search feature flags..."
@@ -96,8 +85,8 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
           <button className="header-button" onClick={() => setIsPopupOpen(true)}>
             Create Feature Flag ➕
           </button>
-          <button className="header-button" onClick={() => downloadFlags()}>
-            export 💾
+          <button className="header-button" onClick={openExportPopup}>
+            Export 💾
           </button>
         </div>
       </div>
@@ -123,6 +112,13 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
         <CreateFeatureFlagPopup
           onClose={() => setIsPopupOpen(false)}
           onCreate={handleCreateFlag}
+        />
+      )}
+      {isExportOpen && exportData && (
+        <ExportPopup
+          show={isExportOpen}
+          onClose={() => setIsExportOpen(false)}
+          jsonData={exportData}
         />
       )}
     </div>
