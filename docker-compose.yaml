@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  flagd-hub:
+    image: flagd-hub:0.1.0
+    container_name: flagd-hub
+    ports:
+      - "8090:8090"
+
+  flagd-hub-ui:
+    image: flagd-hub-ui:0.1.0
+    container_name: flagd-hub-ui
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://flagd-hub:8080
+    depends_on:
+      - flagd-hub
+

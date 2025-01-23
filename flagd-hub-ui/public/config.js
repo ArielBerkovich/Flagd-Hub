@@ -1,0 +1,4 @@
+window.env = {
+    REACT_APP_SERVER_URL:"%%REACT_APP_API_URL%%",
+  };
+  

@@ -38,3 +38,10 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+bootBuildImage {
+    imageName = 'flagd-hub:0.1.0' // Replace with your desired image name
+    environment = [
+            'BP_JVM_VERSION': '21', // Specify the JVM version (optional)
+    ]
+}

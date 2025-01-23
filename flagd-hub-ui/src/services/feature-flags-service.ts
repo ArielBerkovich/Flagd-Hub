@@ -3,12 +3,13 @@ import FeatureFlag from '../models/FeatureFlag';
 
 class FeatureFlagsService {
   private static apiClient: AxiosInstance = axios.create({
-    baseURL: `/flagd-hub/`,
-    headers: {
+    baseURL: process.env.NODE_ENV === 'development' 
+      ?'/flagd-hub/': window.env.REACT_APP_SERVER_URL+'/flagd-hub/' ,
+       headers: {
       'Content-Type': 'application/json',
     },
   });
-
+  
   static async getFeatureFlags(): Promise<FeatureFlag[]> {
     try {
       const response = await FeatureFlagsService.apiClient.get('/flags');
