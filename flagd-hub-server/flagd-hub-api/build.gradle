@@ -18,6 +18,11 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
     implementation 'org.apache.logging.log4j:log4j-api:2.24.3'
     implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.24.3'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
@@ -40,7 +45,7 @@ test {
 }
 
 bootBuildImage {
-    imageName = 'flagd-hub:0.1.0' // Replace with your desired image name
+    imageName = 'flagd-hub:0.2.0' // Replace with your desired image name
     environment = [
             'BP_JVM_VERSION': '21', // Specify the JVM version (optional)
     ]

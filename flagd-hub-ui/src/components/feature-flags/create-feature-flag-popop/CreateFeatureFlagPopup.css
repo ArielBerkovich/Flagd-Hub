@@ -72,7 +72,7 @@
 
   /* Highlight input fields with a red border if empty */
 .input-error {
-  border-color: red !important;
+  border-color: rgb(252, 53, 53) !important;
 }
 
 input:focus-within{

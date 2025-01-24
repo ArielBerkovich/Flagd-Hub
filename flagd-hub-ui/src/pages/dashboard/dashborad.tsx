@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './dashboard.css';
-import FlagsEmptyState from '../components/flags-empty-state/flags-empty-state';
-import FeatureFlagCard from '../components/feature-flags/feature-flag-card/FeatureFlagCard';
-import FeatureFlag from '../models/FeatureFlag';
-import CreateFeatureFlagPopup from '../components/feature-flags/create-feature-flag-popop/CreateFeatureFlagPopup';
-import FeatureFlagService from '../services/feature-flags-service';
-import ExportPopup from '../components/export-popup/ExportPopup'; // Import the popup
+import FlagsEmptyState from '../../components/flags-empty-state/flags-empty-state';
+import FeatureFlagCard from '../../components/feature-flags/feature-flag-card/FeatureFlagCard';
+import FeatureFlag from '../../models/FeatureFlag';
+import CreateFeatureFlagPopup from '../../components/feature-flags/create-feature-flag-popop/CreateFeatureFlagPopup';
+import FeatureFlagService from '../../services/feature-flags-service';
+import ExportPopup from '../../components/export-popup/ExportPopup'; // Import the popup
 
 interface DashboardProps {
   activeArea: string | null;

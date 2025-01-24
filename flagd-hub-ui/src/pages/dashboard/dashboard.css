@@ -1,7 +1,8 @@
 .feature-flags {
     padding: 20px;
     height: 100%;
-    border: 1px solid #1e1d1d; /* Optional: add border for better visibility */
+    max-height: 100%;
+    overflow-y: hidden;
   }
   
   .feature-flags-menu-header {
@@ -28,15 +29,17 @@
   }
   
   .feature-cards {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Ensures exactly 4 cards per row */
-    grid-template-rows: repeat(6, 1fr); /* Ensures exactly 4 cards per row */
-    gap: 20px;
-    overflow-y: auto; /* Makes sidebar scrollable */
-    height: 390px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between items */
     padding: 20px;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 90%;
   }
-  
+
   .feature-card {
     background-color: #fff;
     padding: 20px;
@@ -45,8 +48,21 @@
     transition: transform var(--transition-speed), box-shadow var(--transition-speed);
     text-align: center;
     outline: 10px black;
-  }
+    flex-grow: 0;
   
+    /* Allow the cards to grow and shrink dynamically */
+    flex: 1 1 auto; 
+    min-width: 100px; /* Cards won't be smaller than this */
+    max-width: 400px; /* Cards won't be larger than this */
+    max-height: 100px;
+    margin-bottom: 20px; /* Space between rows */
+  }
+
+  .feature-card:only-child{
+    min-width: 100px; /* Cards won't be smaller than this */
+    max-width: fit-content; /* Cards won't be larger than this */
+  }
+
   .feature-card:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
@@ -79,15 +95,6 @@
     flex-direction: row;
   }
 
-  /* General container for button radio group */
-.button-radio-group {
-  display: flex;
-  border-radius: 20px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px; /* Space between buttons */
-  margin-top: 10px; /* Optional margin for spacing */
-}
 
 /* Individual button-radio styles */
 .button-radio {
@@ -95,8 +102,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 10px 20px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   text-align: center;
   color: var(--dark-bg);

@@ -91,7 +91,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
             <input
               type="text"
               placeholder="e.g., small,medium,large"
-              onChange={(e) => setValues(e.target.value.split(','))}
+              onChange={(e) => setValues(e.target.value.split(',').map(val => val.trim()).filter(val => val !== ''))}
             />
           </label>
         )}
