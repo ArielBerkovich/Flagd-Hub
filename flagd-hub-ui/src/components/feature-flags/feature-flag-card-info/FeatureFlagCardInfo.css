@@ -1,58 +1,105 @@
 /* Popup Overlay */
 .feature-flag-card-info-popup-overlay {
-    position: fixed; /* Ensures it takes up the whole screen */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Make sure it appears above other elements */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+/* Popup Content */
+.feature-flag-card-info-popup {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1001;
+  animation: slideIn 0.4s ease-out;
+}
+
+/* Title */
+.popup-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Description */
+.popup-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+/* Info Text */
+.popup-info {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Changelog Section */
+.changelog p {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.changelog strong {
+  color: #2563eb; /* Primary color */
+}
+
+/* Button */
+.close-btn {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.close-btn:hover {
+  background-color: #103146;
+  transform: scale(1.05);
+}
+
+/* Animation for Slide-in Effect */
+@keyframes fadeIn {
+  from {
     opacity: 0;
-    animation: fadeIn 0.3s forwards;
   }
-  
-  /* Popup Content */
-  .feature-flag-card-info-popup {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 500px;
-    width: 100%;
-    display: flex; /* Enable flexbox for the popup content */
-    flex-direction: column; /* Ensures items stack vertically */
-    justify-content: center; /* Center the content vertically */
-    align-items: center; /* Center the content horizontally */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-    z-index: 1001; /* Ensure popup content is above the overlay */
+  to {
+    opacity: 1;
   }
-  
-  /* Fade-in animation */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
   }
-  
-  /* Close Button */
-  .close-btn {
-    padding: 10px 15px;
-    margin-top: 10px;
-    background-color: #2563eb; /* change to primary */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-  .close-btn:hover {
-    background-color: #103146;
-  }
-  
+}
