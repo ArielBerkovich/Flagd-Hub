@@ -1,4 +1,4 @@
-package org.flagd.hub.config.server.repositories;
+package org.flagd.hub.config.server.repositories.featureflags;
 
 import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.data.annotation.Id;

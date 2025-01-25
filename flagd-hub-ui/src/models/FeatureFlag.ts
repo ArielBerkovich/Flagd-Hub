@@ -8,6 +8,7 @@ export default class FeatureFlag {
   defaultVariant: string;
   targeting: string;
   creationTime: number;
+  wasChanged: boolean;
 
   /**
    * Creates a new FeatureFlag instance.
@@ -48,5 +49,6 @@ export default class FeatureFlag {
     this.defaultVariant = defaultVariant;
     this.targeting = "";
     this.creationTime=creationTime;
+    this.wasChanged = false;
   }
 }

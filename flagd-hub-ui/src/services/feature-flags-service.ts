@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import FeatureFlag from '../models/FeatureFlag';
 import LoginResponse from '../models/LoginResponse';
 import LoginRequest from '../models/LoginRequest';
+import Changelog from '../models/Changelog';
 
 class FeatureFlagsService {
   private static apiClient: AxiosInstance = axios.create({
@@ -32,6 +33,16 @@ class FeatureFlagsService {
       return response.data;
     } catch (error) {
       console.error('Error during login:', error);
+      throw error;
+    }
+  }
+
+  static async getChangelogs(flagKey:string): Promise<Changelog[]> {
+    try {
+      const response = await FeatureFlagsService.apiClient.get(`/flags/${flagKey}/changelog`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching feature flags:', error);
       throw error;
     }
   }

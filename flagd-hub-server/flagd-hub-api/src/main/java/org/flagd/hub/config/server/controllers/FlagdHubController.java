@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.flagd.hub.config.server.services.FeatureFlagsService;
 import org.flagd.hub.rest.api.FlagsHubApi;
 import org.flagd.hub.rest.model.ChangeDefaultVariantRequest;
+import org.flagd.hub.rest.model.ChangelogEvent;
 import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,11 @@ public class FlagdHubController implements FlagsHubApi {
         return featureFlagsService.getFlagByKey(flagKey)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public ResponseEntity<List<ChangelogEvent>> getFlagChangelog(String flagKey) {
+        return ResponseEntity.ok(featureFlagsService.getEvents(flagKey));
     }
 
     @Override

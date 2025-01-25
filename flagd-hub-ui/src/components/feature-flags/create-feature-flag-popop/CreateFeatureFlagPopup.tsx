@@ -36,6 +36,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
       defaultVariant: defaultValue,
       targeting: "",
       creationTime: Date.now(),
+      wasChanged: false,
     };
 
     onCreate(newFlag);

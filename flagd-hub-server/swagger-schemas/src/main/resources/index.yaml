@@ -161,6 +161,31 @@ paths:
           description: "Invalid input."
         404:
           description: "Flag not found."
+  /flagd-hub/flags/{flagKey}/changelog:
+    get:
+      summary: "Get change log for a feature flag"
+      description: "Retrieve a list of change log events for the specified feature flag."
+      operationId: getFlagChangelog
+      tags:
+        - flags-hub
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "The key of the feature flag."
+      responses:
+        200:
+          description: "List of change log events for the feature flag."
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ChangelogEvent"
+        404:
+          description: "Flag not found."
   /flagd-hub/flags/{flagKey}/targeting:
     get:
       summary: "Get targeting rules of a feature flag"
@@ -275,3 +300,18 @@ components:
         creationTime:
           type: "integer"
           format: "int64"
+        wasChanged:
+          type: "boolean"
+    ChangelogEvent:
+      type: object
+      properties:
+        previousVariant:
+          type: string
+          description: "The previous variant value of the flag."
+        updatedVariant:
+          type: string
+          description: "The updated variant value of the flag."
+        timestamp:
+          type: integer
+          format: int64
+          description: "The timestamp of the change event."

@@ -52,7 +52,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
   };
 
   return (
-    <div className="feature-card" >
+    <div className="feature-card">
       <button
         className="delete-button"
         onClick={handleDeleteClick}
@@ -102,6 +102,11 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />
+      )}
+
+      {/* Indicate if the flag was changed */}
+      {flag.wasChanged && (
+        <p className="changed-flag-indicator">This flag was changed</p>
       )}
     </div>
   );

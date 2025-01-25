@@ -2,15 +2,18 @@ package org.flagd.hub.config.server.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.flagd.hub.config.server.repositories.FeatureFlagEntity;
-import org.flagd.hub.config.server.repositories.FeatureFlagRepository;
+import org.flagd.hub.config.server.repositories.changelog.ChangeLogRepository;
+import org.flagd.hub.config.server.repositories.changelog.ChangelogEvents;
+import org.flagd.hub.config.server.repositories.featureflags.FeatureFlagEntity;
+import org.flagd.hub.config.server.repositories.featureflags.FeatureFlagRepository;
+import org.flagd.hub.rest.model.ChangelogEvent;
 import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Log4j2
@@ -19,6 +22,8 @@ import java.util.Optional;
 public class FeatureFlagsService {
     @Autowired
     private final FeatureFlagRepository featureFlagsRepository;
+    @Autowired
+    private final ChangeLogRepository changelogEventsRepositories;
 
     public List<FeatureFlag> getAllFlags() {
         var iterator = featureFlagsRepository.findAll().iterator();
@@ -43,25 +48,45 @@ public class FeatureFlagsService {
 
     public boolean updateFlagDefaultVariant(String flagKey, String newDefaultVariant) {
         log.info("update flag '{}' value to: {}", flagKey, newDefaultVariant);
-        Optional<FeatureFlagEntity> featureFlagEntity = featureFlagsRepository.findById(flagKey);
-        boolean isVariantExist = featureFlagEntity
-                .map(FeatureFlagEntity::getValue)
-                .map(FeatureFlag::getVariants)
-                .filter((Map<String, String> variants) -> variants.containsKey(newDefaultVariant))
-                .isPresent();
-
-        if (isVariantExist) {
-            featureFlagEntity.get().getValue().setDefaultVariant(newDefaultVariant);
-            featureFlagsRepository.save(featureFlagEntity.get());
-        } else {
-            log.warn("{} is not a variant of flag {}", newDefaultVariant, flagKey);
+        Optional<FeatureFlagEntity> optionalFeatureFlagEntity = featureFlagsRepository.findById(flagKey);
+        if (optionalFeatureFlagEntity.isEmpty()) {
+            log.warn("flag '{}' not found", flagKey);
+            return false;
+        }
+        FeatureFlagEntity featureFlagEntity = optionalFeatureFlagEntity.get();
+        if(!isVariantExist(newDefaultVariant, featureFlagEntity)){
+            log.warn("variant '{}' does not exist in flag '{}'", newDefaultVariant, flagKey);
+            return false;
         }
 
-        return isVariantExist;
+        long nowTime = Instant.now().toEpochMilli();
+        ChangelogEvents changelogEvents = getChangelog(flagKey);
+        FeatureFlag featureFlag = featureFlagEntity.getValue();
+        changelogEvents.getChangelogEventsList().add(
+                new ChangelogEvent().previousVariant(featureFlag.getDefaultVariant())
+                        .updatedVariant(newDefaultVariant)
+                        .timestamp(nowTime));
+
+        featureFlag.setDefaultVariant(newDefaultVariant);
+        featureFlag.wasChanged(true);
+        featureFlagsRepository.save(featureFlagEntity);
+        changelogEventsRepositories.save(changelogEvents);
+        return true;
+    }
+
+    public List<ChangelogEvent> getEvents(String flagKey) {
+        return getChangelog(flagKey).getChangelogEventsList();
+    }
+
+    private static boolean isVariantExist(String newDefaultVariant,FeatureFlagEntity featureFlagEntity) {
+        return featureFlagEntity.getValue()
+                .getVariants()
+                .containsKey(newDefaultVariant);
     }
 
     public void deleteFlag(String flagKey) {
         featureFlagsRepository.deleteById(flagKey);
+        changelogEventsRepositories.deleteById(flagKey);
         log.info("flag {} deleted", flagKey);
     }
 
@@ -70,6 +95,10 @@ public class FeatureFlagsService {
             featureFlagEntity.getValue().setTargeting(targeting);
             featureFlagsRepository.save(featureFlagEntity);
         });
+    }
+
+    private ChangelogEvents getChangelog(String flagKey) {
+        return changelogEventsRepositories.findById(flagKey).orElseGet(() -> new ChangelogEvents(flagKey));
     }
 
     public Optional<Object> getFlagTargeting(String flagKey) {
