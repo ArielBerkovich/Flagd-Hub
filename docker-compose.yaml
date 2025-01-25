@@ -2,14 +2,14 @@ version: '3.8'
 
 services:
   flagd-hub:
-    image: flagd-hub:0.2.0
+    image: flagd-hub:0.3.0
     container_name: flagd-hub
     ports:
       - "8090:8090"
     environment:
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=admin
-      - IS_SECURE=true
+      - IS_SECURED=true
       - SECRET_KEY=b53b867f2a4c48f79a237d1d87e9b1fc3d5d87c8e42f53e85ab0a15b8c6f37d2
   flagd-hub-ui:
     image: flagd-hub-ui:0.3.0
@@ -17,7 +17,7 @@ services:
     ports:
       - "3000:80"
     environment:
-      - FLAGD_HUB_API_URL=http://flagd-hub:8090
+      - FLAGD_HUB_API_URL=http://localhost:8090
       - IS_SECURED=true
     depends_on:
       - flagd-hub

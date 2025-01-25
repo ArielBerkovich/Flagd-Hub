@@ -1,4 +1,4 @@
-package org.flagd.hub.config.server.security;
+package org.flagd.hub.config.server.configuration.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

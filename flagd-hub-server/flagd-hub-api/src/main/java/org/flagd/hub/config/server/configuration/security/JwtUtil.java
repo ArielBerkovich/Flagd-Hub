@@ -1,8 +1,7 @@
-package org.flagd.hub.config.server.security;
+package org.flagd.hub.config.server.configuration.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.time.Duration;
 import java.util.Date;

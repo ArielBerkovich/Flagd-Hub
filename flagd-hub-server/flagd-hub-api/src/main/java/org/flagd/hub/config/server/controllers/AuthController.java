@@ -1,6 +1,6 @@
 package org.flagd.hub.config.server.controllers;
 
-import org.flagd.hub.config.server.security.JwtUtil;
+import org.flagd.hub.config.server.configuration.security.JwtUtil;
 import org.flagd.hub.rest.api.AuthApi;
 import org.flagd.hub.rest.model.Login200Response;
 import org.flagd.hub.rest.model.LoginRequest;

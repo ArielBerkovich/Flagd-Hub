@@ -1,4 +1,4 @@
-package org.flagd.hub.config.server;
+package org.flagd.hub.config.server.converters;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

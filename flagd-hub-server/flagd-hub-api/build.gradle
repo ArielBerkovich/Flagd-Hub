@@ -45,7 +45,7 @@ test {
 }
 
 bootBuildImage {
-    imageName = 'flagd-hub:0.2.0' // Replace with your desired image name
+    imageName = 'flagd-hub:0.3.0' // Replace with your desired image name
     environment = [
             'BP_JVM_VERSION': '21', // Specify the JVM version (optional)
     ]
