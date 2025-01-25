@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   flagd-hub:
-    image: flagd-hub:0.3.0
+    image: flagd-hub:0.6.0
     container_name: flagd-hub
     ports:
       - "8090:8090"
@@ -11,6 +11,12 @@ services:
       - ADMIN_PASSWORD=admin
       - IS_SECURED=true
       - SECRET_KEY=b53b867f2a4c48f79a237d1d87e9b1fc3d5d87c8e42f53e85ab0a15b8c6f37d2
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=securepassword123
+    depends_on:
+      - redis
+
   flagd-hub-ui:
     image: flagd-hub-ui:0.3.0
     container_name: flagd-hub-ui
@@ -21,4 +27,19 @@ services:
       - IS_SECURED=true
     depends_on:
       - flagd-hub
+
+  redis:
+    image: redis/redis-stack:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+      - "8001:8001" # Redis Stack GUI
+    command: ["redis-server", "--requirepass", "securepassword123"]
+    environment:
+      REDIS_ARGS: --requirepass securepassword123
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
 
