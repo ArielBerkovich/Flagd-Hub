@@ -17,7 +17,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // Create Flag Popup state
   const [isExportOpen, setIsExportOpen] = useState<boolean>(false); // Export Popup state
-  const [exportData, setExportData] = useState<object | null>(null); // Data for Export Popup
+  const [exportData, setExportData] = useState<FeatureFlag[] | null>(null); // Data for Export Popup
   const POLLING_INTERVAL = 1000;
 
   useEffect(() => {
@@ -117,7 +117,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
         <ExportPopup
           show={isExportOpen}
           onClose={() => setIsExportOpen(false)}
-          jsonData={exportData}
+          featureFlags={exportData}
         />
       )}
     </div>

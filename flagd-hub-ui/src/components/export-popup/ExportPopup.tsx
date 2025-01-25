@@ -1,13 +1,15 @@
 import React from "react";
 import "./ExportPopup.css";
+import FeatureFlag from "../../models/FeatureFlag";
 
 interface JsonPopupProps {
   show: boolean;
   onClose: () => void;
-  jsonData: object;
+  featureFlags: FeatureFlag[];
 }
 
-const ExportPopup: React.FC<JsonPopupProps> = ({ show, onClose, jsonData }) => {
+const ExportPopup: React.FC<JsonPopupProps> = ({ show, onClose, featureFlags }) => {
+  const jsonData = featureFlags.map(({ wasChanged, ...rest }) => rest);
   const handleCopy = () => {
     navigator.clipboard.writeText(JSON.stringify(jsonData, null, 2));
     alert("JSON copied to clipboard!");
