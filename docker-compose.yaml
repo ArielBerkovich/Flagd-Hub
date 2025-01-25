@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   flagd-hub:
-    image: flagd-hub:0.11.0
+    image: flagd-hub:latest
     container_name: flagd-hub
     ports:
       - "8090:8090"
@@ -20,7 +20,7 @@ services:
       - /home/feature-flags.json:/home/feature-flags.json
 
   flagd-hub-ui:
-    image: flagd-hub-ui:0.3.0
+    image: flagd-hub-ui:latest
     container_name: flagd-hub-ui
     ports:
       - "3000:80"

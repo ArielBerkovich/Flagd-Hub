@@ -244,6 +244,7 @@ components:
         - "type"
         - "variants"
         - "defaultVariant"
+        - "creationTime"
       properties:
         key:
           type: "string"
@@ -271,3 +272,6 @@ components:
         targeting:
           type: object
           description: "targeting rules"
+        creationTime:
+          type: "integer"
+          format: "int64"

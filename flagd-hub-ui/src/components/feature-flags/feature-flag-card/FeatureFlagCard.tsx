@@ -93,7 +93,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
       )}
 
       {/* Show Popup when flag.description exists */}
-      {showPopup && <FeatureCardInfoPopup title={flag.name} message={flag.description} onClose={handleClosePopup} />}
+      {showPopup && <FeatureCardInfoPopup featureFlag={flag} onClose={handleClosePopup} />}
 
       {/* Delete Confirmation Popup */}
       {showDeleteConfirm && (

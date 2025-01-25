@@ -7,6 +7,7 @@ export default class FeatureFlag {
   variants: Map<string, string>;
   defaultVariant: string;
   targeting: string;
+  creationTime: number;
 
   /**
    * Creates a new FeatureFlag instance.
@@ -17,6 +18,7 @@ export default class FeatureFlag {
    * @param type - The type of the flag (boolean, string, integer, float, object).
    * @param variants - A dictionary of possible variants for the flag.
    * @param defaultVariant - The chosen variant of the flag.
+   * @param creationTime - The creation time of the flag.
    */
   constructor({
     key,
@@ -26,6 +28,7 @@ export default class FeatureFlag {
     type,
     variants,
     defaultVariant,
+    creationTime,
   }: {
     key: string;
     name: string;
@@ -34,6 +37,7 @@ export default class FeatureFlag {
     type: string;
     variants: Map<string, string>;
     defaultVariant: string;
+    creationTime: number;
   }) {
     this.key = key;
     this.name = name;
@@ -43,5 +47,6 @@ export default class FeatureFlag {
     this.variants = variants;
     this.defaultVariant = defaultVariant;
     this.targeting = "";
+    this.creationTime=creationTime;
   }
 }
