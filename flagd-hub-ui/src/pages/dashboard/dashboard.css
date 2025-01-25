@@ -37,7 +37,7 @@
     justify-content: flex-start;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 90%;
+    max-height: 90%;
   }
 
   .feature-card {
