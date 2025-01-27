@@ -100,9 +100,9 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
         <label>
           Default Value:
           <div className="button-radio-group">
-            {values.map((val) => (
+            {[...new Set(values)].map((val) => (
               <div
-                key={val}
+                key={val} 
                 className={`button-radio ${val === defaultValue ? 'active' : ''}`}
                 onClick={() => setDefaultValue(val)}
               >

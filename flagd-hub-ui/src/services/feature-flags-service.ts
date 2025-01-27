@@ -3,15 +3,14 @@ import FeatureFlag from '../models/FeatureFlag';
 import LoginResponse from '../models/LoginResponse';
 import LoginRequest from '../models/LoginRequest';
 import Changelog from '../models/Changelog';
+import Environment from '../utils/Environment';
 
 class FeatureFlagsService {
   private static apiClient: AxiosInstance = axios.create({
-    baseURL: process.env.NODE_ENV === 'development' 
-      ? '/flagd-hub/' 
-      : `${window.env.REACT_APP_SERVER_URL}/flagd-hub/`,
+    baseURL: Environment.get("flagd_hub_api")+`/flagd-hub/`,
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+        },
   });
 
   // Add an interceptor to include the JWT token in the Authorization header

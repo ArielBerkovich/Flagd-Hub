@@ -13,9 +13,10 @@ WORKDIR /usr/share/nginx/html
 # Copy React build files
 COPY --from=build /app/build .
 
-# Add a script to inject environment variables
-COPY ./env.sh .
-RUN chmod +x env.sh
+# Copy custom NGINX configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Replace placeholders at runtime
-CMD ["sh", "-c", "./env.sh && nginx -g 'daemon off;'"]
+# Copy the JSON file to a location NGINX can serve
+COPY environment.json /usr/share/nginx/html/environment.json
+
+CMD ["nginx", "-g", "daemon off;"]

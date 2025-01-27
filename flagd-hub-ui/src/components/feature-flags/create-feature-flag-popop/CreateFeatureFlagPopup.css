@@ -50,6 +50,13 @@
     color: black;
   }
   
+  .button-radio-group {
+    display: flex;
+    border-radius: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
   .form-button {
     padding: 10px 15px;
