@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.experimental.UtilityClass;
 import org.flagd.hub.rest.model.FeatureFlag;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +38,7 @@ public class FlagdConfigurationConverter {
         flagdFlag.put(DEFAULT_VARIANT_FIELD, featureFlag.getDefaultVariant());
         flagdFlag.set(VARIANTS_FIELD, getVariantsNode(featureFlag));
 
-        if (featureFlag.getTargeting() != null) {
+        if (StringUtils.hasText((String)featureFlag.getTargeting())) {
             ObjectNode targetingNode = OBJECT_MAPPER.valueToTree(featureFlag.getTargeting());
             flagdFlag.set(TARGETING_FIELD, targetingNode);
         }
