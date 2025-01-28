@@ -80,7 +80,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
               <FeatureFlagCard
                 key={flag.key}
                 flag={flag}
-                selectedVariant={selectedVariants[flag.key]}
+                selectedVariant={flag.defaultVariant}
                 onVariantChange={handleVariantChange}
               />
             ))}

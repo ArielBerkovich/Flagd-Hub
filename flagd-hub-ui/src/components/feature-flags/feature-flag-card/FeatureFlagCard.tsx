@@ -44,11 +44,14 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>, variant: string) => {
     console.log('Radio button clicked:', variant);
     onVariantChange(flag.key, variant);
+    flag.defaultVariant=variant;
   };
 
   const handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log('Toggle clicked');
-    onVariantChange(flag.key, selectedVariant === 'on' ? 'off' : 'on');
+    const variant = selectedVariant === 'on' ? 'off' : 'on';
+    onVariantChange(flag.key, variant);
+    flag.defaultVariant=variant;
   };
 
   return (
