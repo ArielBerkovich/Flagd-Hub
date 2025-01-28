@@ -54,7 +54,6 @@
     border-radius: 25px;
     cursor: pointer;
     transition: background-color 0.3s, outline-color 0.3s;
-    outline: 0.1px solid rgb(94, 94, 94);
   }
   
   .toggle-switch input {

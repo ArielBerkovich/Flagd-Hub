@@ -84,7 +84,8 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
           >
             <option value="boolean">Boolean</option>
             <option value="string">String</option>
-            <option value="number">Number</option>
+            <option value="integer">Integer</option>
+            <option value="float">Float</option>
           </select>
         </label>
         {type !== 'boolean' && (

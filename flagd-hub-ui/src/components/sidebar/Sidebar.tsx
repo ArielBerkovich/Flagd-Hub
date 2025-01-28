@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect }) => {
     <div className="sidebar">
       <div className="header">
       <img className="logo"
-        src="/flagd-hub-logo.png"
+        src="./flagd-hub-logo.png"
         alt="Logo"
       />
             <h3>Flagd Hub</h3>

@@ -16,7 +16,7 @@ class FeatureFlagsService {
   // Add an interceptor to include the JWT token in the Authorization header
   static initializeInterceptors() {
     this.apiClient.interceptors.request.use((config) => {
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem('flagd-hub-token');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

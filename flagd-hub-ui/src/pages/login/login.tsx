@@ -23,7 +23,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       };
       const response = await FeatureFlagsService.login(loginRequest);
       const token: string = response.token;
-      localStorage.setItem('authToken', token);
+      localStorage.setItem('flagd-hub-token', token);
       onLoginSuccess(token);
     } catch (error) {
       setError('Invalid');
@@ -34,7 +34,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <img src="/flagd-hub-logo.png" alt="FlagD Hub Logo" className="login-logo" />
+        <img src="./flagd-hub-logo.png" alt="FlagD Hub Logo" className="login-logo" />
         <h2 className="login-title">Welcome Back</h2>
         <form onSubmit={handleLogin} className="login-form">
           <input

@@ -14,7 +14,7 @@ const App: React.FC = () => {
 
   // Check authentication status on initial load
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('flagd-hub-token');
     if (token && !isTokenExpired(token)) {
       setIsAuthenticated(true);
     }

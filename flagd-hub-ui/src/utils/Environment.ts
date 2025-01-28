@@ -23,7 +23,7 @@ export default class Environment {
 
             // If not running locally, fetch environment from the server
             const xhr = new XMLHttpRequest();
-            xhr.open('GET', '/environment', false); // Synchronous request (blocking)
+            xhr.open('GET', './environment', false); // Synchronous request (blocking)
             xhr.send();
 
             if (xhr.status === 200) {
