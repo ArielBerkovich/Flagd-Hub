@@ -62,11 +62,15 @@
     height: 0;
   }
 
+  .flag-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
   .changed-flag-indicator{
-    position: absolute;
-    width: fit-content;
-    bottom: 0;
-    right:0;
+    margin-top: 10px;
+    margin-left:1px;
     scale: 0.7;
   }
   

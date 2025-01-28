@@ -60,7 +60,14 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
       >
         ✖️
       </button>
+      <div className="flag-title">
       <h4 onClick={handleCardClick}>{flag.name}</h4>
+      {flag.wasChanged && (
+        <div className="changed-flag-indicator animated">
+          <span>ⓘ</span>
+        </div>
+      )}
+      </div>
       {flag.type === 'boolean' ? (
         <div className="toggle-wrapper">
           <label className="toggle-switch">
@@ -102,12 +109,6 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />
-      )}
-
-      {flag.wasChanged && (
-        <div className="changed-flag-indicator animated">
-          <span>ⓘ changed </span>
-        </div>
       )}
     </div>
   );
