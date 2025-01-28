@@ -61,6 +61,14 @@
     width: 0;
     height: 0;
   }
+
+  .changed-flag-indicator{
+    position: absolute;
+    width: fit-content;
+    bottom: 0;
+    right:0;
+    scale: 0.7;
+  }
   
   .toggle-switch .slider {
     position: absolute;
@@ -101,13 +109,16 @@
     padding-top: 16px; /* Prevent overlap of content with the button */
     background-color: var(--light-bg);
     max-width: 100%;
+    border: 0.5px solid black;
+    border-radius: 10px;
     /* height: fit-content; */
 }
+
 
 h4{
     cursor: pointer;
     transition: transform 0.3s, color 0.3s; /* Smooth transitions */
-    color: var(--text-color)
+    color: var(--text-color);
 }
 
 h4::after {
@@ -133,16 +144,9 @@ h4:hover::after {
 
 h4:hover{
   transform: scale(1.2);
+  color:blue;
 }
 h4:active {
   transform: scale(0.95); /* Simulates a "pressed" state */
   color: var(--accent-color); /* Adjusts color for active interaction */
 }
-
-.changed-flag-indicator {
-  font-size: 12px;
-  color: #6B7280; /* Neutral gray */
-  text-align: center;
-  margin-top: 8px;
-  font-style: italic;
-} 

@@ -104,9 +104,10 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
         />
       )}
 
-      {/* Indicate if the flag was changed */}
       {flag.wasChanged && (
-        <p className="changed-flag-indicator">This flag was changed</p>
+        <div className="changed-flag-indicator animated">
+          <span>ⓘ changed </span>
+        </div>
       )}
     </div>
   );
