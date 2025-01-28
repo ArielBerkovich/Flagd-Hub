@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class JwtUtil {
     private static final String SECRET_KEY = System.getenv("SECRET_KEY");
-    private static final long EXPIRATION_TIME = Duration.ofMinutes(12).toMillis();
+    private static final long EXPIRATION_TIME = Duration.ofHours(Integer.parseInt(System.getenv("TOKEN_EXPIRATION_IN_HOURS"))).toMillis();
 
     public static String generateToken(String username) {
         return Jwts.builder()

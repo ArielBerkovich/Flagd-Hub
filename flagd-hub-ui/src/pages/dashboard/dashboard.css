@@ -31,7 +31,7 @@
   .feature-cards {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Space between items */
+    gap: 30px; /* Space between items */
     padding: 20px;
     box-sizing: border-box;
     justify-content: flex-start;
@@ -54,7 +54,7 @@
     flex: 1 1 auto; 
     min-width: 100px; /* Cards won't be smaller than this */
     max-width: 400px; /* Cards won't be larger than this */
-    max-height: 100px;
+    max-height: fit-content;
     margin-bottom: 20px; /* Space between rows */
   }
 

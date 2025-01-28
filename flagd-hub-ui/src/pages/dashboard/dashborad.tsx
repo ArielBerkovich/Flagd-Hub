@@ -1,44 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './dashboard.css';
 import FlagsEmptyState from '../../components/flags-empty-state/flags-empty-state';
 import FeatureFlagCard from '../../components/feature-flags/feature-flag-card/FeatureFlagCard';
 import FeatureFlag from '../../models/FeatureFlag';
 import CreateFeatureFlagPopup from '../../components/feature-flags/create-feature-flag-popop/CreateFeatureFlagPopup';
-import FeatureFlagService from '../../services/feature-flags-service';
 import ExportPopup from '../../components/export-popup/ExportPopup'; // Import the popup
+import FeatureFlagsService from '../../services/feature-flags-service';
 
 interface DashboardProps {
   activeArea: string | null;
+  featureFlags: FeatureFlag[];
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
-  const [featureFlags, setFeatureFlags] = useState<FeatureFlag[]>([]);
+const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // Create Flag Popup state
   const [isExportOpen, setIsExportOpen] = useState<boolean>(false); // Export Popup state
   const [exportData, setExportData] = useState<FeatureFlag[] | null>(null); // Data for Export Popup
-  const POLLING_INTERVAL = 1000;
-
-  useEffect(() => {
-    const fetchFeatureFlags = async () => {
-      FeatureFlagService.getFeatureFlags().then(data => {
-        const flags = activeArea ? data.filter((flag: FeatureFlag) => flag.area === activeArea) : data;
-        setFeatureFlags(flags);
-
-        const defaultVariants = flags.reduce(
-          (acc: Record<string, string>, flag: FeatureFlag) => ({ ...acc, [flag.key]: flag.defaultVariant }),
-          {}
-        );
-        setSelectedVariants(defaultVariants);
-      });
-    };
-
-    fetchFeatureFlags();
-    const intervalId = setInterval(fetchFeatureFlags, POLLING_INTERVAL);
-
-    return () => clearInterval(intervalId);
-  }, [activeArea]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
 
@@ -53,16 +32,16 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea }) => {
   };
 
   const updateFeatureFlag = async (flagId: string, defaultVariant: string) => {
-    FeatureFlagService.setFeatureFlag(flagId, defaultVariant);
+    FeatureFlagsService.setFeatureFlag(flagId, defaultVariant);
   };
 
   const handleCreateFlag = (newFlag: FeatureFlag) => {
-    FeatureFlagService.createFeatureFlag(newFlag);
+    FeatureFlagsService.createFeatureFlag(newFlag);
     setIsPopupOpen(false);
   };
 
   const openExportPopup = async () => {
-    const data = await FeatureFlagService.getFeatureFlags();
+    const data = await FeatureFlagsService.getFeatureFlags();
     setExportData(data);
     setIsExportOpen(true);
   };

@@ -1,49 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import './Sidebar.css';
-import FeatureFlagsService from '../../services/feature-flags-service';
 
 interface SidebarProps {
   onAreaSelect: (area: string | null) => void;
+  allAreas: string[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect }) => {
-  const [areas, setAreas] = useState<string[]>([]);
+const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas }) => {
   const [filteredAreas, setFilteredAreas] = useState<string[]>([]);
-  const [activeArea, setActiveArea] = useState<string | null>(null);
+  const [activeArea, setActiveArea] = useState<string | null>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const fetchFeatureFlags = async () => {
-    try {
-      FeatureFlagsService.getFeatureFlags().then(flags=>{
-        const uniqueAreas: any = [...new Set(flags.map((flag: { area: string }) => flag.area))];
-        const areasWithAll = ['All', ...uniqueAreas];
-        setAreas(areasWithAll);
-        setFilteredAreas(() => 
-          searchTerm.trim()
-            ? areasWithAll.filter((area) =>
-                area.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-            : areasWithAll)
-      })
-    } catch (error) {
-      console.error('Error fetching feature flags:', error);
-    }
-  };
-
   useEffect(() => {
-    setActiveArea('All')
-    fetchFeatureFlags();
-    const intervalId = setInterval(fetchFeatureFlags, 1000);
-
-    return () => clearInterval(intervalId); 
-  }, [searchTerm]);
+    setFilteredAreas(() =>
+      searchTerm.trim()
+        ? allAreas.filter((area) =>
+            area.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        : allAreas
+    );
+  }, [allAreas, searchTerm]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
 
     setFilteredAreas(
-      areas.filter((area) =>
+      ['All', ...allAreas].filter((area) =>
         area.toLowerCase().includes(value.toLowerCase())
       )
     );
@@ -57,11 +40,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect }) => {
   return (
     <div className="sidebar">
       <div className="header">
-      <img className="logo"
-        src="./flagd-hub-logo.png"
-        alt="Logo"
-      />
-            <h3>Flagd Hub</h3>
+        <img
+          className="logo"
+          src="./flagd-hub-logo.png"
+          alt="Logo"
+        />
+        <h3>Flagd Hub</h3>
       </div>
 
       <input
