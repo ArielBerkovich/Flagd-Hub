@@ -77,11 +77,6 @@
   }
 
 
-  /* Highlight input fields with a red border if empty */
-.input-error {
-  border-color: rgb(252, 53, 53) !important;
-}
-
 input:focus-within{
   border-color: var(--primary-color) !important;
 }
