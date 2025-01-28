@@ -64,13 +64,14 @@
 
   .flag-title {
     display: flex;
-    flex-direction: row;
     justify-content: center;
+    position: relative;
   }
 
   .changed-flag-indicator{
-    margin-top: 10px;
-    margin-left:1px;
+    position: absolute;
+    right: 0;  /* Fixes it to the right of the container */
+    top: 0;    /* Adjust as necessary */
     scale: 0.7;
   }
   
