@@ -55,8 +55,8 @@ public class FlagdConfigurationConverter {
             case STRING -> featureFlag.getVariants().forEach(variantsNode::put);
             case INTEGER -> featureFlag.getVariants().forEach((String key, String value) ->
                     variantsNode.put(key, Integer.parseInt(value)));
-            case FLOAT -> featureFlag.getVariants().forEach((String key, String value) ->
-                    variantsNode.put(key, Float.parseFloat(value)));
+            case DOUBLE -> featureFlag.getVariants().forEach((String key, String value) ->
+                    variantsNode.put(key, Double.parseDouble(value)));
             case OBJECT -> featureFlag.getVariants().forEach((String key, String value) ->
                     variantsNode.set(key, getObjectValue(value)));
         }

@@ -14,9 +14,10 @@
   .popup-form {
     background: white;
     padding: 20px;
+    height: 900px;
     border-radius: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 400px;
+    width: 800px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -85,4 +86,41 @@ input:focus-within{
 .form-button:disabled {
   background-color: #a8a0a0;
   cursor: not-allowed;
+}
+
+.variant-values-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.variant-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.variant-key {
+  font-weight: bold;
+  background: var(--light-bg);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--dark-bg);
+}
+
+.variant-value-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  transition: border-color var(--transition-speed);
+}
+
+.variant-value-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
 }

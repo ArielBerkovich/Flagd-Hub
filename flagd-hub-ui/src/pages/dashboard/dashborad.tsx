@@ -14,7 +14,6 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // Create Flag Popup state
   const [isExportOpen, setIsExportOpen] = useState<boolean>(false); // Export Popup state
   const [exportData, setExportData] = useState<FeatureFlag[] | null>(null); // Data for Export Popup
@@ -27,7 +26,6 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
 
   const handleVariantChange = (flagId: string, variant: string) => {
     console.log(`Feature flag ID: ${flagId}, Variant selected: ${variant}`);
-    setSelectedVariants(prev => ({ ...prev, [flagId]: variant }));
     updateFeatureFlag(flagId, variant);
   };
 

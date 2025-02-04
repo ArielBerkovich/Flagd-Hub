@@ -49,11 +49,12 @@ const App: React.FC = () => {
 
   // Poll for feature flags
   useEffect(() => {
+    if(isAuthenticated){
     fetchFeatureFlags();
     const intervalId = setInterval(fetchFeatureFlags, POLLING_INTERVAL);
 
-    return () => clearInterval(intervalId);
-  }, [activeArea]);
+    return () => clearInterval(intervalId);}
+  }, [activeArea,isAuthenticated]);
 
   // Handle successful login
   const handleLoginSuccess = (token: string) => {

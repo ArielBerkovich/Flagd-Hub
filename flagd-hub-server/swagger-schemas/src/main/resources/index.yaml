@@ -285,7 +285,7 @@ components:
           description: "flag description"
         type:
           type: "string"
-          enum: ["boolean", "string", "integer", "float", "object"]
+          enum: ["boolean", "string", "integer", "double", "object"]
           description: "The type of the flag."
         variants:
           type: object
