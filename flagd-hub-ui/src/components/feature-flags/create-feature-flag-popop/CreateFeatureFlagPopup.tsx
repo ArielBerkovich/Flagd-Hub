@@ -27,7 +27,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
 
   const handleVariantKeysChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keys = e.target.value.split(',').map((key) => key.trim()).filter((key) => key !== '');
-    setVariantKeys(keys);
+    setVariantKeys([...new Set(keys)]);
     setVariantValues((prevValues) => {
       const newValues: { [key: string]: string } = {};
       keys.forEach((key) => {
@@ -69,40 +69,45 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
     <div className="popup-overlay">
       <div className="popup-form">
         <h3>Create New Feature Flag</h3>
-        <label>
-          Flag key
-          <input type="text" value={flagKey} onChange={(e) => setFlagKey(e.target.value)} />
-        </label>
-        <label>
-          Display name
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-        </label>
-        <label>
-          Area
-          <input type="text" value={area} onChange={(e) => setArea(e.target.value)} />
-        </label>
-        <label>
-          Description
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-        </label>
-        <label>
-          Type
-          <select
-            value={type}
-            onChange={(e) => {
-              const selectedType = e.target.value;
-              setType(selectedType);
-              setVariantKeys(selectedType === 'boolean' ? ['on', 'off'] : []);
-              setVariantValues(selectedType === 'boolean' ? { on: 'true', off: 'false' } : {});
-            }}
-          >
-            <option value="boolean">Boolean</option>
-            <option value="string">String</option>
-            <option value="integer">Integer</option>
-            <option value="double">Double</option>
-            <option value="object">Object</option>
-          </select>
-        </label>
+        <div className="input-values-container">
+          <label>Details:</label>
+          <div className='flag-details'>
+            <label>
+              key
+              <input type="text" value={flagKey} onChange={(e) => setFlagKey(e.target.value)} />
+            </label>
+            <label>
+              Display name
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+            </label>
+            <label>
+              Area
+              <input type="text" value={area} onChange={(e) => setArea(e.target.value)} />
+            </label>
+            <label>
+              Description
+              <textarea className='description-textarea' value={description} onChange={(e) => setDescription(e.target.value)} />
+            </label>
+            <label>
+              Type
+              <select
+                value={type}
+                onChange={(e) => {
+                  const selectedType = e.target.value;
+                  setType(selectedType);
+                  setVariantKeys(selectedType === 'boolean' ? ['on', 'off'] : []);
+                  setVariantValues(selectedType === 'boolean' ? { on: 'true', off: 'false' } : {});
+                }}
+              >
+                <option value="boolean">Boolean</option>
+                <option value="string">String</option>
+                <option value="integer">Integer</option>
+                <option value="double">Double</option>
+                <option value="object">Object</option>
+              </select>
+            </label>
+          </div>
+        </div>
         {type !== 'boolean' && (
           <label>
             Variant Keys (comma-separated):
@@ -110,18 +115,23 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
           </label>
         )}
         {variantKeys.length > 0 && (
-          <div className="variant-values-container">
+          <div className="input-values-container variants">
             <label>Variants:</label>
             {variantKeys.map((key) => (
               <div
                 key={key}
-                className={`variant-row ${key === defaultValue ? 'active' : ''}`}
-                onClick={() => setDefaultValue(key)}
+                className='variant-row'
               >
-                <button className={`variant-key ${key === defaultValue ? 'selected' : ''}`}>
+                <button onClick={()=>{
+                  setDefaultValue(key)
+                  console.log(defaultValue)
+                }
+                  } className={`variant-key ${key === defaultValue ? 'select' : ''}`}>
                   {key}
                 </button>
+                <label>:</label>
                 <input
+                  disabled={type=="boolean"}
                   type="text"
                   className="variant-value-input"
                   value={variantValues[key] || ''}
