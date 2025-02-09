@@ -4,9 +4,10 @@ import './Sidebar.css';
 interface SidebarProps {
   onAreaSelect: (area: string | null) => void;
   allAreas: string[];
+  onLogout: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas, onLogout }) => {
   const [filteredAreas, setFilteredAreas] = useState<string[]>([]);
   const [activeArea, setActiveArea] = useState<string | null>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -55,6 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas }) => {
         value={searchTerm}
         onChange={handleSearchChange}
       />
+      <div className='feature-flags-areas-container' >
       <ul>
         {filteredAreas.map((area, index) => (
           <li
@@ -66,6 +68,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas }) => {
           </li>
         ))}
       </ul>
+      </div>
+      <button className='logout-button' onClick={()=>{
+        localStorage.removeItem('flagd-hub-token');
+        onLogout()
+        }}>logout</button>
     </div>
   );
 };

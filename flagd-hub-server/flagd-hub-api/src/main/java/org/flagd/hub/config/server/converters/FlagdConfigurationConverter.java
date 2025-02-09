@@ -3,6 +3,7 @@ package org.flagd.hub.config.server.converters;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import lombok.experimental.UtilityClass;
 import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.util.StringUtils;
@@ -39,7 +40,7 @@ public class FlagdConfigurationConverter {
         flagdFlag.set(VARIANTS_FIELD, getVariantsNode(featureFlag));
 
         if (StringUtils.hasText((String)featureFlag.getTargeting())) {
-            ObjectNode targetingNode = OBJECT_MAPPER.valueToTree(featureFlag.getTargeting());
+            TextNode targetingNode = OBJECT_MAPPER.valueToTree(featureFlag.getTargeting());
             flagdFlag.set(TARGETING_FIELD, targetingNode);
         }
 

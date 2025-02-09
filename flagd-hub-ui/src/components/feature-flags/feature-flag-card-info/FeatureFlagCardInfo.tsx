@@ -37,6 +37,7 @@ const FeatureFlagCardInfo: React.FC<FeatureFlagCardInfoProps> = ({ featureFlag, 
     <div className="feature-flag-card-info-popup-overlay" onClick={onClose}>
       <div className="feature-flag-card-info-popup" onClick={(e) => e.stopPropagation()}>
         <h2 className="popup-title">{featureFlag.name}</h2>
+        <p className="popup-description"><strong>key:</strong> {featureFlag.key}</p>
         <p className="popup-description"><strong>description:</strong> {featureFlag.description}</p>
         <p className="popup-description"><strong>area:</strong> {featureFlag.area}</p>
         <p className="popup-info">

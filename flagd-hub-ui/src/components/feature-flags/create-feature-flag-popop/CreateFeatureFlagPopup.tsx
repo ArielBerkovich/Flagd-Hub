@@ -12,10 +12,12 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
   const [name, setName] = useState<string>('');
   const [area, setArea] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [targeting, setTargeting] = useState<string>('');
   const [type, setType] = useState<string>('boolean');
   const [variantKeys, setVariantKeys] = useState<string[]>(['on', 'off']);
   const [variantValues, setVariantValues] = useState<{ [key: string]: string }>({ on: 'true', off: 'false' });
   const [defaultValue, setDefaultValue] = useState<string>('on');
+  const [targetingEnabled, setTargetingEnabled] = useState<boolean>(false);
 
   const isFormValid =
     name.trim() &&
@@ -44,20 +46,23 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
   const handleSubmit = () => {
     if (!isFormValid) return;
 
+    console.log("targetingEnabled:", targetingEnabled);
+    console.log("targeting before setting:", targeting);
+    
     const formVariants = new Map<string, string>();
     variantKeys.forEach((key) => {
       formVariants.set(key, variantValues[key]);
     });
 
     const newFlag: FeatureFlag = {
-      key: name.trim(),
+      key: flagKey,
       name: name,
       area: area.trim(),
       description: description.trim(),
       type: type,
       variants: formVariants,
       defaultVariant: defaultValue,
-      targeting: "",
+      targeting: targetingEnabled ? targeting : "",
       creationTime: Date.now(),
       wasChanged: false,
     };
@@ -70,7 +75,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
       <div className="popup-form">
         <h3>Create New Feature Flag</h3>
         <div className="input-values-container">
-          <label>Details:</label>
+          <label>Details</label>
           <div className='flag-details'>
             <label>
               key
@@ -106,6 +111,13 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
                 <option value="object">Object</option>
               </select>
             </label>
+            <label>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                Targeting
+                <input type="checkbox" onClick={() => setTargetingEnabled((prev) => !prev)} />
+              </span>
+              <textarea disabled={!targetingEnabled} className='description-textarea' value={targeting} onChange={(e) => setTargeting(e.target.value)} />
+            </label>
           </div>
         </div>
         {type !== 'boolean' && (
@@ -116,22 +128,22 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
         )}
         {variantKeys.length > 0 && (
           <div className="input-values-container variants">
-            <label>Variants:</label>
+            <label>Variants</label>
             {variantKeys.map((key) => (
               <div
                 key={key}
                 className='variant-row'
               >
-                <button onClick={()=>{
+                <button onClick={() => {
                   setDefaultValue(key)
                   console.log(defaultValue)
                 }
-                  } className={`variant-key ${key === defaultValue ? 'select' : ''}`}>
+                } className={`variant-key ${key === defaultValue ? 'select' : ''}`}>
                   {key}
                 </button>
                 <label>:</label>
                 <input
-                  disabled={type=="boolean"}
+                  disabled={type == "boolean"}
                   type="text"
                   className="variant-value-input"
                   value={variantValues[key] || ''}

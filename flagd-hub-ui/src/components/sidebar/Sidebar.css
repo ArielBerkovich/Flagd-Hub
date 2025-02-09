@@ -61,6 +61,29 @@
   height: auto;
 }
 
+.logout-button {
+  background-color: #dc3545; /* Bootstrap danger color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+  transform: scale(1.02);
+}
+
+.logout-button:active {
+  background-color: #a71d2a;
+  transform: scale(0.98);
+}
+
+
 .sidebar li.active {
   background: linear-gradient(110deg, #3b82f6, #2563eb); /* Bright blue gradient */
   color: #fff;
@@ -91,6 +114,10 @@
 
 .sidebar ul::-webkit-scrollbar-track:hover {
   background: rgba(255, 255, 255, 0.15); /* Slightly brighter on hover */
+}
+
+.feature-flags-areas-container{
+  height: 70%;
 }
 
 /* Search Input Styling */

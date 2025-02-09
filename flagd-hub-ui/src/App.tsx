@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Sidebar from './components/sidebar/Sidebar';
 import Login from './pages/login/login';
 import Dashboard from './pages/dashboard/dashborad';
@@ -7,8 +7,19 @@ import Environment from './utils/Environment';
 import './App.css';
 import FeatureFlag from './models/FeatureFlag';
 
-// Define types for the active area state
+const POLLING_INTERVAL = 1000;
+
 type ActiveArea = string | null;
+
+
+const isTokenExpired = (token: string): boolean => {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+};
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -16,61 +27,43 @@ const App: React.FC = () => {
   const [activeArea, setActiveArea] = useState<ActiveArea>(null);
   const [areas, setAreas] = useState<string[]>([]);
 
-  // Polling interval constant
-  const POLLING_INTERVAL = 1000;
-
-  // Check authentication status on initial load
   useEffect(() => {
     const token = localStorage.getItem('flagd-hub-token');
     if (token && !isTokenExpired(token)) {
       setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+      localStorage.removeItem('flagd-hub-token');
     }
-  }, []);
+  },[]);
 
-  // Utility function to check token expiration
-  const isTokenExpired = (token: string): boolean => {
+  const fetchFeatureFlags = useCallback(async () => {
+    if (!isAuthenticated) return;
+    
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.exp * 1000 < Date.now();
-    } catch {
-      return true; // Treat invalid tokens as expired
+      const data = await FeatureFlagService.getFeatureFlags();
+      const filteredFlags = activeArea ? data.filter(flag => flag.area === activeArea) : data;
+      setFeatureFlags(filteredFlags);
+      setAreas(['All', ...new Set(data.map(flag => flag.area))]);
+    } catch (error) {
+      console.error('Error fetching feature flags:', error);
     }
-  };
-
-  // Fetch feature flags and update state
-  const fetchFeatureFlags = async () => {
-    FeatureFlagService.getFeatureFlags().then(data => {
-      const flags = activeArea ? data.filter((flag: FeatureFlag) => flag.area === activeArea) : data;
-      setFeatureFlags(flags);
-      const uniqueAreas = [...new Set(data.map((flag: FeatureFlag) => flag.area))];
-      setAreas(['All', ...uniqueAreas]); 
-    });
-  };
-
-  // Poll for feature flags
-  useEffect(() => {
-    if(isAuthenticated){
-    fetchFeatureFlags();
-    const intervalId = setInterval(fetchFeatureFlags, POLLING_INTERVAL);
-
-    return () => clearInterval(intervalId);}
   }, [activeArea,isAuthenticated]);
 
-  // Handle successful login
-  const handleLoginSuccess = (token: string) => {
-    setIsAuthenticated(true);
-  };
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    fetchFeatureFlags();
+    const intervalId = setInterval(fetchFeatureFlags, POLLING_INTERVAL);
+    return () => clearInterval(intervalId);
+  }, [isAuthenticated, fetchFeatureFlags]);
 
-  // Redirect to the login page if authentication is required
-  const isSecured = Environment.get('is_secured')?.toLowerCase() === 'true';
-  if (!isAuthenticated && isSecured) {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
+  if (!isAuthenticated && Environment.get('is_secured')?.toLowerCase() === 'true') {
+    return <Login onLoginSuccess={() => setIsAuthenticated(true)} />;
   }
 
-  // Render the main application UI
   return (
     <div id="main" className="main">
-      <Sidebar onAreaSelect={setActiveArea} allAreas={areas} />
+      <Sidebar onAreaSelect={setActiveArea} allAreas={areas} onLogout={()=>setIsAuthenticated(false)} />
       <div className="mainArea">
         <Dashboard activeArea={activeArea} featureFlags={featureFlags} />
       </div>
