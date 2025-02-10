@@ -6,6 +6,8 @@ import FeatureFlag from '../../models/FeatureFlag';
 import CreateFeatureFlagPopup from '../../components/feature-flags/create-feature-flag-popop/CreateFeatureFlagPopup';
 import ExportPopup from '../../components/export-popup/ExportPopup'; // Import the popup
 import FeatureFlagsService from '../../services/feature-flags-service';
+import AddIcon from '@mui/icons-material/Add';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 interface DashboardProps {
   activeArea: string | null;
@@ -48,21 +50,21 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
     <div className="feature-flags">
       <div className="feature-flags-menu-header">
         <h3>{activeArea ? `Feature Flags for ${activeArea}` : 'All Feature Flags'}</h3>
-        <div className="flagfs-actions">
-          <div>
-            <input
-              type="text"
-              placeholder="Search feature flags..."
-              className="search-bar"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-          </div>
+        <div className="flags-actions">
+          <input
+            type="text"
+            placeholder="Search feature flags..."
+            className="search-bar"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
           <button className="header-button" onClick={() => setIsPopupOpen(true)}>
-            Create Feature Flag ➕
+            Create flag
+            <AddIcon className="me-2" />
           </button>
           <button className="header-button" onClick={openExportPopup}>
-            Export 💾
+            Export
+            <FileUploadIcon className="me-2" />
           </button>
         </div>
       </div>

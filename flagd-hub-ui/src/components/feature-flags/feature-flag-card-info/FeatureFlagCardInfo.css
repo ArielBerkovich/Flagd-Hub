@@ -17,14 +17,14 @@
 /* Popup Content */
 .feature-flag-card-info-popup {
   background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 600px;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  max-width: 37.5rem;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1001;
   animation: slideIn 0.4s ease-out;
@@ -34,7 +34,7 @@
 .popup-title {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
   color: #333;
 }
 
@@ -42,7 +42,7 @@
 .popup-description {
   font-size: 1rem;
   color: #555;
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
   line-height: 1.5;
 }
 
@@ -50,14 +50,14 @@
 .popup-info {
   font-size: 0.95rem;
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 /* Changelog Section */
 .changelog p {
   font-size: 0.95rem;
   color: #444;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .changelog strong {
@@ -66,12 +66,12 @@
 
 /* Button */
 .close-btn {
-  padding: 10px 20px;
-  margin-top: 20px;
+  padding: 0.625rem 1.25rem;
+  margin-top: 1.25rem;
   background-color: #2563eb;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s;
@@ -95,7 +95,7 @@
 
 @keyframes slideIn {
   from {
-    transform: translateY(-30px);
+    transform: translateY(-1.875rem);
     opacity: 0;
   }
   to {

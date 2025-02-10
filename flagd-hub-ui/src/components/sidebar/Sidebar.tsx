@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './Sidebar.css';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Environment from '../../utils/Environment';
+
 
 interface SidebarProps {
   onAreaSelect: (area: string | null) => void;
@@ -11,13 +14,18 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas, onLogout }) =
   const [filteredAreas, setFilteredAreas] = useState<string[]>([]);
   const [activeArea, setActiveArea] = useState<string | null>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [isSecured, setIsSecured] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsSecured(Environment.getBoolean('is_secured'));
+  }, []);
 
   useEffect(() => {
     setFilteredAreas(() =>
       searchTerm.trim()
         ? allAreas.filter((area) =>
-            area.toLowerCase().includes(searchTerm.toLowerCase())
-          )
+          area.toLowerCase().includes(searchTerm.toLowerCase())
+        )
         : allAreas
     );
   }, [allAreas, searchTerm]);
@@ -57,22 +65,28 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas, onLogout }) =
         onChange={handleSearchChange}
       />
       <div className='feature-flags-areas-container' >
-      <ul>
-        {filteredAreas.map((area, index) => (
-          <li
-            key={index}
-            className={activeArea === area ? 'active' : ''}
-            onClick={() => handleAreaClick(area)}
-          >
-            {area}
-          </li>
-        ))}
-      </ul>
+        <ul>
+          {filteredAreas.map((area, index) => (
+            <li
+              key={index}
+              className={activeArea === area ? 'active' : ''}
+              onClick={() => handleAreaClick(area)}
+            >
+              {area}
+            </li>
+          ))}
+        </ul>
       </div>
-      <button className='logout-button' onClick={()=>{
-        localStorage.removeItem('flagd-hub-token');
-        onLogout()
-        }}>logout</button>
+      {isSecured && (
+        <div className='logout-container'>
+          <button className='logout-button' onClick={() => {
+            localStorage.removeItem('flagd-hub-token');
+            onLogout()
+          }}>
+            <LogoutIcon className="me-2" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

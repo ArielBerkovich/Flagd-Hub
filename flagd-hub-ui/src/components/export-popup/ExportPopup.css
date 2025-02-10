@@ -1,106 +1,105 @@
 /* Popup Overlay */
 .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  /* Popup Container */
-  .popup-container {
-    background: #fff;
-    border-radius: 8px;
-    width: 400px;
-    max-width: 90%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    animation: fadeIn 0.3s ease;
-  }
-  
-  /* Header */
-  .popup-header {
-    padding: 16px;
-    background: var(--primary-color);
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .popup-header h2 {
-    margin: 0;
-    font-size: 18px;
-  }
-  
-  .close-button {
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  /* Body */
-  .popup-body {
-    padding: 16px;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  
-  .json-pre {
-    background: #e4e9ec;
-    padding: 10px;
-    border: 1px solid rgb(160, 156, 156);
-    border-radius: 5px;
-    font-family: monospace;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-  
-  /* Footer */
-  .popup-footer {
-    padding: 16px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-  }
-  
-  /* Buttons */
-  .button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .button-primary {
-    background: var(--primary-color);
-    color: #fff;
-  }
-  
-  .button-success {
-    background: #28a745;
-    color: #fff;
-  }
-  
-  .button:hover {
-    opacity: 0.9;
-  }
-  
-  /* Animations */
-  @keyframes fadeIn {
-    from {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup Container */
+.popup-container {
+  background: #fff;
+  border-radius: 0.5rem; /* 8px */
+  width: 25rem; /* 400px */
+  max-width: 90%;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2); /* 4px 8px */
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Header */
+.popup-header {
+  padding: 1rem; /* 16px */
+  background: var(--primary-color);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-header h2 {
+  margin: 0;
+  font-size: 1.125rem; /* 18px */
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.25rem; /* 20px */
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Body */
+.popup-body {
+  padding: 1rem; /* 16px */
+  max-height: 18.75rem; /* 300px */
+  overflow-y: auto;
+}
+
+.json-pre {
+  background: #e4e9ec;
+  padding: 0.625rem; /* 10px */
+  border: 0.0625rem solid rgb(160, 156, 156); /* 1px */
+  border-radius: 0.3125rem; /* 5px */
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Footer */
+.popup-footer {
+  padding: 1rem; /* 16px */
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem; /* 8px */
+}
+
+/* Buttons */
+.button {
+  padding: 0.5rem 1rem; /* 8px 16px */
+  border: none;
+  border-radius: 0.25rem; /* 4px */
+  cursor: pointer;
+  font-size: 0.875rem; /* 14px */
+}
+
+.button-primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.button-success {
+  background: #28a745;
+  color: #fff;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
       opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
   }
-  
+  to {
+      opacity: 1;
+  }
+}

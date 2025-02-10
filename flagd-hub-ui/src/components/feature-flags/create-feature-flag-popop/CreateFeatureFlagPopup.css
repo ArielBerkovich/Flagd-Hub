@@ -13,15 +13,15 @@
 
 .popup-form {
   background: white;
-  padding: 1.25rem;
+  padding: 1.25rem; /* 20px */
   height: fit-content;
-  max-height: 45.25rem;
-  border-radius: 1.25rem;
-  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
+  max-height: 45.25rem; /* 724px */
+  border-radius: 1.25rem; /* 20px */
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2); /* 4px 10px */
   width: fit-content;
   display: flex;
   flex-direction: column;
-  gap: 0.9375rem;
+  gap: 0.9375rem; /* 15px */
 }
 
 .popup-form h3 {
@@ -31,29 +31,29 @@
 .popup-form label {
   display: flex;
   flex-direction: column;
-  gap: 0.3125rem;
+  gap: 0.3125rem; /* 5px */
 }
 
 .flag-details {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Max 3 columns */
-  gap: 1rem; /* Space between inputs */
-  padding: 1.25rem;
+  gap: 1rem; /* 16px */
+  padding: 1.25rem; /* 20px */
   max-width: 100%;
 }
 
 .popup-form input,
 .popup-form textarea,
 .popup-form select {
-  padding: 0.5rem;
-  border: 0.0625rem solid #ccc;
+  padding: 0.5rem; /* 8px */
+  border: 0.0625rem solid #ccc; /* 1px */
   border-radius: var(--border-radius);
 }
 
 .form-actions {
   display: flex;
   justify-content: center;
-  gap: 0.625rem;
+  gap: 0.625rem; /* 10px */
 }
 
 h3 {
@@ -62,22 +62,22 @@ h3 {
 
 .button-radio-group {
   display: flex;
-  border-radius: 1.25rem;
-  gap: 0.625rem;
+  border-radius: 1.25rem; /* 20px */
+  gap: 0.625rem; /* 10px */
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .form-button {
-  padding: 0.625rem 0.9375rem;
+  padding: 0.625rem 0.9375rem; /* 10px 15px */
   width: fit-content;
-  margin-left: 0.625rem;
+  margin-left: 0.625rem; /* 10px */
   background-color: var(--light-bg);
   color: var(--dark-bg);
   border: none;
-  border-radius: 3.125rem; /* Increased for a more rounded shape */
+  border-radius: 3.125rem; /* 50px */
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1rem; /* 16px */
   transition: background-color var(--transition-speed);
 }
 
@@ -90,7 +90,6 @@ input:focus-within {
   border-color: var(--primary-color) !important;
 }
 
-/* Disable the Create button if form is invalid */
 .form-button:disabled {
   background-color: #a8a0a0;
   cursor: not-allowed;
@@ -99,16 +98,16 @@ input:focus-within {
 .input-values-container {
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
+  gap: 0.625rem; /* 10px */
   background: #f9f9f9;
   width: 100%;
-  border-radius: 0.625rem;
-  border: 0.0625rem solid #ddd;
+  border-radius: 0.625rem; /* 10px */
+  border: 0.0625rem solid #ddd; /* 1px */
 }
 
 .input-values-container.variants {
   overflow: auto;
-  max-height: 31.25rem;
+  max-height: 31.25rem; /* 500px */
 }
 
 .description-textarea {
@@ -118,15 +117,15 @@ input:focus-within {
 .variant-row {
   display: flex;
   align-items: center;
-  padding: 5px;
-  gap: 0.625rem;
+  padding: 0.3125rem; /* 5px */
+  gap: 0.625rem; /* 10px */
 }
 
 .variant-key {
   font-weight: bold;
   background: var(--light-bg);
-  padding: 0.3125rem 0.625rem;
-  border-radius: 0.3125rem;
+  padding: 0.3125rem 0.625rem; /* 5px 10px */
+  border-radius: 0.3125rem; /* 5px */
   color: var(--dark-bg);
 }
 
@@ -137,8 +136,8 @@ input:focus-within {
 
 .variant-value-input {
   flex: 1;
-  padding: 0.5rem;
-  border: 0.0625rem solid #ccc;
+  padding: 0.5rem; /* 8px */
+  border: 0.0625rem solid #ccc; /* 1px */
   width: fit-content;
   border-radius: var(--border-radius);
   transition: border-color var(--transition-speed);

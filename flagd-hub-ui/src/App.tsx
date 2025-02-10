@@ -39,7 +39,7 @@ const App: React.FC = () => {
 
   const fetchFeatureFlags = useCallback(async () => {
     if (!isAuthenticated) return;
-    
+
     try {
       const data = await FeatureFlagService.getFeatureFlags();
       const filteredFlags = activeArea ? data.filter(flag => flag.area === activeArea) : data;
@@ -57,7 +57,7 @@ const App: React.FC = () => {
     return () => clearInterval(intervalId);
   }, [isAuthenticated, fetchFeatureFlags]);
 
-  if (!isAuthenticated && Environment.get('is_secured')?.toLowerCase() === 'true') {
+  if (!isAuthenticated && Environment.getBoolean('is_secured')) {
     return <Login onLoginSuccess={() => setIsAuthenticated(true)} />;
   }
 

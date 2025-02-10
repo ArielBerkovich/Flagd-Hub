@@ -4,6 +4,8 @@ import FeatureCardInfoPopup from '../feature-flag-card-info/FeatureFlagCardInfo'
 import DeleteConfirmationPopup from '../delete-confirmation-popup/DeleteConfirmationPopup';
 import FeatureFlag from '../../../models/FeatureFlag';
 import FeatureFlagsService from '../../../services/feature-flags-service';
+import CloseIcon from '@mui/icons-material/Close';
+import InfoIcon from '@mui/icons-material/Info';
 
 interface FeatureFlagCardProps {
   flag: FeatureFlag;
@@ -44,14 +46,14 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>, variant: string) => {
     console.log('Radio button clicked:', variant);
     onVariantChange(flag.key, variant);
-    flag.defaultVariant=variant;
+    flag.defaultVariant = variant;
   };
 
   const handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log('Toggle clicked');
     const variant = selectedVariant === 'on' ? 'off' : 'on';
     onVariantChange(flag.key, variant);
-    flag.defaultVariant=variant;
+    flag.defaultVariant = variant;
   };
 
   return (
@@ -61,15 +63,17 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
         onClick={handleDeleteClick}
         title="Delete Feature Flag"
       >
-        ✖️
+        <CloseIcon className="me-2" />
       </button>
       <div className="flag-title">
-      <h4 onClick={handleCardClick}>{flag.name}</h4>
-      {flag.wasChanged && (
-        <div className="changed-flag-indicator animated">
-          <span>ⓘ</span>
-        </div>
-      )}
+        <h4 onClick={handleCardClick}>{flag.name}</h4>
+        {flag.wasChanged && (
+          <div className="changed-flag-indicator animated">
+            <span>
+              <InfoIcon className="me-2" />
+            </span>
+          </div>
+        )}
       </div>
       {flag.type === 'boolean' ? (
         <div className="toggle-wrapper">

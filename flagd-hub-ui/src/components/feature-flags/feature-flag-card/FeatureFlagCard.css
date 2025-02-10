@@ -1,144 +1,142 @@
 /* Feature Card Info Button */
 .info-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: var(--primary-color);
-    color: var(--light-bg);
-    border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 14px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.delete-button {
   position: absolute;
-  top: 10px;
-  z-index: 3;
-  left: 10px;
+  top: 0.625rem;
+  right: 0.625rem;
+  background-color: var(--primary-color);
+  color: var(--light-bg);
   border: none;
-  width: 24px;
-  background-color: transparent;
-  height: 24px;
-  font-size: 14px;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-button {
+  position: absolute;
+  top: 0.625rem;
+  z-index: 3;
+  left: 0.625rem;
+  border: none;
+  width: 1.5rem;
+  background-color: transparent;
+  height: 1.5rem;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 
 .delete-button:hover {
   transform: scale(1.2);
 }
 
-  /* Toggle Wrapper for Alignment */
-  .toggle-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 10px;
-  }
+/* Toggle Wrapper for Alignment */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 0.625rem;
+}
 
-  .toggle-switch {
-    position: relative;
-    width: 50px;
-    height: 25px;
-    background-color: var(--background-color);
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s, outline-color 0.3s;
-  }
-  
-  .toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
+.toggle-switch {
+  position: relative;
+  width: 3.125rem;
+  height: 1.5625rem;
+  background-color: var(--background-color);
+  border-radius: 1.5625rem;
+  cursor: pointer;
+  transition: background-color 0.3s, outline-color 0.3s;
+}
 
-  .flag-title {
-    display: flex;
-    justify-content: center;
-    position: relative;
-  }
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 
-  .changed-flag-indicator{
-    position: absolute;
-    right: 0;  /* Fixes it to the right of the container */
-    top: 0;    /* Adjust as necessary */
-    scale: 0.7;
-  }
-  
-  .toggle-switch .slider {
-    position: absolute;
-    content: '';
-    width: 20px;
-    height: 20px;
-    background-color: #c9c4c4;
-    border-radius: 50%;
-    top: 50%;
-    left: 3px;
-    transform: translateY(-50%);
-    transition: transform 0.3s, background-color 0.3s;
-  }
-  
-  /* Checked State */
-  .toggle-switch input:checked + .slider {
-    transform: translate(25px, -50%);
-    background-color:var(--primary-color);
-  }
+.flag-title {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
 
-  
-  .toggle-label.active {
-    color: var(--primary-color);
-  }
-  
+.changed-flag-indicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  scale: 0.7;
+}
+
+.toggle-switch .slider {
+  position: absolute;
+  content: '';
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: #c9c4c4;
+  border-radius: 50%;
+  top: 50%;
+  left: 0.1875rem;
+  transform: translateY(-50%);
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+/* Checked State */
+.toggle-switch input:checked + .slider {
+  transform: translate(1.5625rem, -50%);
+  background-color: var(--primary-color);
+}
+
+.toggle-label.active {
+  color: var(--primary-color);
+}
+
 .info-button:hover {
-    background-color: var(--accent-color); /* Hover effect with accent color */
+  background-color: var(--accent-color);
 }
-  
+
 .info-button:focus {
-    outline: none;
-    box-shadow: 0 0 3px var(--primary-color); /* Box shadow with primary color */
+  outline: none;
+  box-shadow: 0 0 0.1875rem var(--primary-color);
 }
-  
+
 /* Adjust feature card to accommodate absolute button */
 .feature-card {
-    position: relative; /* Ensures the button stays within the card */
-    padding-top: 16px; /* Prevent overlap of content with the button */
-    background-color: var(--light-bg);
-    max-width: 100%;
-    border: 0.5px solid black;
-    border-radius: 10px;
-    /* height: fit-content; */
+  position: relative;
+  padding-top: 1rem;
+  background-color: var(--light-bg);
+  max-width: 100%;
+  border: 0.03125rem solid black;
+  border-radius: 0.625rem;
 }
 
-
-h4{
-    cursor: pointer;
-    transition: transform 0.3s, color 0.3s; /* Smooth transitions */
-    color: var(--text-color);
-    z-index: 5;
+h4 {
+  cursor: pointer;
+  transition: transform 0.3s, color 0.3s;
+  color: var(--text-color);
+  z-index: 5;
 }
 
 h4::after {
-  content: "see description"; /* Tooltip text */
+  content: "see description";
   position: absolute;
-  top: -24px; /* Adjust position above the element */
+  top: -1.5rem;
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--background-color);
   color: var(--text-color);
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
@@ -146,14 +144,15 @@ h4::after {
 }
 
 h4:hover::after {
-  opacity: 1; /* Makes tooltip visible on hover */
+  opacity: 1;
 }
 
-h4:hover{
+h4:hover {
   transform: scale(1.2);
-  color:blue;
+  color: blue;
 }
+
 h4:active {
-  transform: scale(0.95); /* Simulates a "pressed" state */
-  color: var(--accent-color); /* Adjusts color for active interaction */
+  transform: scale(0.95);
+  color: var(--accent-color);
 }

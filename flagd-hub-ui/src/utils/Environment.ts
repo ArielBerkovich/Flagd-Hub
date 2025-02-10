@@ -44,6 +44,9 @@ export default class Environment {
         }
     }
 
+    public static getBoolean(key: string): boolean{
+        return Environment.get(key)?.toLowerCase() === 'true';
+    }
     // Method to get a specific environment variable (ensures the environment is loaded first)
     public static get(key: string): any {
         if (!this.isInitialized) {
