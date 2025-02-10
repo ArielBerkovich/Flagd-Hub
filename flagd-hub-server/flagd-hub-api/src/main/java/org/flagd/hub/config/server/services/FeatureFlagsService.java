@@ -2,13 +2,12 @@ package org.flagd.hub.config.server.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.flagd.hub.config.server.repositories.changelog.ChangeLogRepository;
 import org.flagd.hub.config.server.repositories.changelog.ChangelogEvents;
 import org.flagd.hub.config.server.repositories.featureflags.FeatureFlagEntity;
-import org.flagd.hub.config.server.repositories.featureflags.FeatureFlagRepository;
 import org.flagd.hub.rest.model.ChangelogEvent;
 import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -21,9 +20,9 @@ import java.util.Optional;
 @Service
 public class FeatureFlagsService {
     @Autowired
-    private final FeatureFlagRepository featureFlagsRepository;
+    private final CrudRepository<FeatureFlagEntity, String> featureFlagsRepository;
     @Autowired
-    private final ChangeLogRepository changelogEventsRepositories;
+    private final CrudRepository<ChangelogEvents, String> changelogEventsRepositories;
 
     public List<FeatureFlag> getAllFlags() {
         var iterator = featureFlagsRepository.findAll().iterator();

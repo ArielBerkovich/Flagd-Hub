@@ -10,6 +10,7 @@ import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.repository.CrudRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +22,7 @@ import java.util.List;
 public class Application {
 
 	@Autowired
-	private FeatureFlagRepository featureFlagRepository;
+	private CrudRepository<FeatureFlagEntity,String> featureFlagRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

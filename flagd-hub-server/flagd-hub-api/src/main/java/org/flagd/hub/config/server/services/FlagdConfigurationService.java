@@ -3,9 +3,11 @@ package org.flagd.hub.config.server.services;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import org.flagd.hub.config.server.converters.FlagdConfigurationConverter;
+import org.flagd.hub.config.server.repositories.featureflags.FeatureFlagEntity;
 import org.flagd.hub.config.server.repositories.featureflags.FeatureFlagRepository;
 import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FlagdConfigurationService {
     @Autowired
-    private final FeatureFlagRepository featureFlagsRepository;
+    private final CrudRepository<FeatureFlagEntity, String> featureFlagsRepository;
 
     public ObjectNode getFlagdConfiguration() {
         var iterator = featureFlagsRepository.findAll().iterator();
