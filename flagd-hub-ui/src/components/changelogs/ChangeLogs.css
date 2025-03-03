@@ -41,7 +41,7 @@
   /* Header */
   .changelogs-popup-header {
     padding: 1.25rem 1.5rem;
-    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    background: linear-gradient(to right, #3b82f6, #2563eb);
     color: #fff;
     display: flex;
     justify-content: space-between;

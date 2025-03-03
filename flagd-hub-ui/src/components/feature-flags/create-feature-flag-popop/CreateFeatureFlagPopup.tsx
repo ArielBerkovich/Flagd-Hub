@@ -75,7 +75,24 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
     <div className="popup-overlay">
       <div className="popup-form">
         <div>
-          <h3>Create New Feature Flag</h3>
+        <header className="feature-flag-header">
+          <h2 className="header-title">Create New Feature Flag</h2>
+          <div className="header-actions">
+            <button 
+              className="header-close-button" 
+              onClick={onClose} 
+              aria-label="Close form"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </header>
+        </div>
+        <div className='inputs'>
+        <div>
           <div className="input-values-container">
             <label>Details</label>
             <div className='flag-details'>
@@ -163,6 +180,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
             Create
           </button>
           <button className="form-button" onClick={onClose}>Cancel</button>
+        </div>
         </div>
       </div>
     </div>
