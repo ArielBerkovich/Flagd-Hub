@@ -161,6 +161,24 @@ paths:
           description: "Invalid input."
         404:
           description: "Flag not found."
+  /flagd-hub/flags/changelogs:
+    get:
+      summary: "Get all change logs for all features"
+      description: "Retrieve a list of all changes"
+      operationId: getFlagsChangelogs
+      tags:
+        - flags-hub
+      responses:
+        200:
+          description: "List of change logs"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/ChangelogEvent"
+        404:
+          description: "Flag not found."
   /flagd-hub/flags/{flagKey}/changelog:
     get:
       summary: "Get change log for a feature flag"

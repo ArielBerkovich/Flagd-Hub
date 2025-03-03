@@ -2,6 +2,7 @@ package org.flagd.hub.config.server.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.flagd.hub.config.server.repositories.changelog.ChangelogEvents;
 import org.flagd.hub.config.server.services.FeatureFlagsService;
 import org.flagd.hub.rest.api.FlagsHubApi;
 import org.flagd.hub.rest.model.ChangeDefaultVariantRequest;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Controller
@@ -22,6 +25,15 @@ public class FlagdHubController implements FlagsHubApi {
     @Override
     public ResponseEntity<List<FeatureFlag>> getFlags() {
         return ResponseEntity.ok(featureFlagsService.getAllFlags());
+    }
+
+    @Override
+    public ResponseEntity<Map<String, ChangelogEvent>> getFlagsChangelogs() {
+        Map<String, ChangelogEvent> changeLogs = featureFlagsService.getChangeLogs().stream()
+                .collect(Collectors.toMap(ChangelogEvents::getFlagKey,
+                        (ChangelogEvents changelogEvents) -> changelogEvents.getChangelogEventsList().getFirst()));
+
+        return ResponseEntity.ok(changeLogs);
     }
 
     @Override

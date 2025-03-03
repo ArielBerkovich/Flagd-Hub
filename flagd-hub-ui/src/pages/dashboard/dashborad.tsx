@@ -8,6 +8,9 @@ import ExportPopup from '../../components/export-popup/ExportPopup'; // Import t
 import FeatureFlagsService from '../../services/feature-flags-service';
 import AddIcon from '@mui/icons-material/Add';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import HistoryIcon from '@mui/icons-material/History';
+import ChangeLogs from '../../components/changelogs/ChangeLogs';
+import Changelog from '../../models/Changelog';
 
 interface DashboardProps {
   activeArea: string | null;
@@ -19,6 +22,8 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // Create Flag Popup state
   const [isExportOpen, setIsExportOpen] = useState<boolean>(false); // Export Popup state
   const [exportData, setExportData] = useState<FeatureFlag[] | null>(null); // Data for Export Popup
+  const [isChangelogsOpen, setIsChangelogsOpen] = useState<boolean>(false); // Export Popup state
+  const [changeLogsData, setChangeLogs] = useState<Map<string,Changelog> | null>(null); // Data for changelogs Popup
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
 
@@ -46,6 +51,13 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
     setIsExportOpen(true);
   };
 
+  const openChangeLogs = async () => {
+    const data = await FeatureFlagsService.getChangeLogs();
+    setChangeLogs(data);
+    setIsChangelogsOpen(true);
+  };
+
+
   return (
     <div className="feature-flags">
       <div className="feature-flags-menu-header">
@@ -65,6 +77,10 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
           <button className="header-button" onClick={openExportPopup}>
             Export
             <FileUploadIcon className="me-2" />
+          </button>
+          <button className="header-button" onClick={openChangeLogs}>
+            Changelogs
+            <HistoryIcon className="me-2" />
           </button>
         </div>
       </div>
@@ -97,6 +113,12 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
           show={isExportOpen}
           onClose={() => setIsExportOpen(false)}
           featureFlags={exportData}
+        />
+      )}
+      {isChangelogsOpen && changeLogsData && (
+        <ChangeLogs
+          onClose={() => setIsChangelogsOpen(false)}
+          changeLogs={changeLogsData}
         />
       )}
     </div>

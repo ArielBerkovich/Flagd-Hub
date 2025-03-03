@@ -56,6 +56,17 @@ class FeatureFlagsService {
     }
   }
 
+
+  static async getChangeLogs(): Promise<Map<string,Changelog>> {
+    try {
+      const response = await FeatureFlagsService.apiClient.get('/flags/changelogs');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching feature flags changelogs', error);
+      throw error;
+    }
+  }
+
   static async setFeatureFlag(flagKey: string, flagData: any) {
     try {
       const response = await FeatureFlagsService.apiClient.put(`/flags/${flagKey}`, { defaultVariant: flagData });

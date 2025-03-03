@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -71,6 +75,11 @@ public class FeatureFlagsService {
         featureFlagsRepository.save(featureFlagEntity);
         changelogEventsRepositories.save(changelogEvents);
         return true;
+    }
+
+    public List<ChangelogEvents> getChangeLogs(){
+        return StreamSupport.stream(changelogEventsRepositories.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public List<ChangelogEvent> getEvents(String flagKey) {

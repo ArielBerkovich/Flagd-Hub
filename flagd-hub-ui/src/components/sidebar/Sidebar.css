@@ -36,7 +36,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   border-radius: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -64,6 +64,7 @@
 .logout-container {
   display: flex;
   justify-content: center;
+  margin-top: auto;
 }
 
 .logout-button {

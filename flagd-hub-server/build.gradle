@@ -15,7 +15,7 @@ allprojects {
 subprojects {
 	apply plugin: 'java'
 
-	// Common configurations for all subprojects
+	// Common d for all subprojects
 	java {
 		toolchain {
 			languageVersion = JavaLanguageVersion.of(21) // Use Java 21

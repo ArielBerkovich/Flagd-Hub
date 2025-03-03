@@ -1,0 +1,60 @@
+.targeting-container {
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.targeting-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.targeting-rule {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  justify-content: space-between;
+}
+
+.targeting-input,
+.targeting-select {
+  width: 160px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.targeting-button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-rule-button {
+  background-color: #007bff;
+  color: white;
+  margin-top: 8px;
+}
+
+.add-rule-button:hover {
+  background-color: #0056b3;
+}
+
+.remove-rule-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.remove-rule-button:hover {
+  background-color: #b02a37;
+}
+

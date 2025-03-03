@@ -1,0 +1,267 @@
+/* Popup Overlay */
+.changelogs-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  
+  /* Popup Container */
+  .changelogs-popup-container {
+    background: #fff;
+    border-radius: 12px;
+    width: 42rem;
+    max-width: 90%;
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Header */
+  .changelogs-popup-header {
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .changelogs-popup-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Close Button */
+  .changelogs-close-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    transition: background-color 0.2s;
+  }
+  
+  .changelogs-close-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+  
+  .changelogs-close-button svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  /* Content Area */
+  .changelogs-popup-content {
+    padding: 0.5rem;
+    overflow-y: auto;
+    flex: 1;
+    max-height: calc(85vh - 4.5rem);
+  }
+  
+  /* Grid Layout */
+  .changelog-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+  
+  /* Card Style */
+  .changelog-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+    border: 1px solid #f0f0f0;
+  }
+  
+  .changelog-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Card Header */
+  .changelog-card-header {
+    padding: 1rem 1.25rem;
+    background: #f9fafb;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #edf2f7;
+  }
+  
+  .changelog-index {
+    background: #4f46e5;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.75rem;
+  }
+  
+  .changelog-card-header h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    flex: 1;
+  }
+  
+  .changelog-date {
+    font-size: 0.8rem;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Card Content */
+  .changelog-card-content {
+    padding: 1.25rem;
+  }
+  
+  .changelog-transition {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .changelog-from, .changelog-to {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  .changelog-arrow {
+    margin: 0 0.75rem;
+    color: #94a3b8;
+  }
+  
+  .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .value {
+    font-weight: 500;
+    color: #0f172a;
+    padding: 0.5rem 0.75rem;
+    background: #f1f5f9;
+    border-radius: 6px;
+    font-size: 0.925rem;
+  }
+  
+  .changelog-from .value {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+  
+  .changelog-to .value {
+    background: #dcfce7;
+    color: #15803d;
+  }
+  
+  /* Time */
+  .changelog-time {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-top: 0.75rem;
+  }
+  
+  .changelog-time svg {
+    margin-right: 0.5rem;
+    color: #94a3b8;
+  }
+  
+  /* Empty State */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    color: #64748b;
+    text-align: center;
+  }
+  
+  .empty-state svg {
+    color: #94a3b8;
+    margin-bottom: 1rem;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .changelog-card-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .changelog-index {
+      margin-bottom: 0.5rem;
+    }
+    
+    .changelog-date {
+      margin-top: 0.5rem;
+    }
+    
+    .changelog-transition {
+      flex-direction: column;
+    }
+    
+    .changelog-arrow {
+      transform: rotate(90deg);
+      margin: 0.75rem 0;
+    }
+    
+    .changelog-from, .changelog-to {
+      width: 100%;
+    }
+  }

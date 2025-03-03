@@ -19,3 +19,4 @@ public class InMemoryFeatureFlag extends AbstractInMemoryRepository<FeatureFlagE
         return null;
     }
 }
+

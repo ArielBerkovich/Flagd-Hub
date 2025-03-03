@@ -121,6 +121,7 @@
 
 h4 {
   cursor: pointer;
+  font-size: large;
   transition: transform 0.3s, color 0.3s;
   color: var(--text-color);
   z-index: 5;

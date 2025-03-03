@@ -15,12 +15,13 @@
   background: white;
   padding: 1.25rem; /* 20px */
   height: fit-content;
-  max-height: 45.25rem; /* 724px */
+  max-height: 30.25rem; /* 724px */
   border-radius: 1.25rem; /* 20px */
   box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2); /* 4px 10px */
   width: fit-content;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
   gap: 0.9375rem; /* 15px */
 }
 
@@ -53,6 +54,7 @@
 .form-actions {
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
   gap: 0.625rem; /* 10px */
 }
 
@@ -101,6 +103,7 @@ input:focus-within {
   gap: 0.625rem; /* 10px */
   background: #f9f9f9;
   width: 100%;
+  margin-top: 1rem;
   border-radius: 0.625rem; /* 10px */
   border: 0.0625rem solid #ddd; /* 1px */
 }
