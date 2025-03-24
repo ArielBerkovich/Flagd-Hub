@@ -1,16 +1,18 @@
 package org.flagd.hub.config.server.converters;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import lombok.experimental.UtilityClass;
+import lombok.extern.log4j.Log4j2;
 import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
 
+@Log4j2
 @UtilityClass
 public class FlagdConfigurationConverter {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -24,27 +26,39 @@ public class FlagdConfigurationConverter {
         ObjectNode configuration = OBJECT_MAPPER.createObjectNode();
         ObjectNode flagsNode = OBJECT_MAPPER.createObjectNode();
 
-        flags.forEach((FeatureFlag featureFlag) ->
-                flagsNode.set(featureFlag.getKey(), convertFlagToFlagdFormat(featureFlag)));
+        flags.forEach((FeatureFlag featureFlag) ->{
+                try{
+                    flagsNode.set(featureFlag.getKey(), convertFlagToFlagdFormat(featureFlag));
+                }
+                catch (Exception e){
+                    log.error("Error converting feature flag: {} - {}", featureFlag.getKey(), e.getMessage(), e);
+                }
+                });
 
         configuration.set(FLAGS_FIELD, flagsNode);
 
         return configuration;
     }
 
-    private static ObjectNode convertFlagToFlagdFormat(FeatureFlag featureFlag) {
+    private static ObjectNode convertFlagToFlagdFormat(FeatureFlag featureFlag) throws JsonProcessingException {
         ObjectNode flagdFlag = OBJECT_MAPPER.createObjectNode();
 
         flagdFlag.put(STATE_FIELD, "ENABLED");
         flagdFlag.put(DEFAULT_VARIANT_FIELD, featureFlag.getDefaultVariant());
         flagdFlag.set(VARIANTS_FIELD, getVariantsNode(featureFlag));
 
-        if (StringUtils.hasText((String)featureFlag.getTargeting())) {
-            TextNode targetingNode = OBJECT_MAPPER.valueToTree(featureFlag.getTargeting());
-            flagdFlag.set(TARGETING_FIELD, targetingNode);
+        if (StringUtils.hasText((String) featureFlag.getTargeting())) {
+                ObjectNode targetingNode = getTargetingNode(featureFlag);
+                flagdFlag.set(TARGETING_FIELD, targetingNode);
         }
 
         return flagdFlag;
+    }
+
+    private static ObjectNode getTargetingNode(FeatureFlag featureFlag) throws JsonProcessingException {
+        String targetingJson = ((String) featureFlag.getTargeting()).replaceAll("\n", "");
+
+        return (ObjectNode) OBJECT_MAPPER.readTree(targetingJson);
     }
 
     private static ObjectNode getVariantsNode(FeatureFlag featureFlag) {
