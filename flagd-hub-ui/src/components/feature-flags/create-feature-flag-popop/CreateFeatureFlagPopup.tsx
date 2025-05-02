@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CreateFeatureFlagPopup.css';
 import FeatureFlag from '../../../models/FeatureFlag';
 import Targeting from './targeting/trageting';
@@ -6,19 +6,66 @@ import Targeting from './targeting/trageting';
 interface CreateFeatureFlagPopupProps {
   onClose: () => void;
   onCreate: (newFlag: FeatureFlag) => void;
+  featureFlag?: FeatureFlag;
 }
 
-const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose, onCreate }) => {
-  const [flagKey, setFlagKey] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [area, setArea] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [targeting, setTargeting] = useState<string>('');
-  const [type, setType] = useState<string>('boolean');
-  const [variantKeys, setVariantKeys] = useState<string[]>(['on', 'off']);
-  const [variantValues, setVariantValues] = useState<{ [key: string]: string }>({ on: 'true', off: 'false' });
-  const [defaultValue, setDefaultValue] = useState<string>('on');
-  const [targetingEnabled, setTargetingEnabled] = useState<boolean>(false);
+const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose, onCreate, featureFlag }) => {
+  const [flagKey, setFlagKey] = useState<string>(featureFlag?.key || '');
+  const [name, setName] = useState<string>(featureFlag?.name || '');
+  const [area, setArea] = useState<string>(featureFlag?.area || '');
+  const [description, setDescription] = useState<string>(featureFlag?.description || '');
+  const [targeting, setTargeting] = useState<string>(featureFlag?.targeting || '');
+  const [type, setType] = useState<string>(featureFlag?.type || 'boolean');
+  const [targetingEnabled, setTargetingEnabled] = useState<boolean>(!!featureFlag?.targeting);
+  
+  // Initialize variants from the provided feature flag or use defaults
+  const initVariantKeys = () => {
+    if (featureFlag?.variants) {
+      // Check if variants is a Map, if not convert it
+      if (featureFlag.variants instanceof Map) {
+        return Array.from(featureFlag.variants.keys());
+      } else {
+        // Handle the case where variants is an object
+        return Object.keys(featureFlag.variants);
+      }
+    }
+    return type === 'boolean' ? ['on', 'off'] : [];
+  };
+  
+  const initVariantValues = () => {
+    if (featureFlag?.variants) {
+      const values: { [key: string]: string } = {};
+      
+      if (featureFlag.variants instanceof Map) {
+        featureFlag.variants.forEach((value, key) => {
+          values[key] = value;
+        });
+      } else {
+        // Handle the case where variants is an object
+        Object.entries(featureFlag.variants).forEach(([key, value]) => {
+          values[key] = value as string;
+        });
+      }
+      
+      return values;
+    }
+    return type === 'boolean' ? { on: 'true', off: 'false' } : {};
+  };
+  
+  const [variantKeys, setVariantKeys] = useState<string[]>(initVariantKeys());
+  const [variantValues, setVariantValues] = useState<{ [key: string]: string }>(initVariantValues());
+  const [defaultValue, setDefaultValue] = useState<string>(featureFlag?.defaultVariant || 'on');
+
+  // Update variant keys and values when type changes
+  useEffect(() => {
+    if (!featureFlag) {
+      if (type === 'boolean') {
+        setVariantKeys(['on', 'off']);
+        setVariantValues({ on: 'true', off: 'false' });
+        setDefaultValue('on');
+      }
+    }
+  }, [type, featureFlag]);
 
   const isFormValid =
     name.trim() &&
@@ -50,6 +97,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
     console.log("targetingEnabled:", targetingEnabled);
     console.log("targeting before setting:", targeting);
 
+    // Create a Map from the variant keys and values
     const formVariants = new Map<string, string>();
     variantKeys.forEach((key) => {
       formVariants.set(key, variantValues[key]);
@@ -64,8 +112,8 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
       variants: formVariants,
       defaultVariant: defaultValue,
       targeting: targetingEnabled ? targeting : "",
-      creationTime: Date.now(),
-      wasChanged: false,
+      creationTime: featureFlag?.creationTime || Date.now(),
+      wasChanged: !!featureFlag,
     };
 
     onCreate(newFlag);
@@ -76,7 +124,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
       <div className="popup-form">
         <div>
         <header className="feature-flag-header">
-          <h2 className="header-title">Create New Feature Flag</h2>
+          <h2 className="header-title">{featureFlag ? 'Edit Feature Flag' : 'Create New Feature Flag'}</h2>
           <div className="header-actions">
             <button 
               className="header-close-button" 
@@ -98,7 +146,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
             <div className='flag-details'>
               <label>
                 key
-                <input type="text" value={flagKey} onChange={(e) => setFlagKey(e.target.value)} />
+                <input type="text" value={flagKey} onChange={(e) => setFlagKey(e.target.value)} disabled={!!featureFlag} />
               </label>
               <label>
                 Display name
@@ -119,9 +167,12 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
                   onChange={(e) => {
                     const selectedType = e.target.value;
                     setType(selectedType);
-                    setVariantKeys(selectedType === 'boolean' ? ['on', 'off'] : []);
-                    setVariantValues(selectedType === 'boolean' ? { on: 'true', off: 'false' } : {});
+                    if (!featureFlag) {
+                      setVariantKeys(selectedType === 'boolean' ? ['on', 'off'] : []);
+                      setVariantValues(selectedType === 'boolean' ? { on: 'true', off: 'false' } : {});
+                    }
                   }}
+                  disabled={!!featureFlag}
                 >
                   <option value="boolean">Boolean</option>
                   <option value="string">String</option>
@@ -133,12 +184,12 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
               <label>
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
                   Targeting
-                  <input type="checkbox" onClick={() => setTargetingEnabled((prev) => !prev)} />
+                  <input type="checkbox" checked={targetingEnabled} onChange={() => setTargetingEnabled((prev) => !prev)} />
                 </span>
               </label>
             </div>
           </div>
-          {type !== 'boolean' && (
+          {type !== 'boolean' && !featureFlag && (
             <label>
               Variant Keys (comma-separated):
               <input type="text" placeholder="e.g., LOW,MEDIUM,HIGH" onChange={handleVariantKeysChange} />
@@ -161,7 +212,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
                   </button>
                   <label>:</label>
                   <input
-                    disabled={type == "boolean"}
+                    disabled={type == "boolean" || (!!featureFlag && type !== 'boolean')}
                     type="text"
                     className="variant-value-input"
                     value={variantValues[key] || ''}
@@ -177,7 +228,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({ onClose
         </div>
         <div className="form-actions">
           <button className="form-button" onClick={handleSubmit} disabled={!isFormValid}>
-            Create
+            {featureFlag ? 'Save Changes' : 'Create'}
           </button>
           <button className="form-button" onClick={onClose}>Cancel</button>
         </div>

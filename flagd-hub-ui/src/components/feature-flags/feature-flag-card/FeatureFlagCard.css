@@ -1,42 +1,63 @@
 /* Feature Card Info Button */
 .info-button {
-  position: absolute;
-  top: 0.625rem;
-  right: 0.625rem;
-  background-color: var(--primary-color);
-  color: var(--light-bg);
   border: none;
+  background-color: transparent;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
-  width: 1.5rem;
-  height: 1.5rem;
-  font-size: 0.875rem;
-  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.2s ease-in-out;
+  color: #34A853;
+}
+
+.info-button:hover {
+  transform: scale(1.2);
+  color: #1e8e3e;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem 0;
+  gap: 1.5rem;
+}
+
+.delete-button, .edit-button {
+  border: none;
+  background-color: transparent;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: var(--text-color);
+}
+
+.delete-button:hover, .edit-button:hover {
+  transform: scale(1.2);
+}
+
+.edit-button {
+  color: #4285F4;
+}
+
+.edit-button:hover {
+  color: #2b5797;
 }
 
 .delete-button {
-  position: absolute;
-  top: 0.625rem;
-  z-index: 3;
-  left: 0.625rem;
-  border: none;
-  width: 1.5rem;
-  background-color: transparent;
-  height: 1.5rem;
-  font-size: 0.875rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+  color: #EA4335;
 }
 
 .delete-button:hover {
-  transform: scale(1.2);
+  color: #c62828;
 }
 
 /* Toggle Wrapper for Alignment */
@@ -100,10 +121,6 @@
   color: var(--primary-color);
 }
 
-.info-button:hover {
-  background-color: var(--accent-color);
-}
-
 .info-button:focus {
   outline: none;
   box-shadow: 0 0 0.1875rem var(--primary-color);
@@ -120,40 +137,9 @@
 }
 
 h4 {
-  cursor: pointer;
+  cursor: default;
   font-size: large;
   transition: transform 0.3s, color 0.3s;
   color: var(--text-color);
   z-index: 5;
-}
-
-h4::after {
-  content: "see description";
-  position: absolute;
-  top: -1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-h4:hover::after {
-  opacity: 1;
-}
-
-h4:hover {
-  transform: scale(1.2);
-  color: blue;
-}
-
-h4:active {
-  transform: scale(0.95);
-  color: var(--accent-color);
 }

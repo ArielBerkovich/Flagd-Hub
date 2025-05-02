@@ -24,6 +24,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
   const [exportData, setExportData] = useState<FeatureFlag[] | null>(null); // Data for Export Popup
   const [isChangelogsOpen, setIsChangelogsOpen] = useState<boolean>(false); // Export Popup state
   const [changeLogsData, setChangeLogs] = useState<Map<string,Changelog> | null>(null); // Data for changelogs Popup
+  const [editingFlag, setEditingFlag] = useState<FeatureFlag | null>(null); // Flag being edited
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
 
@@ -41,8 +42,20 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
   };
 
   const handleCreateFlag = (newFlag: FeatureFlag) => {
+    // Otherwise create a new flag
     FeatureFlagsService.createFeatureFlag(newFlag);
     setIsPopupOpen(false);
+    setEditingFlag(null);
+  };
+
+  const handleEditFlag = (flag: FeatureFlag) => {
+    setEditingFlag(flag);
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+    setEditingFlag(null);
   };
 
   const openExportPopup = async () => {
@@ -98,14 +111,16 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
                 flag={flag}
                 selectedVariant={flag.defaultVariant}
                 onVariantChange={handleVariantChange}
+                onEdit={handleEditFlag}
               />
             ))}
         </div>
       )}
       {isPopupOpen && (
         <CreateFeatureFlagPopup
-          onClose={() => setIsPopupOpen(false)}
+          onClose={handleClosePopup}
           onCreate={handleCreateFlag}
+          featureFlag={editingFlag || undefined}
         />
       )}
       {isExportOpen && exportData && (

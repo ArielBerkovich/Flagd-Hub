@@ -6,16 +6,29 @@ import FeatureFlag from '../../../models/FeatureFlag';
 import FeatureFlagsService from '../../../services/feature-flags-service';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface FeatureFlagCardProps {
   flag: FeatureFlag;
   selectedVariant: string;
   onVariantChange: (flagId: string, variant: string) => void;
+  onEdit?: (flag: FeatureFlag) => void;
 }
 
-const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant, onVariantChange }) => {
+const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant, onVariantChange, onEdit }) => {
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+
+  // Helper function to get variant keys, handling both Map and object variants
+  const getVariantKeys = () => {
+    if (!flag.variants) return [];
+    
+    if (flag.variants instanceof Map) {
+      return Array.from(flag.variants.keys());
+    } else {
+      return Object.keys(flag.variants);
+    }
+  };
 
   const handleCardClick = (e: React.MouseEvent) => {
     console.log('Card clicked');
@@ -32,6 +45,20 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
     e.stopPropagation(); // Prevent parent click handler
     console.log('Delete button clicked');
     setShowDeleteConfirm(true);
+  };
+
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent parent click handler
+    console.log('Edit button clicked');
+    if (onEdit) {
+      onEdit(flag);
+    }
+  };
+
+  const handleInfoClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent parent click handler
+    console.log('Info button clicked');
+    setShowPopup(true);
   };
 
   const handleConfirmDelete = () => {
@@ -58,23 +85,37 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
 
   return (
     <div className="feature-card">
-      <button
-        className="delete-button"
-        onClick={handleDeleteClick}
-        title="Delete Feature Flag"
-      >
-        <CloseIcon className="me-2" />
-      </button>
-      <div className="flag-title">
-        <h4 onClick={handleCardClick}>{flag.name}</h4>
-        {flag.wasChanged && (
-          <div className="changed-flag-indicator animated">
-            <span>
-              <InfoIcon className="me-2" />
-            </span>
-          </div>
-        )}
+      {/* Card Actions */}
+      <div className="card-actions">
+        <button
+          className="info-button"
+          onClick={handleInfoClick}
+          title="View Flag Details"
+        >
+          <InfoIcon fontSize="small" />
+        </button>
+        <button
+          className="edit-button"
+          onClick={handleEditClick}
+          title="Edit Feature Flag"
+        >
+          <EditIcon fontSize="small" />
+        </button>
+        <button
+          className="delete-button"
+          onClick={handleDeleteClick}
+          title="Delete Feature Flag"
+        >
+          <CloseIcon fontSize="small" />
+        </button>
       </div>
+      
+      <div className="card-header">
+        <div className="flag-title">
+          <h4>{flag.name}</h4>
+        </div>
+      </div>
+      
       {flag.type === 'boolean' ? (
         <div className="toggle-wrapper">
           <label className="toggle-switch">
@@ -88,7 +129,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
         </div>
       ) : (
         <div className="button-radio-group">
-          {Object.keys(flag.variants || {}).map((variant) => (
+          {getVariantKeys().map((variant) => (
             <label
               key={variant}
               className={`button-radio ${selectedVariant === variant ? 'active' : ''}`}

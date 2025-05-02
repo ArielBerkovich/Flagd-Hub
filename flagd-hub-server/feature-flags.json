@@ -1,0 +1,21 @@
+[
+  {
+    "key": "sample-flag",
+    "name": "Sample Feature Flag",
+    "description": "This is a sample feature flag",
+    "enabled": true,
+    "variants": [
+      {
+        "key": "on",
+        "name": "On",
+        "value": true
+      },
+      {
+        "key": "off",
+        "name": "Off",
+        "value": false
+      }
+    ],
+    "defaultVariant": "on"
+  }
+]

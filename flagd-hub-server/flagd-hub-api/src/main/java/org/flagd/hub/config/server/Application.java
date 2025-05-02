@@ -3,9 +3,9 @@ package org.flagd.hub.config.server;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.log4j.Log4j2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flagd.hub.config.server.repositories.featureflags.FeatureFlagEntity;
-import org.flagd.hub.config.server.repositories.featureflags.FeatureFlagRepository;
 import org.flagd.hub.rest.model.FeatureFlag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -17,9 +17,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-@Log4j2
 @SpringBootApplication
 public class Application {
+
+	private static final Logger log = LoggerFactory.getLogger(Application.class);
 
 	@Autowired
 	private CrudRepository<FeatureFlagEntity,String> featureFlagRepository;
@@ -30,9 +31,12 @@ public class Application {
 
 	@PostConstruct
 	private void initFlags() {
-		List<FeatureFlag> featureFlags = loadFeatureFlags("/home/feature-flags.json");
+		String filePath = System.getProperty("feature.flags.path", "./feature-flags.json");
+		List<FeatureFlag> featureFlags = loadFeatureFlags(filePath);
 		if (featureFlags != null) {
 			saveNewFlags(featureFlags);
+		} else {
+			log.warn("No feature flags loaded from {}", filePath);
 		}
 	}
 

@@ -26,6 +26,21 @@ class FeatureFlagsService {
     });
   }
 
+  // Helper method to convert variants from objects to Maps
+  private static convertVariantsToMap(flags: any[]): FeatureFlag[] {
+    return flags.map(flag => {
+      // If variants is an object, convert it to a Map
+      if (flag.variants && !(flag.variants instanceof Map)) {
+        const variantsMap = new Map<string, string>();
+        Object.entries(flag.variants).forEach(([key, value]) => {
+          variantsMap.set(key, value as string);
+        });
+        flag.variants = variantsMap;
+      }
+      return flag;
+    });
+  }
+
   static async login(loginRequest: LoginRequest): Promise<LoginResponse> {
     try {
       const response = await FeatureFlagsService.apiClient.post('/login', loginRequest);
@@ -49,7 +64,7 @@ class FeatureFlagsService {
   static async getFeatureFlags(): Promise<FeatureFlag[]> {
     try {
       const response = await FeatureFlagsService.apiClient.get('/flags');
-      return response.data;
+      return this.convertVariantsToMap(response.data);
     } catch (error) {
       console.error('Error fetching feature flags:', error);
       throw error;
@@ -73,6 +88,20 @@ class FeatureFlagsService {
       return response.data;
     } catch (error) {
       console.error(`Error setting feature flag (${flagKey}):`, error);
+      throw error;
+    }
+  }
+
+  static async updateFeatureFlag(featureFlag: FeatureFlag) {
+    try {
+      const json = JSON.stringify({
+        ...featureFlag,
+        variants: Object.fromEntries(featureFlag.variants),
+      });
+      const response = await FeatureFlagsService.apiClient.put(`/flags/${featureFlag.key}`, json);
+      return response.data;
+    } catch (error) {
+      console.error(`Error updating feature flag (${featureFlag.key}):`, error);
       throw error;
     }
   }
