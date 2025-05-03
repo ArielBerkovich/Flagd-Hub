@@ -27,7 +27,6 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
   const [isChangelogsOpen, setIsChangelogsOpen] = useState<boolean>(false); // Export Popup state
   const [changeLogsData, setChangeLogs] = useState<Map<string,Changelog> | null>(null); // Data for changelogs Popup
   const [editingFlag, setEditingFlag] = useState<FeatureFlag | null>(null); // Flag being edited
-  const [allFlagsEnabled, setAllFlagsEnabled] = useState<boolean>(false); // Track if all flags are enabled
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
 
@@ -94,9 +93,6 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
         flag.defaultVariant = newState;
       }
     }
-    
-    // Update the toggle state
-    setAllFlagsEnabled(!allOn);
     
     // Force a re-render
     setSearchTerm(searchTerm);
