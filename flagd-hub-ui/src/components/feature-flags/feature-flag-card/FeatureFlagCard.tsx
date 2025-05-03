@@ -92,21 +92,21 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({ flag, selectedVariant
           onClick={handleInfoClick}
           title="View Flag Details"
         >
-          <InfoIcon fontSize="small" />
+          <InfoIcon fontSize="medium" />
         </button>
         <button
           className="edit-button"
           onClick={handleEditClick}
           title="Edit Feature Flag"
         >
-          <EditIcon fontSize="small" />
+          <EditIcon fontSize="medium" />
         </button>
         <button
           className="delete-button"
           onClick={handleDeleteClick}
           title="Delete Feature Flag"
         >
-          <CloseIcon fontSize="small" />
+          <CloseIcon fontSize="medium" />
         </button>
       </div>
       

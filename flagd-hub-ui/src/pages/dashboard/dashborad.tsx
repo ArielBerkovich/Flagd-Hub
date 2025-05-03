@@ -9,6 +9,8 @@ import FeatureFlagsService from '../../services/feature-flags-service';
 import AddIcon from '@mui/icons-material/Add';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import HistoryIcon from '@mui/icons-material/History';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ChangeLogs from '../../components/changelogs/ChangeLogs';
 import Changelog from '../../models/Changelog';
 
@@ -25,6 +27,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
   const [isChangelogsOpen, setIsChangelogsOpen] = useState<boolean>(false); // Export Popup state
   const [changeLogsData, setChangeLogs] = useState<Map<string,Changelog> | null>(null); // Data for changelogs Popup
   const [editingFlag, setEditingFlag] = useState<FeatureFlag | null>(null); // Flag being edited
+  const [allFlagsEnabled, setAllFlagsEnabled] = useState<boolean>(false); // Track if all flags are enabled
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
 
@@ -70,6 +73,45 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
     setIsChangelogsOpen(true);
   };
 
+  // Function to toggle all boolean flags in the current view
+  const toggleAllBooleanFlags = async () => {
+    // Get only the boolean flags from the filtered flags
+    const booleanFlags = filteredFlags.filter(flag => flag.type === 'boolean');
+    
+    if (booleanFlags.length === 0) return;
+    
+    // Check if all flags are currently on
+    const allOn = booleanFlags.every(flag => flag.defaultVariant === 'on');
+    
+    // Set the new state (opposite of current state)
+    const newState = allOn ? 'off' : 'on';
+    
+    // Update each boolean flag
+    for (const flag of booleanFlags) {
+      if (flag.defaultVariant !== newState) {
+        await FeatureFlagsService.setFeatureFlag(flag.key, newState);
+        // Update the flag in the UI
+        flag.defaultVariant = newState;
+      }
+    }
+    
+    // Update the toggle state
+    setAllFlagsEnabled(!allOn);
+    
+    // Force a re-render
+    setSearchTerm(searchTerm);
+  };
+
+  // Calculate if any boolean flags exist in the filtered flags
+  const hasBooleanFlags = () => {
+    return filteredFlags.some(flag => flag.type === 'boolean');
+  };
+
+  // Calculate if all boolean flags are currently enabled
+  const calculateAllFlagsState = () => {
+    const booleanFlags = filteredFlags.filter(flag => flag.type === 'boolean');
+    return booleanFlags.length > 0 && booleanFlags.every(flag => flag.defaultVariant === 'on');
+  };
 
   return (
     <div className="feature-flags">
@@ -102,19 +144,42 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
       ) : filteredFlags.length === 0 ? (
         <FlagsEmptyState searchTerm={searchTerm} />
       ) : (
-        <div className="feature-cards">
-          {filteredFlags
-            .sort((a, b) => a.name.localeCompare(b.name)) // Sort by name
-            .map(flag => (
-              <FeatureFlagCard
-                key={flag.key}
-                flag={flag}
-                selectedVariant={flag.defaultVariant}
-                onVariantChange={handleVariantChange}
-                onEdit={handleEditFlag}
-              />
-            ))}
-        </div>
+        <>
+          {hasBooleanFlags() && (
+            <div className="toggle-all-container">
+              <button 
+                className="toggle-all-button" 
+                onClick={toggleAllBooleanFlags}
+                title={calculateAllFlagsState() ? "Disable all boolean flags" : "Enable all boolean flags"}
+              >
+                {calculateAllFlagsState() ? (
+                  <>
+                    <ToggleOffIcon className="toggle-icon off" />
+                    <span>Disable All Boolean Flags</span>
+                  </>
+                ) : (
+                  <>
+                    <ToggleOnIcon className="toggle-icon on" />
+                    <span>Enable All Boolean Flags</span>
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+          <div className="feature-cards">
+            {filteredFlags
+              .sort((a, b) => a.name.localeCompare(b.name)) // Sort by name
+              .map(flag => (
+                <FeatureFlagCard
+                  key={flag.key}
+                  flag={flag}
+                  selectedVariant={flag.defaultVariant}
+                  onVariantChange={handleVariantChange}
+                  onEdit={handleEditFlag}
+                />
+              ))}
+          </div>
+        </>
       )}
       {isPopupOpen && (
         <CreateFeatureFlagPopup
