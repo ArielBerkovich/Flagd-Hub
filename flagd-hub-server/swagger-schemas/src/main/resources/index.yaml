@@ -269,7 +269,7 @@ paths:
           description: "Targeting rule deleted."
         404:
           description: "Flag not found."
-  /internal/flags:
+  /internal/flagd-hub/flags:
     get:
       summary: "Get all feature flags (Internal)"
       description: "Retrieve a list of all feature flags without authentication."
@@ -302,7 +302,7 @@ paths:
           description: "Flag created or updated successfully."
         400:
           description: "Invalid input."
-  /internal/flags/{flagKey}:
+  /internal/flagd-hub/flags/{flagKey}:
     get:
       summary: "Get a specific feature flag (Internal)"
       description: "Retrieve details of a specific feature flag by its key without authentication."
@@ -366,7 +366,7 @@ paths:
           description: "Invalid input."
         404:
           description: "Flag not found."
-  /internal/flags/{flagKey}/targeting:
+  /internal/flagd-hub/flags/{flagKey}/targeting:
     get:
       summary: "Get targeting rules of a feature flag (Internal)"
       description: "Retrieve targeting rules of the specified feature flag without authentication."
