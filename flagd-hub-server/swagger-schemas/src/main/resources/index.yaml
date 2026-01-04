@@ -269,6 +269,168 @@ paths:
           description: "Targeting rule deleted."
         404:
           description: "Flag not found."
+  /internal/flagd-hub/flags:
+    get:
+      summary: "Get all feature flags (Internal)"
+      description: "Retrieve a list of all feature flags without authentication."
+      operationId: getFlagsInternal
+      tags:
+        - internal-flags
+      responses:
+        200:
+          description: "A list of feature flags."
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/FeatureFlag"
+    post:
+      summary: "Create or update a feature flag (Internal)"
+      description: "Create a new feature flag or override an existing one without authentication."
+      operationId: createFlagInternal
+      tags:
+        - internal-flags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeatureFlag"
+      responses:
+        200:
+          description: "Flag created or updated successfully."
+        400:
+          description: "Invalid input."
+  /internal/flagd-hub/flags/{flagKey}:
+    get:
+      summary: "Get a specific feature flag (Internal)"
+      description: "Retrieve details of a specific feature flag by its key without authentication."
+      operationId: getFlagInternal
+      tags:
+        - internal-flags
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "Details of the feature flag."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureFlag"
+        404:
+          description: "Flag not found."
+    delete:
+      summary: "Delete a feature flag (Internal)"
+      description: "Remove a feature flag by its key without authentication."
+      operationId: deleteFlagInternal
+      tags:
+        - internal-flags
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        204:
+          description: "Flag deleted successfully."
+        404:
+          description: "Flag not found."
+    put:
+      summary: "Update a feature flag value (Internal)"
+      description: "Update the default variant of an existing feature flag by its key without authentication."
+      operationId: updateFlagValueInternal
+      tags:
+        - internal-flags
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeDefaultVariantRequest"
+      responses:
+        200:
+          description: "Flag value updated successfully."
+        400:
+          description: "Invalid input."
+        404:
+          description: "Flag not found."
+  /internal/flagd-hub/flags/{flagKey}/targeting:
+    get:
+      summary: "Get targeting rules of a feature flag (Internal)"
+      description: "Retrieve targeting rules of the specified feature flag without authentication."
+      operationId: getFlagTargetingInternal
+      tags:
+        - internal-flags
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "The key of the feature flag."
+      responses:
+        200:
+          description: "The targeting rules."
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: "Flag not found."
+    post:
+      summary: "Add a targeting rule to a feature flag (Internal)"
+      description: "Add a new targeting rule to an existing feature flag without authentication."
+      operationId: addFlagTargetingInternal
+      tags:
+        - internal-flags
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "The key of the feature flag."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        200:
+          description: "Targeting rule added successfully."
+        404:
+          description: "Flag not found."
+    delete:
+      summary: "Delete targeting of a feature flag (Internal)"
+      description: "Delete targeting rule of an existing featire without authentication."
+      operationId: deleteFlagTargetingInternal
+      tags:
+        - internal-flags
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "The key of the feature flag."
+      responses:
+        202:
+          description: "Targeting rule deleted."
+        404:
+          description: "Flag not found."
 components:
   schemas:
     ChangeDefaultVariantRequest:

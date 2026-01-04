@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/flagd-hub/login").permitAll()
+                        .requestMatchers("/internal/flagd-hub/**").permitAll()
                         .requestMatchers("/flagd-hub/**").authenticated()
                         .anyRequest().permitAll())
                 .addFilterBefore(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -31,7 +32,8 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        AuthenticationManagerBuilder authenticationManagerBuilder = http
+                .getSharedObject(AuthenticationManagerBuilder.class);
 
         authenticationManagerBuilder
                 .inMemoryAuthentication()

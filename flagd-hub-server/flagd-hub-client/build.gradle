@@ -1,0 +1,74 @@
+plugins {
+    id 'java-library'
+    id 'org.openapi.generator' version '7.10.0'
+    id 'maven-publish'
+}
+
+group = 'org.flagd.hub.client'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.16'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+}
+
+openApiGenerate {
+    generatorName = "java"
+    inputSpec = "${projectDir}/../swagger-schemas/src/main/resources/index.yaml"
+    outputDir = "${buildDir}/generated-sources/openapi"
+    apiPackage = "org.flagd.hub.client.api"
+    modelPackage = "org.flagd.hub.client.model"
+    configOptions = [
+            library: "native",
+            dateLibrary: "java8",
+            openApiNullable: "false",
+            useJakartaEe: "true"
+    ]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${buildDir}/generated-sources/openapi/src/main/java"
+        }
+    }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = 'Flagd Hub Client'
+                description = 'Client library for Flagd Hub generated from OpenAPI spec'
+            }
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('openApiGenerate')
+}
+
+tasks.named('sourcesJar') {
+    dependsOn tasks.named('openApiGenerate')
+}
+
+tasks.named('javadocJar') {
+    dependsOn tasks.named('openApiGenerate')
+}
