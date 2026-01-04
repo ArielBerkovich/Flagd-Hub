@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'org.openapi.generator' version '7.10.0'
+    id 'maven-publish'
 }
 
 group = 'org.flagd.hub.client'
@@ -43,6 +44,31 @@ sourceSets {
     }
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = 'Flagd Hub Client'
+                description = 'Client library for Flagd Hub generated from OpenAPI spec'
+            }
+        }
+    }
+}
+
 tasks.named('compileJava') {
+    dependsOn tasks.named('openApiGenerate')
+}
+
+tasks.named('sourcesJar') {
+    dependsOn tasks.named('openApiGenerate')
+}
+
+tasks.named('javadocJar') {
     dependsOn tasks.named('openApiGenerate')
 }
