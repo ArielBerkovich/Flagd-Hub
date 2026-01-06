@@ -10,6 +10,29 @@
   padding: 1.5rem 1rem;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.header:hover {
+  transform: scale(1.05) translateX(5px);
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.2s ease;
+}
+
+.header:hover .logo {
+  transform: scale(1.1);
+}
+
 .sidebar h3 {
   text-align: left;
   font-size: 1.5rem;

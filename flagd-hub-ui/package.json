@@ -13,6 +13,7 @@
     "cra-template": "1.2.0",
     "http-proxy-middleware": "^3.0.3",
     "js-yaml": "^4.1.0",
+    "lucide-react": "^0.507.0",
     "path": "^0.12.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

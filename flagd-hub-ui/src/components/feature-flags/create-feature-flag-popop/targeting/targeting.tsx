@@ -12,6 +12,7 @@ interface Rule {
 interface TargetingProps {
   variants: string[];
   setTargeting: (value: string) => void;
+  initialTargeting?: string;
 }
 
 interface OperatorTemplate {
@@ -142,13 +143,117 @@ const isRuleComplete = (rule: Rule): boolean => {
   return !!(rule.variable && rule.operator && rule.value && rule.result);
 };
 
-const Targeting: React.FC<TargetingProps> = ({ variants, setTargeting }) => {
-  const [rules, setRules] = useState<Rule[]>([]);
+/**
+ * Parses targeting JSON back into rules for editing
+ */
+const parseTargetingToRules = (targetingJson: string): Rule[] => {
+  if (!targetingJson || targetingJson.trim() === '') return [];
 
-  // Generate targeting JSON whenever rules change
+  try {
+    const targeting = JSON.parse(targetingJson);
+    if (!targeting.if || !Array.isArray(targeting.if)) return [];
+
+    const parsedRules: Rule[] = [];
+    const ifArray = targeting.if;
+
+    // Process pairs of [condition, result]
+    for (let i = 0; i < ifArray.length; i += 2) {
+      const condition = ifArray[i];
+      const result = ifArray[i + 1];
+
+      if (!condition || !result) continue;
+
+      const rule = parseCondition(condition, result);
+      if (rule) parsedRules.push(rule);
+    }
+
+    return parsedRules;
+  } catch (e) {
+    console.error('Failed to parse targeting JSON:', e);
+    return [];
+  }
+};
+
+/**
+ * Parses a single condition object into a Rule
+ */
+const parseCondition = (condition: any, result: string): Rule | null => {
+  // Handle negation wrapper
+  if (condition['!']) {
+    const innerCondition = condition['!'];
+    const rule = parseCondition(innerCondition, result);
+    if (rule) {
+      // Map back to negated operators
+      if (rule.operator === 'in') rule.operator = 'not_contains_string';
+      else if (rule.operator === 'in_list') rule.operator = 'not_in_list';
+    }
+    return rule;
+  }
+
+  // Get the operator (first key in condition)
+  const operator = Object.keys(condition)[0];
+  if (!operator) return null;
+
+  const operands = condition[operator];
+  if (!Array.isArray(operands) || operands.length < 2) return null;
+
+  // Extract variable and value
+  const variableObj = operands[0];
+  const value = operands[1];
+
+  if (!variableObj || typeof variableObj !== 'object' || !variableObj.var) return null;
+
+  const variable = variableObj.var;
+
+  // Map operator back to UI operator
+  let uiOperator = operator;
+  if (operator === 'starts_with' || operator === 'ends_with') {
+    uiOperator = operator;
+  } else if (operator === 'in' && Array.isArray(value)) {
+    uiOperator = 'in_list';
+  } else if (operator === 'in') {
+    uiOperator = 'contains_string';
+  } else if (operator === '===') {
+    uiOperator = '===';
+  } else if (operator === '!==') {
+    uiOperator = '!==';
+  }
+
+  // Format value
+  let formattedValue = value;
+  if (Array.isArray(value)) {
+    formattedValue = value.join(', ');
+  }
+
+  return {
+    variable,
+    operator: uiOperator,
+    value: String(formattedValue),
+    result
+  };
+};
+
+const Targeting: React.FC<TargetingProps> = ({ variants, setTargeting, initialTargeting }) => {
+  const [rules, setRules] = useState<Rule[]>([]);
+  const [initialized, setInitialized] = useState(false);
+
+  // Initialize rules from existing targeting JSON when component mounts
   useEffect(() => {
-    generateTargeting(rules, setTargeting);
-  }, [rules, setTargeting]);
+    if (initialTargeting && !initialized) {
+      const parsedRules = parseTargetingToRules(initialTargeting);
+      if (parsedRules.length > 0) {
+        setRules(parsedRules);
+      }
+      setInitialized(true);
+    }
+  }, [initialTargeting, initialized]);
+
+  // Generate targeting JSON whenever rules change (but skip initial empty state)
+  useEffect(() => {
+    if (initialized || rules.length > 0) {
+      generateTargeting(rules, setTargeting);
+    }
+  }, [rules, setTargeting, initialized]);
 
   // Handler functions
   const addRule = () => {

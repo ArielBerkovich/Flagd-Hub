@@ -31,7 +31,7 @@ public class FlagdHubController implements FlagsHubApi {
     public ResponseEntity<Map<String, ChangelogEvent>> getFlagsChangelogs() {
         Map<String, ChangelogEvent> changeLogs = featureFlagsService.getChangeLogs().stream()
                 .collect(Collectors.toMap(ChangelogEvents::getFlagKey,
-                        (ChangelogEvents changelogEvents) -> changelogEvents.getChangelogEventsList().getFirst()));
+                        (ChangelogEvents changelogEvents) -> changelogEvents.getChangelogEventsList().get(0)));
 
         return ResponseEntity.ok(changeLogs);
     }

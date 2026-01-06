@@ -296,9 +296,10 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({
           </div>
           <div>
             {targetingEnabled && (
-              <Targeting 
-                variants={variantKeys} 
+              <Targeting
+                variants={variantKeys}
                 setTargeting={setTargeting}
+                initialTargeting={targeting}
               />
             )}
           </div>

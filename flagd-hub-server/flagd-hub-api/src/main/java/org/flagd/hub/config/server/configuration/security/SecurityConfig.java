@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/flagd-hub/login").permitAll()
+                        .requestMatchers("/insecure/**").permitAll()
                         .requestMatchers("/flagd-hub/**").authenticated()
                         .anyRequest().permitAll())
                 .addFilterBefore(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Sidebar.css';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Environment from '../../utils/Environment';
+import AboutPopup from '../about-popup/AboutPopup';
 
 
 interface SidebarProps {
@@ -15,6 +16,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas, onLogout }) =
   const [activeArea, setActiveArea] = useState<string | null>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isSecured, setIsSecured] = useState<boolean>(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   useEffect(() => {
     setIsSecured(Environment.getBoolean('is_secured'));
@@ -46,9 +48,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas, onLogout }) =
     onAreaSelect(area === 'All' ? null : area);
   };
 
+  const handleAboutClick = () => {
+    setIsAboutOpen(true);
+  };
+
   return (
     <div className="sidebar">
-      <div className="header">
+      <div className="header" onClick={handleAboutClick}>
         <img
           className="logo"
           src="./flagd-hub-logo.png"
@@ -77,6 +83,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas, onLogout }) =
           ))}
         </ul>
       </div>
+      {isAboutOpen && (
+        <AboutPopup
+          onClose={() => setIsAboutOpen(false)}
+        />
+      )}
       {isSecured && (
         <div className='logout-container'>
           <button className='logout-button' onClick={() => {
