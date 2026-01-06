@@ -18,7 +18,7 @@ subprojects {
 	// Common d for all subprojects
 	java {
 		toolchain {
-			languageVersion = JavaLanguageVersion.of(21) // Use Java 21
+			languageVersion = JavaLanguageVersion.of(17) // Use Java 17
 		}
 	}
 

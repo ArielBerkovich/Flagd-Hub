@@ -14,10 +14,11 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=securepassword123
+      - USE_IN_MEMORY_DATABASE=false
     depends_on:
       - redis
     volumes:
-      - /home/feature-flags.json:/home/feature-flags.json
+      - ./flagd-hub-server/feature-flags.json:/app/feature-flags.json
 
   flagd-hub-ui:
     image: flagd-hub-ui:latest
@@ -36,7 +37,7 @@ services:
     ports:
       - "6379:6379"
       - "8001:8001" # Redis Stack GUI
-    command: ["redis-server", "--requirepass", "securepassword123"]
+    command: [ "redis-server", "--requirepass", "securepassword123" ]
     environment:
       REDIS_ARGS: --requirepass securepassword123
     volumes:
@@ -44,4 +45,5 @@ services:
 
 volumes:
   redis-data:
+
 
