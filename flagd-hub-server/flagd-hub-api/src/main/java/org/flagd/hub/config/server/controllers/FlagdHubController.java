@@ -50,6 +50,29 @@ public class FlagdHubController implements FlagsHubApi {
 
     @Override
     public ResponseEntity<Void> createFlag(FeatureFlag featureFlag) {
+        // Validate that all required fields are present
+        if (featureFlag.getKey() == null || featureFlag.getKey().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (featureFlag.getType() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (featureFlag.getDefaultVariant() == null || featureFlag.getDefaultVariant().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // Validate that variants map is not empty
+        if (featureFlag.getVariants() == null || featureFlag.getVariants().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // Validate that default variant exists in variants map
+        if (!featureFlag.getVariants().containsKey(featureFlag.getDefaultVariant())) {
+            return ResponseEntity.badRequest().build();
+        }
+
         featureFlagsService.createFlag(featureFlag);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -68,29 +91,12 @@ public class FlagdHubController implements FlagsHubApi {
 
     @Override
     public ResponseEntity<Void> deleteFlag(String flagKey) {
+        // Check if flag exists before attempting to delete
+        if (featureFlagsService.getFlagByKey(flagKey).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         featureFlagsService.deleteFlag(flagKey);
-
-        return ResponseEntity.accepted().build();
-    }
-
-    @Override
-    public ResponseEntity<Object> getFlagTargeting(String flagKey) {
-        return featureFlagsService.getFlagTargeting(flagKey)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @Override
-    public ResponseEntity<Void> addFlagTargeting(String flagKey, Object body) {
-        featureFlagsService.updateFlagTargeting(flagKey, body);
-
-        return ResponseEntity.accepted().build();
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteFlagTargeting(String flagKey) {
-        featureFlagsService.deleteFlagTargeting(flagKey);
-
         return ResponseEntity.accepted().build();
     }
 }

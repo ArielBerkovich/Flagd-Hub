@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: flagd-hub-api-test
+  redis:
+    host: localhost  # Will be overridden by Testcontainers
+    port: 6379       # Will be overridden by Testcontainers
+    password: ""
+  data:
+    redis:
+      repositories:
+        enabled: true
+
+server:
+  port: 0  # Random port for tests
+
+logging:
+  level:
+    root: INFO
+    org.springframework: WARN
+    org.flagd.hub: DEBUG
+    org.testcontainers: INFO

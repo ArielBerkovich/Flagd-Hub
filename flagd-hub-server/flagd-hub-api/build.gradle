@@ -40,10 +40,20 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // Testcontainers for integration testing
+    testImplementation 'org.testcontainers:testcontainers:1.19.3'
+    testImplementation 'org.testcontainers:junit-jupiter:1.19.3'
+
+    // Spring Security Test for JWT testing
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
     useJUnitPlatform()
+    maxParallelForks = 1
+    forkEvery = 0
+    systemProperty 'junit.jupiter.execution.parallel.enabled', 'false'
 }
 
 bootBuildImage {

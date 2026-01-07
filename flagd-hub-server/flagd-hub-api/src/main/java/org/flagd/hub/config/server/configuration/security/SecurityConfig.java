@@ -1,5 +1,6 @@
 package org.flagd.hub.config.server.configuration.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,11 +17,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private String getConfigValue(String key) {
+        String value = System.getenv(key);
+        if (value == null) {
+            value = System.getProperty(key);
+        }
+        return value;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("**")
+        http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/flagd-hub/login").permitAll()
                         .requestMatchers("/insecure/**").permitAll()
@@ -31,16 +43,19 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+    public AuthenticationManager authManager(PasswordEncoder passwordEncoder) throws Exception {
+        var user = org.springframework.security.core.userdetails.User
+                .withUsername(getConfigValue("ADMIN_USERNAME"))
+                .password(getConfigValue("ADMIN_PASSWORD"))
+                .roles("ADMIN")
+                .build();
 
-        authenticationManagerBuilder
-                .inMemoryAuthentication()
-                .withUser(System.getenv("ADMIN_USERNAME"))
-                .password(passwordEncoder.encode(System.getenv("ADMIN_PASSWORD")))
-                .roles("ADMIN");
+        var userDetailsService = new org.springframework.security.provisioning.InMemoryUserDetailsManager(user);
+        var authProvider = new org.springframework.security.authentication.dao.DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
 
-        return authenticationManagerBuilder.build();
+        return new org.springframework.security.authentication.ProviderManager(authProvider);
     }
 
     @Bean

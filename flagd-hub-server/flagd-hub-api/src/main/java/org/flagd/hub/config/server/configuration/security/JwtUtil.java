@@ -8,8 +8,17 @@ import java.time.Instant;
 import java.util.Date;
 
 public class JwtUtil {
-    private static final String SECRET_KEY = System.getenv("SECRET_KEY");
-    private static final long EXPIRATION_TIME = Duration.ofHours(Integer.parseInt(System.getenv("TOKEN_EXPIRATION_IN_HOURS"))).toMillis();
+    private static final String SECRET_KEY = getConfigValue("SECRET_KEY");
+    private static final long EXPIRATION_TIME = Duration.ofHours(Integer.parseInt(getConfigValue("TOKEN_EXPIRATION_IN_HOURS"))).toMillis();
+
+    private static String getConfigValue(String key) {
+        // Try environment variable first, then system property
+        String value = System.getenv(key);
+        if (value == null) {
+            value = System.getProperty(key);
+        }
+        return value;
+    }
 
     public static String generateToken(String username) {
         return Jwts.builder()

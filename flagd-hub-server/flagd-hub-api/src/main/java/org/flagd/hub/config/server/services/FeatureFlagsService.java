@@ -98,27 +98,7 @@ public class FeatureFlagsService {
         log.info("flag {} deleted", flagKey);
     }
 
-    public void updateFlagTargeting(String flagKey, Object targeting) {
-        featureFlagsRepository.findById(flagKey).ifPresent(featureFlagEntity -> {
-            featureFlagEntity.getValue().setTargeting(targeting);
-            featureFlagsRepository.save(featureFlagEntity);
-        });
-    }
-
     private ChangelogEvents getChangelog(String flagKey) {
         return changelogEventsRepositories.findById(flagKey).orElseGet(() -> new ChangelogEvents(flagKey));
-    }
-
-    public Optional<Object> getFlagTargeting(String flagKey) {
-        return featureFlagsRepository.findById(flagKey)
-                .map(FeatureFlagEntity::getValue)
-                .map(FeatureFlag::getTargeting);
-    }
-
-    public void deleteFlagTargeting(String flagKey) {
-        featureFlagsRepository.findById(flagKey).ifPresent(featureFlagEntity -> {
-            featureFlagEntity.getValue().setTargeting(null);
-            featureFlagsRepository.save(featureFlagEntity);
-        });
     }
 }
