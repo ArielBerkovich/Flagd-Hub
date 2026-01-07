@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/js-yaml": "^4.0.9",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3"
