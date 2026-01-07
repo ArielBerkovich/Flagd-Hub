@@ -17,10 +17,10 @@ const ChangeLogs: React.FC<ChangeLogProps> = ({ changeLogs, onClose }) => {
 
   return (
     <div className="changelogs-popup-overlay">
-      <div className="changelogs-popup-container">
+      <div className="changelogs-popup-container" data-testid="changelogs-dialog">
         <div className="changelogs-popup-header">
           <h2>Changelogs</h2>
-          <button className="changelogs-close-button" onClick={onClose}>
+          <button className="changelogs-close-button" onClick={onClose} data-testid="changelogs-close-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -31,7 +31,7 @@ const ChangeLogs: React.FC<ChangeLogProps> = ({ changeLogs, onClose }) => {
           {sortedLogs.length > 0 ? (
             <div className="changelog-grid">
               {sortedLogs.map(([flagName, log], index) => (
-                <div key={flagName} className="changelog-card">
+                <div key={flagName} className="changelog-card" data-testid={`changelog-entry-${index}`}>
                   <div className="changelog-card-header">
                     <span className="changelog-index">{index + 1}</span>
                     <h3>{flagName}</h3>

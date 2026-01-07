@@ -80,16 +80,17 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
             className="search-bar"
             value={searchTerm}
             onChange={handleSearchChange}
+            data-testid="search-flags-input"
           />
-          <button className="header-button" onClick={() => setIsPopupOpen(true)}>
+          <button className="header-button" onClick={() => setIsPopupOpen(true)} data-testid="create-flag-button">
             Create flag
             <AddIcon className="me-2" />
           </button>
-          <button className="header-button" onClick={openExportPopup}>
+          <button className="header-button" onClick={openExportPopup} data-testid="export-button">
             Export
             <FileUploadIcon className="me-2" />
           </button>
-          <button className="header-button" onClick={openChangeLogs}>
+          <button className="header-button" onClick={openChangeLogs} data-testid="changelogs-button">
             Changelogs
             <HistoryIcon className="me-2" />
           </button>

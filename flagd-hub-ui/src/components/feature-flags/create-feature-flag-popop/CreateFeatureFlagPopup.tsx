@@ -171,35 +171,39 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({
       <div className='flag-details'>
         <label>
           key
-          <input 
-            type="text" 
-            value={flagKey} 
-            onChange={(e) => setFlagKey(e.target.value)} 
-            disabled={!!featureFlag} 
+          <input
+            type="text"
+            value={flagKey}
+            onChange={(e) => setFlagKey(e.target.value)}
+            disabled={!!featureFlag}
+            data-testid="flag-key-input"
           />
         </label>
         <label>
           Display name
-          <input 
-            type="text" 
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            data-testid="flag-name-input"
           />
         </label>
         <label>
           Area
-          <input 
-            type="text" 
-            value={area} 
-            onChange={(e) => setArea(e.target.value)} 
+          <input
+            type="text"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
+            data-testid="flag-area-input"
           />
         </label>
         <label>
           Description
-          <textarea 
-            className='description-textarea' 
-            value={description} 
-            onChange={(e) => setDescription(e.target.value)} 
+          <textarea
+            className='description-textarea'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            data-testid="flag-description-input"
           />
         </label>
         <label>
@@ -208,6 +212,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({
             value={type}
             onChange={(e) => setType(e.target.value)}
             disabled={!!featureFlag}
+            data-testid="flag-type-select"
           >
             <option value="boolean">Boolean</option>
             <option value="string">String</option>
@@ -249,9 +254,10 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({
         <label>Variants</label>
         {variantKeys.map(key => (
           <div key={key} className='variant-row'>
-            <button 
-              onClick={() => handleDefaultVariantChange(key)} 
+            <button
+              onClick={() => handleDefaultVariantChange(key)}
               className={`variant-key ${key === defaultValue ? 'select' : ''}`}
+              data-testid={`variant-${key}-button`}
             >
               {key}
             </button>
@@ -262,6 +268,7 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({
               className="variant-value-input"
               value={variantValues[key] || ''}
               onChange={(e) => handleVariantValueChange(key, e.target.value)}
+              data-testid={`variant-${key}-value`}
             />
           </div>
         ))}
@@ -271,14 +278,19 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({
 
   const renderFormActions = () => (
     <div className="form-actions">
-      <button 
-        className="form-button" 
-        onClick={handleSubmit} 
+      <button
+        className="form-button"
+        onClick={handleSubmit}
         disabled={!isFormValid}
+        data-testid="flag-save-button"
       >
         {featureFlag ? 'Save Changes' : 'Create'}
       </button>
-      <button className="form-button" onClick={onClose}>
+      <button
+        className="form-button"
+        onClick={onClose}
+        data-testid="flag-cancel-button"
+      >
         Cancel
       </button>
     </div>

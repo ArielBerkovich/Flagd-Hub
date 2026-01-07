@@ -89,6 +89,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({
         onClick={handleInfoClick}
         title="View Flag Details"
         aria-label="View feature flag details"
+        data-testid={`flag-info-button-${flag.key}`}
       >
         <InfoIcon fontSize="medium" />
       </button>
@@ -97,6 +98,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({
         onClick={handleEditClick}
         title="Edit Feature Flag"
         aria-label="Edit feature flag"
+        data-testid={`flag-edit-button-${flag.key}`}
       >
         <EditIcon fontSize="medium" />
       </button>
@@ -105,6 +107,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({
         onClick={handleDeleteClick}
         title="Delete Feature Flag"
         aria-label="Delete feature flag"
+        data-testid={`flag-delete-button-${flag.key}`}
       >
         <CloseIcon fontSize="medium" />
       </button>
@@ -119,6 +122,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({
           checked={selectedVariant === 'on'}
           onChange={handleToggleChange}
           aria-label={`Toggle ${flag.name} ${selectedVariant === 'on' ? 'off' : 'on'}`}
+          data-testid={`flag-toggle-${flag.key}`}
         />
         <span className="slider"></span>
       </label>
@@ -166,17 +170,17 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({
   );
 
   return (
-    <div className="feature-card">
+    <div className="feature-card" data-testid={`flag-card-${flag.key}`}>
       {renderCardActions()}
-      
+
       <div className="card-header">
         <div className="flag-title">
-          <h4>{flag.name}</h4>
+          <h4 data-testid={`flag-name-${flag.key}`}>{flag.name}</h4>
         </div>
       </div>
-      
-      {flag.type === 'boolean' 
-        ? renderBooleanToggle() 
+
+      {flag.type === 'boolean'
+        ? renderBooleanToggle()
         : renderVariantRadioGroup()
       }
 

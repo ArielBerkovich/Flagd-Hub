@@ -65,7 +65,7 @@ const ExportPopup: React.FC<JsonPopupProps> = ({ show, onClose, featureFlags }) 
           </div>
           <div className="export-popup-actions">
             <span className="export-count">{featureFlags.length} flags</span>
-            <button className="export-close-button" onClick={onClose}>
+            <button className="export-close-button" onClick={onClose} data-testid="export-close-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -83,15 +83,16 @@ const ExportPopup: React.FC<JsonPopupProps> = ({ show, onClose, featureFlags }) 
               </div>
             </div>
             <pre className="export-json-pre">
-              <code>{formattedJson}</code>
+              <code data-testid="export-json-content">{formattedJson}</code>
             </pre>
           </div>
         </div>
         
         <div className="export-popup-footer">
-          <button 
+          <button
             className={`export-button export-button-primary ${copySuccess ? 'export-button-success' : ''}`}
             onClick={handleCopy}
+            data-testid="export-copy-button"
           >
             {copySuccess ? (
               <>
