@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: flagd-hub-ui/package-lock.json
+
+      - name: Fix file permissions
+        run: |
+          chmod +x flagd-hub-server/gradlew
+          chmod +x flagd-hub-e2e/gradlew
+          chmod +x flagd-hub-e2e/run-tests.sh
+          chmod +x build-images.sh
+
+      - name: Run backend unit tests
+        run: |
+          cd flagd-hub-server
+          ./gradlew test --no-daemon
+
+      - name: Build Docker images
+        run: ./build-images.sh
+
+      - name: Start services with docker compose
+        run: docker compose up -d
+
+      - name: Wait for services to be healthy
+        run: |
+          echo "Checking UI availability..."
+          curl --retry 20 --retry-delay 3 --retry-connrefused http://localhost:3000 || exit 1
+
+          echo "Checking API availability..."
+          curl --retry 20 --retry-delay 3 --retry-connrefused http://localhost:8090/actuator/health || exit 1
+
+          echo "All services are healthy!"
+
+      - name: Install Playwright browsers
+        working-directory: flagd-hub-e2e
+        run: ./gradlew --console=plain exec:java -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps chromium"
+
+      - name: Run E2E tests
+        run: |
+          cd flagd-hub-e2e
+          ./run-tests.sh headless
+        env:
+          CI: true
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            flagd-hub-server/flagd-hub-api/build/reports/
+            flagd-hub-e2e/build/reports/
+            flagd-hub-e2e/build/traces/
+          retention-days: 7
+
+      - name: Show docker logs on failure
+        if: failure()
+        run: docker compose logs --timestamps --tail=100
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down -v

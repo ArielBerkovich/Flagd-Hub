@@ -1,6 +1,7 @@
 # Flagd-Hub
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![CI](https://github.com/arielberkovich/Flagd-Hub/actions/workflows/ci.yml/badge.svg)](https://github.com/arielberkovich/Flagd-Hub/actions/workflows/ci.yml)
 
 A comprehensive web-based management interface for [flagd](https://github.com/open-feature/flagd), the OpenFeature-compliant feature flag daemon. Flagd-Hub simplifies feature flag management by providing an intuitive UI, RESTful API, and flag configuration for flagd instances.
 
@@ -37,7 +38,7 @@ A comprehensive web-based management interface for [flagd](https://github.com/op
 ```
 ┌─────────────────┐      ┌──────────────────┐      ┌─────────────┐
 │  Flagd-Hub UI   │─────▶│  Flagd-Hub API   │─────▶│    Redis    │
-│   (React/TS)    │      │  (Spring Boot)   │      │   (storage)   │
+│   (React/TS)    │      │  (Spring Boot)   │      │   (storage) │
 └─────────────────┘      └──────────────────┘      └─────────────┘
                                   │
                                   ▼
@@ -287,26 +288,41 @@ Flagd-Hub/
 ├── build-images.sh            # Docker build script
 ```
 
-## Contributing
+## Continuous Integration
 
-Contributions are welcome! Please follow these steps:
+This project uses GitHub Actions for automated testing and validation. The CI pipeline runs on every push to `main` and on all pull requests.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### CI Pipeline Steps
 
-## Roadmap
+1. **Backend Unit Tests** - Runs `./gradlew test` in the server module
+2. **Build Docker Images** - Builds both UI and server Docker images
+3. **Start Services** - Brings up the full stack with `docker compose up`
+4. **Health Checks** - Verifies all services are running and healthy
+5. **E2E Tests** - Runs the full Playwright test suite
 
-- [ ] Multi-tenancy support
-- [ ] Role-based access control (RBAC)
-- [ ] Flag targeting rules UI
-- [ ] Flag analytics and metrics
-- [ ] Import/export flag configurations
-- [ ] Webhooks for flag change notifications
-- [ ] Audit log UI
-- [ ] Flag templates and versioning
+### Viewing CI Results
+
+- CI status badge is displayed at the top of this README
+- Click the badge to view detailed workflow runs
+- Test reports and traces are uploaded as artifacts for failed runs
+
+### Running CI Locally
+
+You can run the same checks locally:
+
+```bash
+# Run backend unit tests
+cd flagd-hub-server
+./gradlew test
+
+# Build images and start services
+./build-images.sh
+docker compose up -d
+
+# Run E2E tests
+cd flagd-hub-e2e
+./run-tests.sh
+```
 
 ## Troubleshooting
 
