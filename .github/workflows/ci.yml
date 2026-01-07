@@ -54,8 +54,7 @@ jobs:
           echo "All services are healthy!"
 
       - name: Install Playwright browsers
-        working-directory: flagd-hub-e2e
-        run: ./gradlew --console=plain exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
+        run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
         run: |
