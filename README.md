@@ -356,7 +356,7 @@ docker compose restart
 - Verify flagd is polling the correct endpoint
 - Check flagd logs for sync errors
 - Confirm network connectivity between flagd and Flagd-Hub API
-- Validate flag configuration format at `/flagd/configuration`
+- Validate flag configuration format at `/flagd/flags`
 
 ## License
 
