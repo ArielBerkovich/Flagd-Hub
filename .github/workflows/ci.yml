@@ -55,7 +55,7 @@ jobs:
 
       - name: Install Playwright browsers
         working-directory: flagd-hub-e2e
-        run: ./gradlew --console=plain exec:java -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps chromium"
+        run: ./gradlew --console=plain exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
 
       - name: Run E2E tests
         run: |
