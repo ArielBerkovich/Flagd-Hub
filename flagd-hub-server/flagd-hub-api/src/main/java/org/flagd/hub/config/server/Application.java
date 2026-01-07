@@ -31,7 +31,7 @@ public class Application {
 
 	@PostConstruct
 	private void initFlags() {
-		String filePath = System.getProperty("feature.flags.path", "./feature-flags.json");
+		String filePath = System.getProperty("FEATURE_FLAGS_JSON_PATH", "./feature-flags.json");
 		List<FeatureFlag> featureFlags = loadFeatureFlags(filePath);
 		if (featureFlags != null) {
 			saveNewFlags(featureFlags);

@@ -42,6 +42,19 @@ services:
     volumes:
       - redis-data:/data
 
+  flagd:
+    image: ghcr.io/open-feature/flagd:latest
+    container_name: flagd
+    ports:
+      - "8013:8013" # flagd evaluation API
+    command:
+      - "start"
+      - "--uri"
+      - "http://flagd-hub:8090/flagd/flags"
+    depends_on:
+      - flagd-hub
+    restart: unless-stopped
+
 volumes:
   redis-data:
 
