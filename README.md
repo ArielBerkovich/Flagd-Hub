@@ -1,6 +1,5 @@
 # Flagd-Hub
 
-[![CI](https://github.com/your-username/Flagd-Hub/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/Flagd-Hub/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 A comprehensive web-based management interface for [flagd](https://github.com/open-feature/flagd), the OpenFeature-compliant feature flag daemon. Flagd-Hub simplifies feature flag management by providing an intuitive UI, RESTful API, and flag configuration for flagd instances.
