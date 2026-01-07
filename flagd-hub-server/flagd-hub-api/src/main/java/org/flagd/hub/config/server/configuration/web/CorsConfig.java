@@ -20,10 +20,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Apply to all endpoints
-                        .allowedOrigins(corsAllowedOrigins) // Allow all origins
+                        .allowedOrigins(corsAllowedOrigins) // Allow configured origins
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow all HTTP methods
                         .allowedHeaders("*") // Allow all headers
-                        .allowCredentials(false);
+                        .allowCredentials(true); // Allow credentials (cookies, authorization headers)
             }
         };
     }

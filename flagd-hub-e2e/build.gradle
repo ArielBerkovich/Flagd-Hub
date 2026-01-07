@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.flagdhub'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    // Playwright for Java
+    testImplementation 'com.microsoft.playwright:playwright:1.48.0'
+
+    // JUnit 5
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // AssertJ for fluent assertions
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+
+    // SLF4J for logging
+    testImplementation 'org.slf4j:slf4j-simple:2.0.9'
+
+    // Jackson for JSON parsing
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.16.0'
+}
+
+test {
+    useJUnitPlatform()
+
+    // Set system properties for tests
+    systemProperty 'playwright.headless', System.getProperty('playwright.headless', 'true')
+    systemProperty 'base.url', System.getProperty('base.url', 'http://localhost:3000')
+    systemProperty 'api.url', System.getProperty('api.url', 'http://localhost:8090')
+
+    // Disable parallel execution - run tests sequentially
+    maxParallelForks = 1
+
+    // Test output
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showStandardStreams = false
+    }
+}
+
+// Task to run tests with headed browser
+tasks.register('testHeaded', Test) {
+    useJUnitPlatform()
+    systemProperty 'playwright.headless', 'false'
+    systemProperty 'base.url', System.getProperty('base.url', 'http://localhost:3000')
+    systemProperty 'api.url', System.getProperty('api.url', 'http://localhost:8090')
+}
+
+// Task to run tests with screenshots and traces
+tasks.register('testDebug', Test) {
+    useJUnitPlatform()
+    systemProperty 'playwright.headless', 'false'
+    systemProperty 'playwright.slowMo', '500'
+    systemProperty 'base.url', System.getProperty('base.url', 'http://localhost:3000')
+    systemProperty 'api.url', System.getProperty('api.url', 'http://localhost:8090')
+}

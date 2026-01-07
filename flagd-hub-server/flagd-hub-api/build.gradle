@@ -57,8 +57,29 @@ test {
 }
 
 bootBuildImage {
-    imageName = 'flagd-hub:0.10.0' // Replace with your desired image name
+    imageName = 'flagd-hub:latest' // Replace with your desired image name
     environment = [
         'BP_JVM_VERSION': '21', // Specify the JVM version (optional)
     ]
+    builder = 'paketobuildpacks/builder-jammy-base:latest'
+    buildpacks = ['gcr.io/paketo-buildpacks/java']
+    docker {
+        publishRegistry {
+            // No remote publishing needed for local development
+        }
+        builderRegistry {
+            // Use default registry
+        }
+    }
+    // Build for ARM64 (Apple Silicon) to avoid Rosetta issues
+    buildCache {
+        volume {
+            name = "cache-${rootProject.name}.build"
+        }
+    }
+    launchCache {
+        volume {
+            name = "cache-${rootProject.name}.launch"
+        }
+    }
 }

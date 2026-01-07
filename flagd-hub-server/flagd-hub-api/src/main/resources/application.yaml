@@ -15,7 +15,7 @@ security:
 
 cors:
   allowed:
-    origins: http://localhost:3000
+    origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
 
 server:
   port: 8090 # Port the application will run on
