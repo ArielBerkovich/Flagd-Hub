@@ -48,13 +48,73 @@ openApiGenerate {
     ]
 }
 
+// Client generation task
+tasks.register('openApiGenerateClient', org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName = "java"
+    inputSpec = "${projectDir}/src/main/resources/index.yaml"
+    outputDir = "${buildDir}/generated-sources/openapi-client"
+    apiPackage = "org.flagd.hub.client.api"
+    modelPackage = "org.flagd.hub.client.model"
+    configOptions = [
+            dateLibrary: "java8",
+            javaVersion: "17", 
+            library: "native", // Java 11+ HttpClient
+            useJakartaEe: "true",
+            useLombok: "true",
+            hideGenerationTimestamp: "true"
+    ]
+    globalProperties = [
+            'apis': '',
+            'models': '',
+            'supportingFiles': ''
+    ]
+}
+
+// Define the client source set so it can be compiled
 sourceSets {
     main {
         java {
             srcDir "${buildDir}/generated-sources/openapi/src/main/java"
         }
     }
+    client {
+        java {
+            srcDir "${buildDir}/generated-sources/openapi-client/src/main/java"
+        }
+        resources {
+             // If the client needs resources
+        }
+    }
 }
+
+// Add dependencies for the client source set
+configurations {
+    clientImplementation.extendsFrom implementation
+    clientRuntimeOnly.extendsFrom runtimeOnly
+}
+
+dependencies {
+    // Need these for the native java client
+    clientImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    clientImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+    clientImplementation 'jakarta.annotation:jakarta.annotation-api:2.1.1' 
+    clientImplementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+}
+
+// Task to compile client
+// Configure the auto-generated compile task
+tasks.named('compileClientJava') {
+    dependsOn 'openApiGenerateClient'
+    options.encoding = 'UTF-8'
+}
+
+// Task to package client jar
+tasks.register('clientJar', Jar) {
+    archiveClassifier.set('client')
+    from sourceSets.client.output
+    dependsOn 'compileClientJava'
+}
+
 
 tasks.named('openApiGenerate') {
     doLast {

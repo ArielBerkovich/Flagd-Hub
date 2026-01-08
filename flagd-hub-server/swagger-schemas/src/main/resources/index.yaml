@@ -204,6 +204,51 @@ paths:
                   $ref: "#/components/schemas/ChangelogEvent"
         404:
           description: "Flag not found."
+  /insecure/flags/{flagKey}:
+    get:
+      summary: "Get a specific feature flag (Insecure)"
+      description: "Retrieve details of a specific feature flag by its key without authentication."
+      operationId: getInsecureFlag
+      tags:
+        - insecure
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "Details of the feature flag."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureFlag"
+        404:
+          description: "Flag not found."
+    put:
+      summary: "Update a feature flag default variant (Insecure)"
+      description: "Update the default variant of an existing feature flag by its key without authentication."
+      operationId: updateInsecureFlagValue
+      tags:
+        - insecure
+      parameters:
+        - name: "flagKey"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeDefaultVariantRequest"
+      responses:
+        202:
+          description: "Flag value update accepted."
+        409:
+          description: "Conflict. Update failed."
 components:
   schemas:
     ChangeDefaultVariantRequest:
