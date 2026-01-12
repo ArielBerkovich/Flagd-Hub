@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './Sidebar.css';
 import LogoutIcon from '@mui/icons-material/Logout';
-import Environment from '../../utils/Environment';
+import { environment } from '../../utils/environment.util';
+import { ENV_KEYS } from '../../constants/environment.constants';
+import { STORAGE_KEYS } from '../../constants/storage.constants';
 import AboutPopup from '../about-popup/AboutPopup';
 
 
@@ -19,28 +21,20 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas, onLogout }) =
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   useEffect(() => {
-    setIsSecured(Environment.getBoolean('is_secured'));
+    setIsSecured(environment.getBooleanSync(ENV_KEYS.IS_SECURED));
   }, []);
 
+  // Consolidated filtering logic - no more duplication!
   useEffect(() => {
-    setFilteredAreas(() =>
-      searchTerm.trim()
-        ? allAreas.filter((area) =>
-          area.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        : allAreas
+    const areasToFilter = searchTerm.trim() ? allAreas : allAreas;
+    const filtered = areasToFilter.filter((area) =>
+      area.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    setFilteredAreas(filtered);
   }, [allAreas, searchTerm]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-
-    setFilteredAreas(
-      ['All', ...allAreas].filter((area) =>
-        area.toLowerCase().includes(value.toLowerCase())
-      )
-    );
+    setSearchTerm(event.target.value);
   };
 
   const handleAreaClick = (area: string) => {
@@ -91,8 +85,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onAreaSelect, allAreas, onLogout }) =
       {isSecured && (
         <div className='logout-container'>
           <button className='logout-button' onClick={() => {
-            localStorage.removeItem('flagd-hub-token');
-            onLogout()
+            localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+            onLogout();
           }}>
             <LogoutIcon className="me-2" />
           </button>
