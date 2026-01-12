@@ -1,6 +1,6 @@
 import React from "react";
 import "./ChangeLogs.css";
-import Changelog from "../../models/Changelog";
+import { Changelog } from "../../models";
 
 interface ChangeLogProps {
   changeLogs: Record<string, Changelog> | Map<string, Changelog>;

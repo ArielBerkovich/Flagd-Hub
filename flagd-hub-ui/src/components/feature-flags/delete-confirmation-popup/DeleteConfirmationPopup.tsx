@@ -1,19 +1,23 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { Modal } from '../../common/Modal/Modal';
 import './DeleteConfirmationPopup.css';
 
 interface DeleteConfirmationPopupProps {
+  isOpen: boolean;
   message: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-const DeleteConfirmationPopup: React.FC<DeleteConfirmationPopupProps> = ({ message, onConfirm, onCancel }) => {
-  return ReactDOM.createPortal(
-    <div className="popup-overlay" onClick={onCancel}>
-      <div
-        className="popup-form"
-      >
+const DeleteConfirmationPopup: React.FC<DeleteConfirmationPopupProps> = ({
+  isOpen,
+  message,
+  onConfirm,
+  onCancel
+}) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onCancel} className="delete-confirmation-modal">
+      <div className="popup-form">
         <h3>Confirm Delete</h3>
         <p>{message}</p>
         <div className="form-actions">
@@ -21,8 +25,7 @@ const DeleteConfirmationPopup: React.FC<DeleteConfirmationPopupProps> = ({ messa
           <button className="confirm-button" onClick={onCancel}>No</button>
         </div>
       </div>
-    </div>,
-    document.body
+    </Modal>
   );
 };
 

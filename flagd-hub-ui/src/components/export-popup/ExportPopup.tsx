@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ExportPopup.css";
-import FeatureFlag from "../../models/FeatureFlag";
+import { FeatureFlag } from "../../models";
 
 interface JsonPopupProps {
   show: boolean;
@@ -12,11 +12,8 @@ const ExportPopup: React.FC<JsonPopupProps> = ({ show, onClose, featureFlags }) 
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
   const [downloadSuccess, setDownloadSuccess] = useState<boolean>(false);
   
-  // Remove wasChanged property from each flag
-  const jsonData = featureFlags.map(({ wasChanged, ...rest }) => rest);
-  
   // Format JSON with proper indentation
-  const formattedJson = JSON.stringify(jsonData, null, 2);
+  const formattedJson = JSON.stringify(featureFlags, null, 2);
   
   const handleCopy = () => {
     navigator.clipboard.writeText(formattedJson)
@@ -24,7 +21,7 @@ const ExportPopup: React.FC<JsonPopupProps> = ({ show, onClose, featureFlags }) 
         setCopySuccess("Copied!");
         setTimeout(() => setCopySuccess(null), 2000);
       })
-      .catch(err => {
+      .catch(() => {
         setCopySuccess("Failed to copy");
         setTimeout(() => setCopySuccess(null), 2000);
       });

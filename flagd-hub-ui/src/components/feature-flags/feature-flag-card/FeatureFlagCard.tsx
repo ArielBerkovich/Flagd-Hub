@@ -1,9 +1,10 @@
-import React, { useState, useCallback, JSX } from 'react';
+import React, { useState, JSX } from 'react';
 import './FeatureFlagCard.css';
 import FeatureCardInfoPopup from '../feature-flag-card-info/FeatureFlagCardInfo';
 import DeleteConfirmationPopup from '../delete-confirmation-popup/DeleteConfirmationPopup';
-import FeatureFlag from '../../../models/FeatureFlag';
-import FeatureFlagsService from '../../../services/feature-flags-service';
+import { FeatureFlag } from '../../../models';
+import * as featureFlagsService from '../../../services/feature-flags.service';
+import { getVariantKeys } from '../../../utils/variant.utils';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import EditIcon from '@mui/icons-material/Edit';
@@ -25,16 +26,8 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({
   const [showInfoPopup, setShowInfoPopup] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
-  // Helper function to get variant keys, handling both Map and object variants
-  const getVariantKeys = useCallback((): string[] => {
-    if (!flag.variants) return [];
-    
-    if (flag.variants instanceof Map) {
-      return Array.from(flag.variants.keys());
-    } 
-    
-    return Object.keys(flag.variants);
-  }, [flag.variants]);
+  // Use consolidated variant utility
+  const variantKeys = getVariantKeys(flag.variants);
 
   // Event handlers
   const handleInfoClick = (e: React.MouseEvent): void => {
@@ -60,7 +53,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({
 
   const handleConfirmDelete = (): void => {
     setShowDeleteConfirm(false);
-    FeatureFlagsService.deleteFeatureFlag(flag.key);
+    featureFlagsService.deleteFeatureFlag(flag.key);
   };
 
   const handleCancelDelete = (): void => {
@@ -131,7 +124,7 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({
 
   const renderVariantRadioGroup = (): JSX.Element => (
     <div className="button-radio-group" role="radiogroup" aria-label={`${flag.name} variants`}>
-      {getVariantKeys().map((variant) => (
+      {variantKeys.map((variant) => (
         <label
           key={variant}
           className={`button-radio ${selectedVariant === variant ? 'active' : ''}`}
@@ -153,19 +146,18 @@ const FeatureFlagCard: React.FC<FeatureFlagCardProps> = ({
   const renderPopups = (): JSX.Element => (
     <>
       {showInfoPopup && (
-        <FeatureCardInfoPopup 
-          featureFlag={flag} 
-          onClose={handleCloseInfoPopup} 
+        <FeatureCardInfoPopup
+          featureFlag={flag}
+          onClose={handleCloseInfoPopup}
         />
       )}
 
-      {showDeleteConfirm && (
-        <DeleteConfirmationPopup
-          message={`Are you sure you want to delete feature flag ${flag.name}?`}
-          onConfirm={handleConfirmDelete}
-          onCancel={handleCancelDelete}
-        />
-      )}
+      <DeleteConfirmationPopup
+        isOpen={showDeleteConfirm}
+        message={`Are you sure you want to delete feature flag ${flag.name}?`}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
     </>
   );
 
