@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './CreateFeatureFlagPopup.css';
-import FeatureFlag from '../../../models/FeatureFlag';
+import { FeatureFlag } from '../../../models';
 import Targeting from './targeting/targeting';
 
 // Type definitions
-type VariantMap = Map<string, string>;
 type VariantObject = { [key: string]: string };
 
 interface CreateFeatureFlagPopupProps {
@@ -138,7 +137,6 @@ const CreateFeatureFlagPopup: React.FC<CreateFeatureFlagPopupProps> = ({
       defaultVariant: defaultValue,
       targeting: targetingEnabled ? targeting : "",
       creationTime: featureFlag?.creationTime || Date.now(),
-      wasChanged: !!featureFlag,
     };
 
     onCreate(newFlag);

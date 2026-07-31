@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import LoginRequest from '../../models/LoginRequest';
-import FeatureFlagsService from '../../services/feature-flags-service';
+import { LoginRequest } from '../../models';
+import * as featureFlagsService from '../../services/feature-flags.service';
+import { STORAGE_KEYS } from '../../constants/storage.constants';
 import './login.css';
 
 interface LoginProps {
@@ -21,12 +22,14 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         username,
         password,
       };
-      const response = await FeatureFlagsService.login(loginRequest);
-      const token: string = response.token;
-      localStorage.setItem('flagd-hub-token', token);
-      onLoginSuccess(token);
-    } catch (error) {
-      setError('Invalid');
+      const response = await featureFlagsService.login(loginRequest);
+      localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, response.token);
+      onLoginSuccess(response.token);
+    } catch (error: any) {
+      const errorMessage = error.response?.status === 401
+        ? 'Invalid username or password'
+        : 'Login failed. Please try again.';
+      setError(errorMessage);
       console.error('Login failed:', error);
     }
   };

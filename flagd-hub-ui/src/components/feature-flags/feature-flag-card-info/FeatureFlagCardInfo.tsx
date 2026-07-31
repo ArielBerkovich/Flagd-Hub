@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './FeatureFlagCardInfo.css';
-import FeatureFlag from '../../../models/FeatureFlag';
-import FeatureFlagsService from '../../../services/feature-flags-service';
-import Changelog from '../../../models/Changelog';
+import { FeatureFlag, Changelog } from '../../../models';
+import * as featureFlagsService from '../../../services/feature-flags.service';
 
 interface FeatureFlagCardInfoProps {
   featureFlag: FeatureFlag;
@@ -16,7 +15,7 @@ const FeatureFlagCardInfo: React.FC<FeatureFlagCardInfoProps> = ({ featureFlag, 
   useEffect(() => {
     const fetchChangelogs = async () => {
       try {
-        const changelogs = await FeatureFlagsService.getChangelogs(featureFlag.key);
+        const changelogs = await featureFlagsService.getChangelogs(featureFlag.key);
         if (changelogs && changelogs.length > 0) {
           setChangelog(changelogs[changelogs.length - 1]);
         }

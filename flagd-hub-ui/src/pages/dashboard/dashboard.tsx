@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import './dashboard.css';
 import FlagsEmptyState from '../../components/flags-empty-state/flags-empty-state';
 import FeatureFlagCard from '../../components/feature-flags/feature-flag-card/FeatureFlagCard';
-import FeatureFlag from '../../models/FeatureFlag';
+import { FeatureFlag, Changelog } from '../../models';
 import CreateFeatureFlagPopup from '../../components/feature-flags/create-feature-flag-popop/CreateFeatureFlagPopup';
-import ExportPopup from '../../components/export-popup/ExportPopup'; // Import the popup
-import FeatureFlagsService from '../../services/feature-flags-service';
+import ExportPopup from '../../components/export-popup/ExportPopup';
+import * as featureFlagsService from '../../services/feature-flags.service';
 import AddIcon from '@mui/icons-material/Add';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import HistoryIcon from '@mui/icons-material/History';
 import ChangeLogs from '../../components/changelogs/ChangeLogs';
-import Changelog from '../../models/Changelog';
 
 interface DashboardProps {
   activeArea: string | null;
@@ -30,7 +29,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
 
   const filteredFlags = featureFlags
     .filter(flag => flag.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    .sort((a, b) => (a.defaultVariant === 'on' ? -1 : 1));
+    .sort((a, _b) => (a.defaultVariant === 'on' ? -1 : 1));
 
   const handleVariantChange = (flagId: string, variant: string) => {
     console.log(`Feature flag ID: ${flagId}, Variant selected: ${variant}`);
@@ -38,13 +37,21 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
   };
 
   const updateFeatureFlag = async (flagId: string, defaultVariant: string) => {
-    FeatureFlagsService.setFeatureFlag(flagId, defaultVariant);
+    try {
+      await featureFlagsService.setFeatureFlagVariant(flagId, defaultVariant);
+    } catch (error) {
+      console.error('Failed to update feature flag:', error);
+    }
   };
 
-  const handleCreateFlag = (newFlag: FeatureFlag) => {
-    FeatureFlagsService.createFeatureFlag(newFlag);
-    setIsPopupOpen(false);
-    setEditingFlag(null);
+  const handleCreateFlag = async (newFlag: FeatureFlag) => {
+    try {
+      await featureFlagsService.createFeatureFlag(newFlag);
+      setIsPopupOpen(false);
+      setEditingFlag(null);
+    } catch (error) {
+      console.error('Failed to create feature flag:', error);
+    }
   };
 
   const handleEditFlag = (flag: FeatureFlag) => {
@@ -58,15 +65,23 @@ const Dashboard: React.FC<DashboardProps> = ({ activeArea, featureFlags }) => {
   };
 
   const openExportPopup = async () => {
-    const data = await FeatureFlagsService.getFeatureFlags();
-    setExportData(data);
-    setIsExportOpen(true);
+    try {
+      const data = await featureFlagsService.getFeatureFlags();
+      setExportData(data);
+      setIsExportOpen(true);
+    } catch (error) {
+      console.error('Failed to load export data:', error);
+    }
   };
 
   const openChangeLogs = async () => {
-    const data = await FeatureFlagsService.getChangeLogs();
-    setChangeLogs(data);
-    setIsChangelogsOpen(true);
+    try {
+      const data = await featureFlagsService.getAllChangeLogs();
+      setChangeLogs(data);
+      setIsChangelogsOpen(true);
+    } catch (error) {
+      console.error('Failed to load changelogs:', error);
+    }
   };
 
   return (
